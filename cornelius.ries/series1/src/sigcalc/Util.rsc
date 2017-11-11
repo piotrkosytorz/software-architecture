@@ -16,7 +16,7 @@ public int countLines(list[str] lines){
 	int ret = 0;
 	for(l <- lines){
 		str lt = trim(l);
-		if(lt != "" && !startsWith(lt, "//") && !startsWith(lt, "/*") && !startsWith(lt, "*")){
+		if(lt != "" && !startsWith(lt, "//") && !startsWith(lt, "/*") && !startsWith(lt, "*") && !startsWith(lt, "*/")){
 			ret += 1;
 		}
 	}

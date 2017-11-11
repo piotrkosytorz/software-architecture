@@ -9,6 +9,7 @@ import util::Math;
 import sigcalc::Types;
 import sigcalc::Util;
 
+// calculate the average score for a list of scores
 public score calcScore(list[score] scs){
 	int i = (0 | it +  sc.v | sc <- scs);
 	real s = i  / toReal(size(scs));
@@ -20,6 +21,7 @@ public score calcScore(list[score] scs){
 	throw "Could not compute score";
 }
 
+// calculate the volume score
 public score volumeScore(int volume){
 	if(volume < 66000) return scores.vh;
 	if(volume < 246000) return scores.h;
@@ -28,6 +30,10 @@ public score volumeScore(int volume){
 	return scores.vl;
 }
 
+// calculate unit complexity score
+// first divide units based on unit cc threshold
+// then calculate the percentages based on total loc
+// return the appropriate score
 public unitScore unitCCScore(int volume, unitsInfo ui){
 	
 	int mlc = (0 | it + i.lc | i <- ui, i.cc > 10 && i.cc <= 20);
@@ -47,6 +53,10 @@ public unitScore unitCCScore(int volume, unitsInfo ui){
 	return <floor(rmlc), floor(rhlc), floor(rvhlc), s>;
 }
 
+// calculate unit complexity score
+// first divide units based on unit size threshold
+// then calculate the percentages based on total loc
+// return the appropriate score
 public unitScore unitLCScore(int volume, unitsInfo ui){
 	
 	int mlc = (0 | it + i.lc | i <- ui, i.lc > 10 && i.lc <= 20);

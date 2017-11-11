@@ -7,11 +7,13 @@ import sigcalc::Rating;
 import sigcalc::Util;
 import sigcalc::Types;
 
+// load analysis data an generate  report to report file
 public void loadAndGenerateReport(loc dataFile, loc reportFile){
 	analysisInfo info = readData(dataFile);
 	generateReport(info, reportFile);
 }
 
+// generate a report based on analysis info to a report file
 public void generateReport(analysisInfo info, loc reportFile){
 	
 	score vS = volumeScore(info.locs);
