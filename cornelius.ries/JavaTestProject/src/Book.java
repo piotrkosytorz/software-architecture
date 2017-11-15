@@ -43,5 +43,10 @@ public class Book {
 			break;
 		}
 	}
+	
+	public void testWhile() {
+		while(name == "if" && name == "of")
+			System.out.println("blub");
+	}
 
 }

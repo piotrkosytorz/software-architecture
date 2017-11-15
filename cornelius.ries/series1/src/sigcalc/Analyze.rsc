@@ -59,10 +59,14 @@ private analysisInfo analyzeProjectOpt(set[loc] files) {
 			
     		int cc = 1;
     		visit(e){
-    			case /\if(_,_) : cc += 1;
-    			case /\if(_,_,_) : cc += 1;
+    			case /\if(exp,_) : cc += 1;
+    			case /\if(exp,_,_) : cc += 1;
     			case /\case(_) : cc += 1;
     			case /\defaultCase() : cc += 1;
+    			case /\foreach(_,_,_) : cc += 1;
+    			case /\for(_,_,_,_) : cc += 1;
+    			case /\for(_,_,_) : cc += 1;
+    			case /\while(exp,_) : cc += 1;
     		}
     		units += <x.decl, lc, cc>;
     	}
@@ -76,4 +80,13 @@ private analysisInfo analyzeProjectOpt(set[loc] files) {
 	}
 	// because we call toSet duplicate duplication findings are removed
 	return <0, units, toSet(allDups)>;
+}
+
+private int countConditions(Expression exp){
+	int x = 0;
+	visit(exp){
+    	case /&&/ : x += 1;		
+    	case /||/ : x += 1;	
+    }
+    return x;
 }
