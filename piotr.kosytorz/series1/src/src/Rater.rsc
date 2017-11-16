@@ -53,7 +53,7 @@ public score volumeScore(int volume){
  * ================================
  * 
  */
-public unitScore unitCCScore(unitsInfo ui){
+public unitScore unitCCScore(unitsInfo ui, int totalProcjectLOC){
 	
 	// total number of units
 	int totalUnits = size(ui);
@@ -68,20 +68,20 @@ public unitScore unitCCScore(unitsInfo ui){
 	| > 50  | untestable, very high risk   |
 	+--------------------------------------+
 	 */
-	// count number of units per treshold risk
+	// count number of lines of units per treshold risk
 	
-	// number of units with moderate risk
-	// number of units with high risk
-	// number of units with very high risk
+	// sum of lines of code of units with moderate risk
+	// sum of lines of code of units with high risk
+	// sum of lines of code of units with very high risk
 	
-	int moderateRiskUnits = 	(0 | it + 1 | i <- ui, i.cc > 10 && i.cc <= 20 );
-	int highRiskUnits = 		(0 | it + 1 | i <- ui, i.cc > 21 && i.cc <= 50);
-	int veryHighRiskUnits = 	(0 | it + 1 | i <- ui, i.cc > 50);
+	int moderateRiskUnitsLOC = 	(0 | it + i.lc | i <- ui, i.cc > 10 && i.cc <= 20 );
+	int highRiskUnitsLOC = 		(0 | it + i.lc | i <- ui, i.cc > 20 && i.cc <= 50);
+	int veryHighRiskUnitsLOC = 	(0 | it + i.lc | i <- ui, i.cc > 50);
 	
 	// count size (as percentage) of risk treshold per total number of units in the system
-	int moderateRiskUnitsPercentage = percent(moderateRiskUnits, totalUnits);
-	int highRiskUnitsPercentage = percent(highRiskUnits, totalUnits);
-	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnits, totalUnits);
+	int moderateRiskUnitsPercentage = percent(moderateRiskUnitsLOC, totalProcjectLOC);
+	int highRiskUnitsPercentage = percent(highRiskUnitsLOC, totalProcjectLOC);
+	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnitsLOC, totalProcjectLOC);
 	
 	/**
 	 * Last: return the appropriate score
@@ -113,29 +113,27 @@ public unitScore unitCCScore(unitsInfo ui){
  * Calculates unit volume score
  * 
  */
-public unitScore unitSizeScore(unitsInfo ui){
-	
-	// total number of units
-	int totalUnits = size(ui);
-	
+public unitScore unitSizeScore(unitsInfo ui, int totalProcjectLOC){
+		
 	// count number of units per treshold risk
 	
-	// number of units with moderate risk
-	// number of units with high risk
-	// number of units with very high risk
+	// sum of lines of code of units with moderate risk
+	// sum of lines of code of units with high risk
+	// sum of lines of code of units with very high risk
 	
-	int moderateRiskUnits = 	(0 | it + 1 | i <- ui, i.lc > 10 && i.lc <= 20 );
-	int highRiskUnits = 		(0 | it + 1 | i <- ui, i.lc > 21 && i.lc <= 50);
-	int veryHighRiskUnits = 	(0 | it + 1 | i <- ui, i.lc > 50);
+	int moderateRiskUnitsLOC = 	(0 | it + i.lc | i <- ui, i.lc > 15 && i.lc <= 30 );
+	int highRiskUnitsLOC = 		(0 | it + i.lc | i <- ui, i.lc > 30 && i.lc <= 60);
+	int veryHighRiskUnitsLOC = 	(0 | it + i.lc | i <- ui, i.lc > 60);
 	
-	// count size (as percentage) of risk treshold per total number of units in the system
-	int moderateRiskUnitsPercentage = percent(moderateRiskUnits, totalUnits);
-	int highRiskUnitsPercentage = percent(highRiskUnits, totalUnits);
-	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnits, totalUnits);
+	// count size (as percentage) of risk treshold per total number of LOC in the system
+	int moderateRiskUnitsPercentage = percent(moderateRiskUnitsLOC, totalProcjectLOC);
+	int highRiskUnitsPercentage = percent(highRiskUnitsLOC, totalProcjectLOC);
+	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnitsLOC, totalProcjectLOC);
 	
-	// count the aggregated unit size score 
-	
+	// count the aggregated score 
 	score totalScore = scores.vl;	// defaul score = very low (--)
+	
+	// TODO: verify this metrics
 	
 	if		(moderateRiskUnitsPercentage <= 25 &&	highRiskUnitsPercentage == 0		&& veryHighRiskUnitsPercentage == 0) totalScore = scores.vh;	// very high (++)
 	else if	(moderateRiskUnitsPercentage <= 30 &&	highRiskUnitsPercentage <= 5		&& veryHighRiskUnitsPercentage == 0) totalScore = scores.h;	// high (+)
@@ -143,4 +141,24 @@ public unitScore unitSizeScore(unitsInfo ui){
 	else if	(moderateRiskUnitsPercentage <= 50 &&	highRiskUnitsPercentage <= 15	&& veryHighRiskUnitsPercentage <= 5) totalScore = scores.l;	// low (-)
 	
 	return <floor(moderateRiskUnitsPercentage), floor(highRiskUnitsPercentage), floor(veryHighRiskUnitsPercentage), totalScore>;
+}
+
+// For duplication i  count the lines of duplicated code and compute a percentage
+public dupScore duplicationScore(dupsInfo dups, int volume) {
+	
+	int duplicatedCode = 0;
+	
+	for(set[loc] dup <- dups){
+		duplicatedCode += (0 | it + 1 + el.end.line - el.begin.line | el <- tail(toList(dup)));
+	}
+	
+	int rd = percent(duplicatedCode, volume);
+	
+	score r = scores.vl;
+	if(rd <= 3) r = scores.vh;
+	else if(rd <= 5) r = scores.h;
+	else if(rd <= 10) r = scores.m;
+	else if(rd <= 20) r = scores.l;
+	
+	return <rd, r>;
 }
