@@ -47,15 +47,13 @@ public void generteReport(loc location) {
 	
 	// scores
 	score volumeS = volumeScore(unitsInfo.locs);
-	unitScore unitCCS = unitCCScore(volume, unitsInfo.units);
-	unitScore unitVS = unitVScore(volume, unitsInfo.units);
+	unitScore unitCCS = unitCCScore(unitsInfo.units);
+	unitScore unitSS = unitSizeScore(unitsInfo.units);
 	//dupScore dupS = duplicationScore(unitsInfo.locs, unitsInfo.dups);
-	
-	//text(units);
-	
+		
 	// report generation
 	println("Project volume (LOCs): <volume>.");
 	println("Project volume score: <volumeS>");
 	println("Cyclomatic complexity score: <unitCCS>");
-	println("Unit volume score: <unitVS>");
+	println("Unit size score: <unitSS>");
  }

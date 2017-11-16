@@ -53,7 +53,10 @@ public score volumeScore(int volume){
  * ================================
  * 
  */
-public unitScore unitCCScore(int volume, unitsInfo ui){
+public unitScore unitCCScore(unitsInfo ui){
+	
+	// total number of units
+	int totalUnits = size(ui);
 	
 	/**
 	 *  First: evaluate units cc risks based on threshold
@@ -65,14 +68,20 @@ public unitScore unitCCScore(int volume, unitsInfo ui){
 	| > 50  | untestable, very high risk   |
 	+--------------------------------------+
 	 */
-	int mlc = 	(0 | it + i.lc | i <- ui, i.cc > 10 && i.cc <= 20);	// moderate risk
-	int hlc = 	(0 | it + i.lc | i <- ui, i.cc > 20 && i.cc <= 50);	// high risk
-	int vhlc = 	(0 | it + i.lc | i <- ui, i.cc > 50);				// very high risk
+	// count number of units per treshold risk
 	
-	// Then: calculate the percentages based on total loc
-	int rmlc = percent(mlc, volume);
-	int rhlc = percent(hlc, volume);
-	int rvhlc = percent(vhlc, volume);
+	// number of units with moderate risk
+	// number of units with high risk
+	// number of units with very high risk
+	
+	int moderateRiskUnits = 	(0 | it + 1 | i <- ui, i.cc > 10 && i.cc <= 20 );
+	int highRiskUnits = 		(0 | it + 1 | i <- ui, i.cc > 21 && i.cc <= 50);
+	int veryHighRiskUnits = 	(0 | it + 1 | i <- ui, i.cc > 50);
+	
+	// count size (as percentage) of risk treshold per total number of units in the system
+	int moderateRiskUnitsPercentage = percent(moderateRiskUnits, totalUnits);
+	int highRiskUnitsPercentage = percent(highRiskUnits, totalUnits);
+	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnits, totalUnits);
 	
 	/**
 	 * Last: return the appropriate score
@@ -90,33 +99,48 @@ public unitScore unitCCScore(int volume, unitsInfo ui){
 	| --   | -        | -    | -           |
 	+--------------------------------------+
 	 */
-	score s = scores.vl;
-	if(rmlc <= 25 && rhlc == 0 && rvhlc == 0) s = scores.vh;
-	elseif(rmlc <= 30 && rhlc <= 5 && rvhlc == 0) s = scores.h;
-	elseif(rmlc <= 40 && rhlc <= 10 && rvhlc == 0) s = scores.m;
-	elseif(rmlc <= 50 && rhlc <= 15 && rvhlc <= 5) s = scores.l;
+	score totalScore = scores.vl;	// defaul score = very low (--)
 	
-	return <floor(rmlc), floor(rhlc), floor(rvhlc), s>;
+	if		(moderateRiskUnitsPercentage <= 25 &&	highRiskUnitsPercentage == 0		&& veryHighRiskUnitsPercentage == 0) totalScore = scores.vh;	// very high (++)
+	else if	(moderateRiskUnitsPercentage <= 30 &&	highRiskUnitsPercentage <= 5		&& veryHighRiskUnitsPercentage == 0) totalScore = scores.h;	// high (+)
+	else if	(moderateRiskUnitsPercentage <= 40 &&	highRiskUnitsPercentage <= 10	&& veryHighRiskUnitsPercentage == 0) totalScore = scores.m;	// moderate (o)
+	else if	(moderateRiskUnitsPercentage <= 50 &&	highRiskUnitsPercentage <= 15	&& veryHighRiskUnitsPercentage <= 5) totalScore = scores.l;	// low (-)
+	
+	return <floor(moderateRiskUnitsPercentage), floor(highRiskUnitsPercentage), floor(veryHighRiskUnitsPercentage), totalScore>;
 }
 
 /**
  * Calculates unit volume score
+ * 
  */
-public unitScore unitVScore(int volume, unitsInfo ui){
+public unitScore unitSizeScore(unitsInfo ui){
 	
-	int mlc = (0 | it + i.lc | i <- ui, i.lc > 10 && i.lc <= 20);
-	int hlc = (0 | it + i.lc | i <- ui, i.lc > 21 && i.lc <= 50);
-	int vhlc = (0 | it + i.lc | i <- ui, i.lc > 50);
+	// total number of units
+	int totalUnits = size(ui);
 	
-	int rmlc = percent(mlc, volume);
-	int rhlc = percent(hlc, volume);
-	int rvhlc = percent(vhlc, volume);
+	// count number of units per treshold risk
 	
-	score s = scores.vl;
-	if(rmlc <= 25 && rhlc == 0 && rvhlc == 0) s = scores.vh;
-	else if(rmlc <= 30 && rhlc <= 5 && rvhlc == 0) s =  scores.h;
-	else if(rmlc <= 40 && rhlc <= 10 && rvhlc == 0) s =  scores.m;
-	else if(rmlc <= 50 && rhlc <= 15 && rvhlc <= 5) s =  scores.l;
+	// number of units with moderate risk
+	// number of units with high risk
+	// number of units with very high risk
 	
-	return <floor(rmlc), floor(rhlc), floor(rvhlc), s>;
+	int moderateRiskUnits = 	(0 | it + 1 | i <- ui, i.lc > 10 && i.lc <= 20 );
+	int highRiskUnits = 		(0 | it + 1 | i <- ui, i.lc > 21 && i.lc <= 50);
+	int veryHighRiskUnits = 	(0 | it + 1 | i <- ui, i.lc > 50);
+	
+	// count size (as percentage) of risk treshold per total number of units in the system
+	int moderateRiskUnitsPercentage = percent(moderateRiskUnits, totalUnits);
+	int highRiskUnitsPercentage = percent(highRiskUnits, totalUnits);
+	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnits, totalUnits);
+	
+	// count the aggregated unit size score 
+	
+	score totalScore = scores.vl;	// defaul score = very low (--)
+	
+	if		(moderateRiskUnitsPercentage <= 25 &&	highRiskUnitsPercentage == 0		&& veryHighRiskUnitsPercentage == 0) totalScore = scores.vh;	// very high (++)
+	else if	(moderateRiskUnitsPercentage <= 30 &&	highRiskUnitsPercentage <= 5		&& veryHighRiskUnitsPercentage == 0) totalScore = scores.h;	// high (+)
+	else if	(moderateRiskUnitsPercentage <= 40 &&	highRiskUnitsPercentage <= 10	&& veryHighRiskUnitsPercentage == 0) totalScore = scores.m;	// moderate (o)
+	else if	(moderateRiskUnitsPercentage <= 50 &&	highRiskUnitsPercentage <= 15	&& veryHighRiskUnitsPercentage <= 5) totalScore = scores.l;	// low (-)
+	
+	return <floor(moderateRiskUnitsPercentage), floor(highRiskUnitsPercentage), floor(veryHighRiskUnitsPercentage), totalScore>;
 }
