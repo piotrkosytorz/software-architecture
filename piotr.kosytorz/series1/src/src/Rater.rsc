@@ -21,6 +21,20 @@ import Types;
 import Utils;
 
 /**
+	Calculate the avarage of multiple ratings for SIG mainainability
+*/
+public score avarageScore(list[score] scs){
+	int i = (0 | it +  sc.v | sc <- scs);
+	real s = i  / toReal(size(scs));
+	int x = s >= 0 ? floor(s) : ceil(s);
+	for(score sc <- scores){
+		if(sc.v  == x)
+			return sc;
+	}
+	throw "Could not compute score";
+}
+
+/**
  * Calculates volume rating 
  * ==========================
  *
