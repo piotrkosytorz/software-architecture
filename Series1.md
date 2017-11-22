@@ -58,8 +58,34 @@ As given in \[1\], we use the following table to as conversion basis to obtain t
 #### Unit Size
 Simillary to volume, Uint size is a count of lines of code per unit. We use Rascal's AST parser and retrieve units it. We purify each unit in simmilar way as described above (see: Volume) and count number of lines per unit. 
 
+
+
 #### Unit Complexity
-According to \[1\] and \[2\]
+Based on information provided in \[1\] and \[2\], we decided to use the 
+
+According to \[1\] we perform the following operations to optain the SIG score for CC:
+
+First: Evaluate cc risks per unit based on thresholds from the following table:
+
+	| CC    | Risk evaluation              |
+  |-------|------------------------------|
+	| 1-10  | simple, without much risk    |
+	| 11-20 | more complex, moderate risk  |
+	| 21-50 | complex, high risk           |
+	| > 50  | untestable, very high risk   |
+
+Finally: Score units per number of units falling int the following tresholds:
+	 
+	|          maximum relative LOC        |
+	|--------------------------------------|
+	| rank | moderate | high | very high   |
+	|------|----------|------|-------------|
+	| ++   | 25%      | 0%   | 0%          |
+	| +    | 30%      | 5%   | 0%          |
+	| o    | 40%      | 10%  | 0%          |
+	| -    | 50%      | 15%  | 5%          |
+	| --   | -        | -    | -           |
+
 
 ### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
 
@@ -74,3 +100,5 @@ According to \[1\] and \[2\]
 \[1\] I. Heitlager, T. Kuipers, and J. Visser. A Practical Model for Measuring Maintainability. *In Quality of Information and Communications Technology*, 2007. QUATIC 2007. 6th International Conference on the, pages 30–39, Sept 2007.
 
 \[2\] Jurgen J. Vinju and Michael W. Godfrey. What Does Control Flow Really Look Like? Eyeballing the Cyclomatic Complexity Metric. International Working 
+
+\[3\] Alves, T.L., Correia, J.P., and Visser, J. (2011). Benchmark-based aggregation of metrics to ratings. In Proceedings - Joint Conference of the 21st International Workshop on Software Measurement, IWSM 2011 and the 6th International Conference on Software Process and Product Measurement, MENSURA 2011, pp. 20–29.
