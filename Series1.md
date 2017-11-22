@@ -134,6 +134,10 @@ This method has delivered the most code duplicated blocks, but is extremaly slow
 
 ***TODO***: *Explain*
 
+#### Maintanability
+
+
+
 ### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
 
 **TODO**: *Explain per metric and case, give examples.*
