@@ -219,11 +219,22 @@ public void generateReport(loc location, loc reportFile){
 		'                    \</td\>
 		'                \</tr\>
 		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
+		'                    \<td class=\"test-result-step-command-cell test-result-describe-cell\"\>
+		'                        Units
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell test-result-describe-cell\"\>
+		'                        <numberOfUnits>
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell test-result-describe-cell\"\>
+		'                        
+		'                    \</td\>
+		'                \</tr\>
+		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
 		'                    \<td class=\"test-result-step-command-cell\"\>
 		'                        Duplication
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <dupS.p>%
+		'                        <dupS.p>% (<dupCount> duplicated lines)
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <dupS.s.s>
@@ -234,7 +245,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Testing
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <testingS.p>%
+		'                        <testingS.p>% (<numberOfAsserts> assert statements)
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <testingS.s.s>
