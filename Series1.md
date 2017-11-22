@@ -58,6 +58,24 @@ As given in \[1\], we use the following table to as conversion basis to obtain t
 #### Unit Size
 Simillary to volume, Uint size is a count of lines of code per unit. We use Rascal's AST parser and retrieve units it. We purify each unit in simmilar way as described above (see: Volume) and count number of lines per unit. 
 
+For benchmarking the unit size (possibly simmilar to SIG standards) we have used the following tresholds taken from \[3\]:
+
+| CC    | Risk evaluation              |
+|-------|------------------------------|
+| <  30 | simple, without much risk    |
+| 30-44 | more complex, moderate risk  |
+| 44-74 | complex, high risk           |
+| >  74 | untestable, very high risk   |
+
+Maximum relative LOC:
+
+| rank | moderate | high   | very high |
+|------|----------|--------|-----------|
+| ++   |   19.5%  | 10.9%  |   3.9%    |
+| +    |   26.0%  | 15.5%  |   6.5%    |
+| o    |   34.1%  | 22.2%  |   11.0%   |
+| -    |   45.9%  | 31.4%  |   18.1%   |
+| --   |    -     |   -    |   -       |
 
 
 #### Unit Complexity
