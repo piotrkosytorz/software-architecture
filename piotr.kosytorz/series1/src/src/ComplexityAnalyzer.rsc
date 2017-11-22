@@ -6,6 +6,7 @@ import Types;
 import IO;
 import Set;
 import List;
+import Node;
 import String;
 
 import lang::java::m3::Core;
@@ -14,11 +15,10 @@ import lang::java::m3::AST;
 
 import util::ValueUI;
 
-public unitsInfo getComplexity(set[loc] files) {
-	
-	set[Declaration] declarations = createAstsFromFiles(files, true);
+public astInfo analyzeAST(set[Declaration] declarations) {
 
 	unitsInfo units = [];
+	int numberOfAsserts = 0;
 	
 	visit(declarations){
 	
@@ -35,7 +35,7 @@ public unitsInfo getComplexity(set[loc] files) {
 	    		
 	    		// lines count per unit (unit size)
 	    		list[str] lines = readFileLines(x.src);
-			int lc = countLines(lines);
+				int lc = countLines(lines);
 	    			    		
 	    		/** 
 	    		 * Cyclomatic complexity
@@ -58,7 +58,7 @@ public unitsInfo getComplexity(set[loc] files) {
 	    			case /\if(_,_) 					: cc += 1;	// params: (Expression condition, Statement thenBranch)
 	    			case /\if(_,_,_) 				: cc += 1;	// params: (Expression condition, Statement thenBranch, Statement elseBranch)
 	    			case \conditional(_, _, _)		: cc += 1; 	// params: (Expression expression, Expression thenBranch, Expression elseBranch), example: a ? b : c
-	    			case /\for(_,_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body)
+	    			case /\for(_,_,_,_) 			: cc += 1;	// params: (list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body)
 	    			case /\for(_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, list[Expression] updaters, Statement body)
 	    			case /\foreach(_,_,_) 			: cc += 1;	// params: (Declaration parameter, Expression collection, Statement body)
 	    			case /\while(_,_) 				: cc += 1;	// params: (Expression condition, Statement body)
@@ -66,8 +66,13 @@ public unitsInfo getComplexity(set[loc] files) {
 	    		}
 	    		units += <x.decl, lc, cc>;
     		}
-    	
+    	case Declaration x:class(_, /simpleName(a), _, body) : {
+    		if(contains(a, "TestCase")){
+	    		visit(body) {
+	    			case /assert/ : numberOfAsserts += 1;
+	    		}
+    		}
+    	}
 	}
-	
-	return units;
+	return <units, numberOfAsserts>;
 }	

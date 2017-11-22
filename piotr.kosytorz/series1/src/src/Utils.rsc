@@ -55,9 +55,32 @@ public list[str] purifyContents(list[str] contents, bool ignoreImports) {
 	return pureContent;
 }
 
+test bool purifyContentsTest(list[str] contents){
+	list[str] pcontents = purifyContents(contents);
+	return size(pcontents) <= size(contents);
+}
+
+test bool purifyContentsTest2(list[str] contents){
+	list[str] pcontents = purifyContents(contents);
+	for(line <- pcontents){
+		if(startsWith(line, "*")) return false;
+		if(startsWith(line, "/*")) return false;
+		if(startsWith(line, "//")) return false;
+		if(startsWith(line, "*/")) return false;
+		
+	}
+	return true;
+}
+
+
 /**
  * Helper function for calcVolume, calculates code lines number per file 
  */
 int countLines(list[str] contents) {	
 	return size(purifyContents(contents, false));
+}
+
+test bool countLinesTest(list[str] contents){
+	int lc = countLines(contents);
+	return lc <= size(contents);
 }
