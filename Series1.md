@@ -21,7 +21,6 @@ The following metrics were proposed:
 * Unit Size,
 * Unit Complexity,
 * Duplication.
-* Piotr
 
 SIG model metrics:
 
@@ -117,6 +116,23 @@ Maximum relative LOC:
 | -    | 50%      | 15%  | 5%          |
 | --   | -        | -    | -           |
 
+#### Duplication
+
+We've came up with three different ways of counting duplicaed lines. Different methods can lead to very different results, which shows that counting duplicated lines based only on the textual representation of tested programs is prone to errors and should be taken with much reserve. 
+
+**Method 1: Comparing duplicated blocks**
+
+The first and the easiest way that we came up with was to extract code blocks from the AST and then, after code purification per block, we were simply comparing the blocks whether they contain each other - if yes, then such a block wyould be trated as a duplicated one. 
+
+**Method 2: Line per line text searching (top-to-bottom)**
+
+This method has delivered the most code duplicated blocks, but is extremaly slow, as it requires to compare most of lines with each other. 
+
+***TODO***: *Explain*
+
+**Method 3: 6-lines duplication cadidates***
+
+***TODO***: *Explain*
 
 ### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
 
@@ -126,7 +142,7 @@ Maximum relative LOC:
 
 **TODO**: *Propose improvements, give examples.*
 
-# References
+## References
 
 \[1\] I. Heitlager, T. Kuipers, and J. Visser. A Practical Model for Measuring Maintainability. *In Quality of Information and Communications Technology*, 2007. QUATIC 2007. 6th International Conference on the, pages 30–39, Sept 2007. \[[link](http://wiki.di.uminho.pt/twiki/pub/Personal/Joost/PublicationList/HeitlagerKuipersVisser-Quatic2007.pdf)\].
 
