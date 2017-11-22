@@ -58,6 +58,24 @@ As given in \[1\], we use the following table to as conversion basis to obtain t
 #### Unit Size
 Simillary to volume, Uint size is a count of lines of code per unit. We use Rascal's AST parser and retrieve units it. We purify each unit in simmilar way as described above (see: Volume) and count number of lines per unit. 
 
+For benchmarking the unit size (possibly simmilar to SIG standards) we have used the following tresholds taken from \[3\]:
+
+| CC    | Risk evaluation              |
+|-------|------------------------------|
+| <  30 | simple, without much risk    |
+| 30-44 | more complex, moderate risk  |
+| 44-74 | complex, high risk           |
+| >  74 | untestable, very high risk   |
+
+Maximum relative LOC:
+
+| rank | moderate | high   | very high |
+|------|----------|--------|-----------|
+| ++   |   19.5%  | 10.9%  |   3.9%    |
+| +    |   26.0%  | 15.5%  |   6.5%    |
+| o    |   34.1%  | 22.2%  |   11.0%   |
+| -    |   45.9%  | 31.4%  |   18.1%   |
+| --   |    -     |   -    |   -       |
 
 
 #### Unit Complexity
@@ -98,6 +116,23 @@ Maximum relative LOC:
 | -    | 50%      | 15%  | 5%          |
 | --   | -        | -    | -           |
 
+#### Duplication
+
+We've came up with three different ways of counting duplicaed lines. Different methods can lead to very different results, which shows that counting duplicated lines based only on the textual representation of tested programs is prone to errors and should be taken with much reserve. 
+
+**Method 1: Comparing duplicated blocks**
+
+The first and the easiest way that we came up with was to extract code blocks from the AST and then, after code purification per block, we were simply comparing the blocks whether they contain each other - if yes, then such a block wyould be trated as a duplicated one. 
+
+**Method 2: Line per line text searching (top-to-bottom)**
+
+This method has delivered the most code duplicated blocks, but is extremaly slow, as it requires to compare most of lines with each other. 
+
+***TODO***: *Explain*
+
+**Method 3: 6-lines duplication cadidates***
+
+***TODO***: *Explain*
 
 ### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
 
@@ -107,10 +142,10 @@ Maximum relative LOC:
 
 **TODO**: *Propose improvements, give examples.*
 
-# References
+## References
 
-\[1\] I. Heitlager, T. Kuipers, and J. Visser. A Practical Model for Measuring Maintainability. *In Quality of Information and Communications Technology*, 2007. QUATIC 2007. 6th International Conference on the, pages 30–39, Sept 2007.
+\[1\] I. Heitlager, T. Kuipers, and J. Visser. A Practical Model for Measuring Maintainability. *In Quality of Information and Communications Technology*, 2007. QUATIC 2007. 6th International Conference on the, pages 30–39, Sept 2007. \[[link](http://wiki.di.uminho.pt/twiki/pub/Personal/Joost/PublicationList/HeitlagerKuipersVisser-Quatic2007.pdf)\].
 
-\[2\] Jurgen J. Vinju and Michael W. Godfrey. What Does Control Flow Really Look Like? Eyeballing the Cyclomatic Complexity Metric. International Working 
+\[2\] Jurgen J. Vinju and Michael W. Godfrey. What Does Control Flow Really Look Like? Eyeballing the Cyclomatic Complexity Metric. International Working \[[link](https://homepages.cwi.nl/~jurgenv/papers/SCAM2012.pdf)\].
 
-\[3\] Alves, T.L., Correia, J.P., and Visser, J. (2011). Benchmark-based aggregation of metrics to ratings. In Proceedings - Joint Conference of the 21st International Workshop on Software Measurement, IWSM 2011 and the 6th International Conference on Software Process and Product Measurement, MENSURA 2011, pp. 20–29.
+\[3\] Alves, T.L., Correia, J.P., and Visser, J. (2011). Benchmark-based aggregation of metrics to ratings. In Proceedings - Joint Conference of the 21st International Workshop on Software Measurement, IWSM 2011 and the 6th International Conference on Software Process and Product Measurement, MENSURA 2011, pp. 20–29.\[[link](https://www.sig.eu/files/en/080_Benchmark-based_Aggregation_of_Metrics_to_Ratings.pdf)\].
