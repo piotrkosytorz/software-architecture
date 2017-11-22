@@ -61,7 +61,19 @@ Simillary to volume, Uint size is a count of lines of code per unit. We use Rasc
 
 
 #### Unit Complexity
-Based on information provided in \[1\] and \[2\], we decided to use the 
+The default code complexity per unit is defined to be 1.
+Based on information provided in \[1\] and \[2\], we decided to count the following statements as an increment of code complexity per unit: 
+* case
+* defaultCase
+* catch
+* do
+* if
+* conditional
+* for
+* foreach
+* while
+* &&
+* ||
 
 According to \[1\] we perform the following operations to optain the SIG score for CC:
 
