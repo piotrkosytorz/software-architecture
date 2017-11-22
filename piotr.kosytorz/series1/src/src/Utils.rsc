@@ -56,12 +56,12 @@ public list[str] purifyContents(list[str] contents, bool ignoreImports) {
 }
 
 test bool purifyContentsTest(list[str] contents){
-	list[str] pcontents = purifyContents(contents);
+	list[str] pcontents = purifyContents(contents, false);
 	return size(pcontents) <= size(contents);
 }
 
 test bool purifyContentsTest2(list[str] contents){
-	list[str] pcontents = purifyContents(contents);
+	list[str] pcontents = purifyContents(contents, false);
 	for(line <- pcontents){
 		if(startsWith(line, "*")) return false;
 		if(startsWith(line, "/*")) return false;
