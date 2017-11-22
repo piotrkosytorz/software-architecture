@@ -53,6 +53,11 @@ public list[str] purifyContents(list[str] contents) {
 	return pureContent;
 }
 
+test bool purifyContentsTest(list[str] contents){
+	list[str] pcontents = purifyContents(contents);
+	return size(pcontents) <= size(contents);
+}
+
 public list[tuple[loc fileLoc, int lineNumber, str lineStr]] purifyBlob(list[tuple[loc fileLoc, int lineNumber, str lineStr]] blob) {
 	
 	list[tuple[loc fileLoc, int lineNumber, str lineStr]] pureBlob = [];
@@ -103,4 +108,9 @@ public list[tuple[loc fileLoc, int lineNumber, str lineStr]] purifyBlob(list[tup
  */
 int countLines(list[str] contents) {	
 	return size(purifyContents(contents));
+}
+
+test bool countLinesTest(list[str] contents){
+	int lc = countLines(contents);
+	return lc <= size(contents);
 }

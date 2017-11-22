@@ -110,6 +110,7 @@ public void generateReport(loc location, loc reportFile){
 	testingScore testingS = testingScore(numberOfAsserts, numberOfUnits);
 	dupScore dupS = duplicationScore(dups, volume);
 	
+	// TODO decide if we use testing metric and add them to all the relecant score calculations
 	score maintainability = avarageScore([volumeS, unitCCS.s, unitSS.s, dupS.s]);
 	score analysability = avarageScore([volumeS, unitSS.s, dupS.s]);
 	score changeability = avarageScore([unitCCS.s, dupS.s]);

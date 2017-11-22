@@ -25,13 +25,22 @@ import Utils;
 */
 public score avarageScore(list[score] scs){
 	int i = (0 | it +  sc.v | sc <- scs);
-	real s = i  / toReal(size(scs));
+	real size = toReal(size(scs));
+	if(size <= 0)
+		return scores.e;
+	real s = i  / size;
 	int x = round(s);
 	for(score sc <- scores){
 		if(sc.v  == x)
 			return sc;
 	}
-	throw "Could not compute score";
+	return scores.e;
+}
+
+test bool testAvarageScore(list[score] scs){
+	score s = avarageScore(scs);
+	if(s.v notin [-2,-1,0,1,2,-99]) return false;
+	return true;
 }
 
 /**
@@ -60,6 +69,18 @@ public score volumeScore(int volume){
 	if(volume < 665000) return scores.m;
 	if(volume < 1310000) return scores.l;
 	return scores.vl;
+}
+
+test bool testVolumeValues(int volume){
+	score s = volumeScore(volume);
+	if(s.v notin [-2,-1,0,1,2]) return false;
+	return true;
+}
+
+test bool testVolumeString(int volume){
+	score s = volumeScore(volume);
+	if(s.s notin ["--","-","o","+","++"]) return false;
+	return true;
 }
 
 /**
@@ -210,7 +231,7 @@ public testingScore testingScore(int numberOfAsserts, int numberOfUnits){
 	
 	/**
 	* Last: return the appropriate score
-	* Source: 
+	* Source: [Heitlager, 2007]
 	*
 	+---------------------+
 	|      |              |
