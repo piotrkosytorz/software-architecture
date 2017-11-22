@@ -43,7 +43,7 @@ To reach the best results we purify the source code files before counting the nu
 * Removing multi-line comments - `/* ... */`(in all variants such as a comment beginning in one line just after code, etc.)
 We *do count curly braces* as lines of code.  
 
-*Rating per unit*
+**Volume rating per unit**
 
 As given in \[1\], we use the following table to as conversion basis to obtain the SIG volume score:
 
