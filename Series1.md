@@ -20,16 +20,15 @@ The following metrics were proposed:
 * Volume,
 * Unit Size,
 * Unit Complexity,
-* Duplication,
-* Test Quality.
+* Duplication.
+* Piotr
 
 SIG model metrics:
 
 * Maintainability (overall),
 * Analysability,
 * Changeability,
-* Testability,
-* Stability.
+* Testability.
 
 ### How are these metrics computed?
 
