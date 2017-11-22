@@ -10,6 +10,7 @@ module Main
 import IO;
 import lang::java::m3::Core;
 import lang::java::jdt::m3::Core;
+import lang::java::m3::AST;
 import List;
 
 import util::ValueUI;
@@ -24,6 +25,7 @@ import Types;
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer;
+import TestingAnalyzer;
 
 /**
  * Tetst code (java projects) location
@@ -45,8 +47,14 @@ public void generteReport(loc location) {
  	// project volume (sum)
 	int volume = getVolume(files);			
 	
+	// create the ast
+	set[Declaration] declarations = createAstsFromFiles(files, true);		
+	
 	// units analysis 
-	unitsCompleity = getComplexity(files);
+	unitsCompleity = getComplexity(declarations);
+	
+	// testing analysis
+	int asserts = getAsserts(declarations);
 	
 	// scores
 	score volumeS = volumeScore(volume);
@@ -74,10 +82,17 @@ public void generateReport(loc location, loc reportFile){
  	set[loc] files = extractFilesFromM3(m);	
  	
  	// project volume (sum)
-	int volume = getVolume(files);			
+	int volume = getVolume(files);	
+	
+	// create the ast
+	set[Declaration] declarations = createAstsFromFiles(files, true);		
 	
 	// units analysis 
-	unitsCompleity = getComplexity(files);
+	unitsCompleity = getComplexity(declarations);
+	
+	// testing analysis
+	int numberOfAsserts = getAsserts(declarations);
+	int numberOfUnits = size(unitsCompleity);
 	
 	// TODO add the duplication calculation
 	dupsInfo dups = {};
@@ -86,12 +101,13 @@ public void generateReport(loc location, loc reportFile){
 	score volumeS = volumeScore(volume);
 	unitScore unitCCS = unitCCScore(unitsCompleity, volume);
 	unitScore unitSS = unitSizeScore(unitsCompleity, volume);
+	testingScore testingS = testingScore(numberOfAsserts, numberOfUnits);
 	dupScore dupS = duplicationScore(dups, volume);
 	
 	score maintainability = avarageScore([volumeS, unitCCS.s, unitSS.s, dupS.s]);
 	score analysability = avarageScore([volumeS, unitSS.s, dupS.s]);
 	score changeability = avarageScore([unitCCS.s, dupS.s]);
-	//score stability = <0,"">;
+	score stability = testingS.s;
 	score testability = avarageScore([unitCCS.s, unitSS.s]);
 	
 	str html = 
@@ -206,6 +222,17 @@ public void generateReport(loc location, loc reportFile){
 		'                        <dupS.s.s>
 		'                    \</td\>
 		'                \</tr\>
+		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
+		'                    \<td class=\"test-result-step-command-cell\"\>
+		'                        Testing
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell\"\>
+		'                        <testingS.p>
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell\"\>
+		'                        <testingS.s.s>
+		'                    \</td\>
+		'                \</tr\>
 		'            \</tbody\>
 		'        \</table\>
 		'		 \<div style=\" margin-top:25px \" \>
@@ -251,6 +278,14 @@ public void generateReport(loc location, loc reportFile){
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <testability.s>
+		'                    \</td\>
+		'                \</tr\>
+		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
+		'                    \<td class=\"test-result-step-command-cell\"\>
+		'                        Stability
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell\"\>
+		'                        <stability.s>
 		'                    \</td\>
 		'                \</tr\>
 		'            \</tbody\>

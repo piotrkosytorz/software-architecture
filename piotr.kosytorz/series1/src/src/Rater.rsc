@@ -26,7 +26,7 @@ import Utils;
 public score avarageScore(list[score] scs){
 	int i = (0 | it +  sc.v | sc <- scs);
 	real s = i  / toReal(size(scs));
-	int x = s >= 0 ? floor(s) : ceil(s);
+	int x = round(s);
 	for(score sc <- scores){
 		if(sc.v  == x)
 			return sc;
@@ -135,7 +135,7 @@ public unitScore unitSizeScore(unitsInfo ui, int totalProcjectLOC){
 	| <  30 | simple, without much risk    |
 	| 30-44 | more complex, moderate risk  |
 	| 44-74 | complex, high risk           |
-	| > 74  | untestable, very high risk   |
+	| >  74  | untestable, very high risk   |
 	+--------------------------------------+
 	 */	
 	// count number of units per treshold risk
@@ -199,4 +199,35 @@ public dupScore duplicationScore(dupsInfo dups, int volume) {
 	else if(rd <= 20) r = scores.l;
 	
 	return <rd, r>;
+}
+
+/**
+	Calculates the testing score
+*/
+public testingScore testingScore(int numberOfAsserts, int numberOfUnits){
+	
+	int testingPercentage = percent(numberOfAsserts, numberOfUnits);
+	
+	/**
+	* Last: return the appropriate score
+	* Source: 
+	*
+	+---------------------+
+	|      |              |
+	+---------------------+
+	| rank |  Percentage  |
+	+---------------------+
+	| ++   |  95-100%     |
+	| +    |  80-95%      |
+	| o    |  60-80%      |
+	| -    |  20-60%      |
+	| --   |  0-20%       |
+	+---------------------+
+	*/
+	
+	if(testingPercentage <= 20) return <testingPercentage,scores.vl>;
+	if(testingPercentage <= 60) return <testingPercentage,scores.l>;
+	if(testingPercentage <= 80) return <testingPercentage,scores.m>;
+	if(testingPercentage <= 95) return <testingPercentage,scores.h>;
+	return <testingPercentage,scores.vh>;
 }
