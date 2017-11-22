@@ -202,10 +202,12 @@ public unitScore unitSizeScore(unitsInfo ui, int totalProcjectLOC){
 	return <moderateRiskUnitsPercentage, highRiskUnitsPercentage, veryHighRiskUnitsPercentage, totalScore>;
 }
 
-// For duplication i  count the lines of duplicated code and compute a percentage
+/**
+	Calculates the duplication score based on the amount of duplicated code
+	and the total lines of code in the system
+*/
 public dupScore duplicationScore(int duplicatedCode, int volume) {
 
-	
 	int rd = percent(duplicatedCode, volume);
 	
 	score r = scores.vl;
@@ -218,7 +220,8 @@ public dupScore duplicationScore(int duplicatedCode, int volume) {
 }
 
 /**
-	Calculates the testing score
+	Calculates the testing score based on the amount of asserts
+	and the total amount of units in the system
 */
 public testingScore testingScore(int numberOfAsserts, int numberOfUnits){
 	
