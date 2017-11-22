@@ -43,9 +43,6 @@ public void generteReport(loc location) {
 	// project files
  	set[loc] files = extractFilesFromM3(m);	
  	
- 	//text(getMegaFile(files));
- 	
- 	
  	// project volume (sum)
 	int volume = getVolume(files);			
 	
@@ -59,9 +56,6 @@ public void generteReport(loc location) {
 	// testing analysis
 	int numberOfAsserts = ai.numberOfAsserts;
 	int numberOfUnits = size(unitsCompleity);
-	
-	// TODO add the duplication calculation
-	dupsInfo dups = {};
 	
 	// duplications count
 	int dupCount = detectClones(files);
@@ -107,22 +101,21 @@ public void generateReport(loc location, loc reportFile){
 	int numberOfAsserts = ai.numberOfAsserts;
 	int numberOfUnits = size(unitsCompleity);
 	
-	// TODO add the duplication calculation
-	dupsInfo dups = {};
+	// duplications count
+	int dupCount = detectClones(files);
 	
 	// scores
 	score volumeS = volumeScore(volume);
 	unitScore unitCCS = unitCCScore(unitsCompleity, volume);
 	unitScore unitSS = unitSizeScore(unitsCompleity, volume);
+	dupScore dupS = duplicationScore(dupCount, volume);
 	testingScore testingS = testingScore(numberOfAsserts, numberOfUnits);
-	dupScore dupS = duplicationScore(dups, volume);
 	
-	// TODO decide if we use testing metric and add them to all the relecant score calculations
-	score maintainability = avarageScore([volumeS, unitCCS.s, unitSS.s, dupS.s]);
-	score analysability = avarageScore([volumeS, unitSS.s, dupS.s]);
+	score maintainability = avarageScore([volumeS, unitCCS.s, unitSS.s, dupS.s, testingS.s]);
+	score analysability = avarageScore([volumeS, unitSS.s, dupS.s, testingS.s]);
 	score changeability = avarageScore([unitCCS.s, dupS.s]);
 	score stability = testingS.s;
-	score testability = avarageScore([unitCCS.s, unitSS.s]);
+	score testability = avarageScore([unitCCS.s, unitSS.s, testingS.s]);
 	
 	str html = 
 		"
@@ -197,7 +190,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Volume
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <volume>
+		'                        <volume> LOCs
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <volumeS.s>
@@ -208,7 +201,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Unit Complexity
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Medium: <unitCCS.m> High: <unitCCS.h> Very High: <unitCCS.vh> 
+		'                        Medium: <unitCCS.m>% High: <unitCCS.h>% Very High: <unitCCS.vh>% 
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <unitCCS.s.s>
@@ -219,7 +212,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Unit Size
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Medium: <unitSS.m> High: <unitSS.h> Very High: <unitSS.vh> 
+		'                        Medium: <unitSS.m>% High: <unitSS.h>% Very High: <unitSS.vh>% 
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <unitSS.s.s>
@@ -230,7 +223,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Duplication
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <dupS.p>
+		'                        <dupS.p>%
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <dupS.s.s>
@@ -241,7 +234,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Testing
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <testingS.p>
+		'                        <testingS.p>%
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <testingS.s.s>
@@ -305,26 +298,6 @@ public void generateReport(loc location, loc reportFile){
 		'            \</tbody\>
 		'        \</table\>
 		'		 \<div style=\" margin-top:25px \" \>
-		'        \<table class=\"test-result-table\" cellspacing=\"0\"\>
-		'            \<thead\>
-		'                \<tr\>
-		'                    \<td class=\"test-result-table-header-cell\"\>
-		'                        Duplications
-		'                    \</td\>
-		'                \</tr\>
-		'            \</thead\>
-		'            \<tbody\>
-		'<for(dup <- dups) {> 
-		'                \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'					\<td class=\"test-result-step-command-cell\"\>
-		'<for(dl <- dup)  {>
-			<dl> \</br\>
-		<}>
-		'                    \</td\>
-		'                \</tr\>
-		'<}>
-		'            \</tbody\>
-		'        \</table\>
 		'    \</body\>
 		'\</html\>
 		";
