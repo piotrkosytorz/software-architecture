@@ -23,7 +23,7 @@ import Types;
 
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
-import DuplicationsAnalyzer;
+import DuplicationsAnalyzer2;
 
 /**
  * Tetst code (java projects) location
@@ -42,32 +42,29 @@ public void generteReport(loc location) {
 	// project files
  	set[loc] files = extractFilesFromM3(m);	
  	
+ 	//text(getMegaFile(files));
+ 	
+ 	
  	// project volume (sum)
 	int volume = getVolume(files);			
 	
 	// units analysis 
 	unitsCompleity = getComplexity(files);
 	
+	// duplications count
+	int dupCount = detectClones(files);
+	
 	// scores
 	score volumeS = volumeScore(volume);
 	unitScore unitCCS = unitCCScore(unitsCompleity, volume);
 	unitScore unitSS = unitSizeScore(unitsCompleity, volume);
-	//dupScore dupS = duplicationScore(unitsInfo.dups, volume);
+	dupScore dupS = duplicationScore(dupCount, volume);
 		
 	// report generation
 	println("Project volume (LOCs): <volume>.");
 	println("Project volume score: <volumeS>");
 	println("Cyclomatic complexity score: <unitCCS>");
 	println("Unit size score: <unitSS>");
-	//println("Duplication score: <dupS>");
- }
- 
- public void clones (loc location) {
- 	// m3 object
- 	M3 m = createM3FromEclipseProject(location);
-
-	// project files
- 	set[loc] files = extractFilesFromM3(m);	
- 	
- 	detectClones(files);
+	println("Duplication score: <dupS>");
+	
  }

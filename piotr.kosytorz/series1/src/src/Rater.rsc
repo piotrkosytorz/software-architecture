@@ -144,13 +144,7 @@ public unitScore unitSizeScore(unitsInfo ui, int totalProcjectLOC){
 }
 
 // For duplication i  count the lines of duplicated code and compute a percentage
-public dupScore duplicationScore(dupsInfo dups, int volume) {
-	
-	int duplicatedCode = 0;
-	
-	for(set[loc] dup <- dups){
-		duplicatedCode += (0 | it + 1 + el.end.line - el.begin.line | el <- tail(toList(dup)));
-	}
+public dupScore duplicationScore(int duplicatedCode, int volume) {
 	
 	int rd = percent(duplicatedCode, volume);
 	

@@ -32,15 +32,15 @@ public void detectClones(set[loc] files) {
 
 	for (location <- files) {
 		list[str] lines = readFileLines(location);
-		
+		purifiedLines = purifyContents(lines, true); 
 		int k = 1;	//line number
-		for (line <- lines) {
+		for (line <- purifiedLines) {
 			blob += getMetaDataTouple(location, k, line);
 			k += 1;
 		}
 	}
 	
-	pureBlob = purifyBlob(blob);
+	pureBlob = blob; //purifyBlob(blob);
 	pureBlobLastIndex = size(pureBlob) - 1;
 		
 	// determine possible clones
@@ -48,8 +48,8 @@ public void detectClones(set[loc] files) {
 	int part1index = 0;		// line 1 index
 	for (line <- pureBlob) {
 		
-		if ((part1index + 7) < pureBlobLastIndex &&
-			!lineStartsInSourceBlock(line, detectedAsSources)
+		if ((part1index + 7) < pureBlobLastIndex 
+			&& !lineStartsInSourceBlock(line, detectedAsSources)
 		) {
 		
 			int part2index = 0;
@@ -58,7 +58,6 @@ public void detectClones(set[loc] files) {
 				if( part2index > part1index && // compare blocks that are upper in the blob with the ones that are lower & don't compare the same line
 					line.lineStr == line2.lineStr
 					) {	// start comparing only if lines are equal (optimization)
-				
 				
 					// check consecutive lines 
 					
@@ -71,9 +70,9 @@ public void detectClones(set[loc] files) {
 					}
 										
 					if (i>5 && (<line.fileLoc, line.lineNumber> notin detectedAsDuplicates)) {
-						duplicatesReport += <<line.fileLoc, line.lineNumber>,<line2.fileLoc,line2.lineNumber>,i>;
+				//		duplicatesReport += <<line.fileLoc, line.lineNumber>,<line2.fileLoc,line2.lineNumber>,i>;
 						detectedAsSources += <line.fileLoc, line.lineNumber, line.lineNumber+i>;
-						detectedAsDuplicates += <line2.fileLoc,line2.lineNumber>;
+				//		detectedAsDuplicates += <line2.fileLoc,line2.lineNumber>;
 						duplicatedLinesOfCode += i;
 					}
 					
@@ -91,9 +90,9 @@ public void detectClones(set[loc] files) {
 		part1index += 1;
 	}
 	
-	//text(detectedAsSources);
-	//text(detectedAsDuplicates);
-	text(duplicatesReport);
+	// text(detectedAsSources);
+	// text(detectedAsDuplicates);
+	// text(duplicatesReport);
 	println("Total duplicated lines of code: <duplicatedLinesOfCode>");
 	
 }
