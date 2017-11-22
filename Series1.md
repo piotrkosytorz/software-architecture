@@ -67,24 +67,24 @@ According to \[1\] we perform the following operations to optain the SIG score f
 
 First: Evaluate cc risks per unit based on thresholds from the following table:
 
-	| CC    | Risk evaluation              |
-  |-------|------------------------------|
-	| 1-10  | simple, without much risk    |
-	| 11-20 | more complex, moderate risk  |
-	| 21-50 | complex, high risk           |
-	| > 50  | untestable, very high risk   |
+| CC    | Risk evaluation              |
+|-------|------------------------------|
+| 1-10  | simple, without much risk    |
+| 11-20 | more complex, moderate risk  |
+| 21-50 | complex, high risk           |
+| > 50  | untestable, very high risk   |
 
 Finally: Score units per number of units falling int the following tresholds:
 	 
-	|          maximum relative LOC        |
-	|--------------------------------------|
-	| rank | moderate | high | very high   |
-	|------|----------|------|-------------|
-	| ++   | 25%      | 0%   | 0%          |
-	| +    | 30%      | 5%   | 0%          |
-	| o    | 40%      | 10%  | 0%          |
-	| -    | 50%      | 15%  | 5%          |
-	| --   | -        | -    | -           |
+Maximum relative LOC:
+	  
+| rank | moderate | high | very high   |
+|------|----------|------|-------------|
+| ++   | 25%      | 0%   | 0%          |
+| +    | 30%      | 5%   | 0%          |
+| o    | 40%      | 10%  | 0%          |
+| -    | 50%      | 15%  | 5%          |
+| --   | -        | -    | -           |
 
 
 ### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
