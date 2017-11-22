@@ -58,6 +58,18 @@ test bool purifyContentsTest(list[str] contents){
 	return size(pcontents) <= size(contents);
 }
 
+test bool purifyContentsTest2(list[str] contents){
+	list[str] pcontents = purifyContents(contents);
+	for(line <- pcontents){
+		if(startsWith(line, "*")) return false;
+		if(startsWith(line, "/*")) return false;
+		if(startsWith(line, "//")) return false;
+		if(startsWith(line, "*/")) return false;
+		
+	}
+	return true;
+}
+
 public list[tuple[loc fileLoc, int lineNumber, str lineStr]] purifyBlob(list[tuple[loc fileLoc, int lineNumber, str lineStr]] blob) {
 	
 	list[tuple[loc fileLoc, int lineNumber, str lineStr]] pureBlob = [];
