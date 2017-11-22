@@ -20,14 +20,16 @@ The following metrics were proposed:
 * Volume,
 * Unit Size,
 * Unit Complexity,
-* Duplication.
+* Duplication,
+* Test Quality.
 
 SIG model metrics:
 
 * Maintainability (overall),
 * Analysability,
 * Changeability,
-* Testability.
+* Testability,
+* Stability.
 
 ### How are these metrics computed?
 
