@@ -54,19 +54,25 @@ public void generteReport(loc location) {
 	unitsCompleity = getComplexity(declarations);
 	
 	// testing analysis
-	int asserts = getAsserts(declarations);
+	int numberOfAsserts = getAsserts(declarations);
+	int numberOfUnits = size(unitsCompleity);
+	
+	// TODO add the duplication calculation
+	dupsInfo dups = {};
 	
 	// scores
 	score volumeS = volumeScore(volume);
 	unitScore unitCCS = unitCCScore(unitsCompleity, volume);
 	unitScore unitSS = unitSizeScore(unitsCompleity, volume);
-	//dupScore dupS = duplicationScore(unitsInfo.dups, volume);
+	testingScore testingS = testingScore(numberOfAsserts, numberOfUnits);
+	dupScore dupS = duplicationScore(dups, volume);
 		
 	// report generation
 	println("Project volume (LOCs): <volume>.");
 	println("Project volume score: <volumeS>");
 	println("Cyclomatic complexity score: <unitCCS>");
 	println("Unit size score: <unitSS>");
+	println("Testing score: <testingS>");
 	//println("Duplication score: <dupS>");
  }
  
