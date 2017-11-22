@@ -7,6 +7,7 @@ module Types
  */
  
 alias unitsInfo = list[tuple[loc l, int lc, int cc]];
+alias astInfo = tuple[unitsInfo ui, int numberOfAsserts];
 alias dupsInfo = set[set[loc]];
 alias analysisInfo = tuple[unitsInfo units, dupsInfo dups];
 

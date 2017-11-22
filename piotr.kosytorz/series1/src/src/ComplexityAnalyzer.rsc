@@ -15,9 +15,10 @@ import lang::java::m3::AST;
 
 import util::ValueUI;
 
-public unitsInfo getComplexity(set[Declaration] declarations) {
+public astInfo analyzeAST(set[Declaration] declarations) {
 
 	unitsInfo units = [];
+	int numberOfAsserts = 0;
 	
 	visit(declarations){
 	
@@ -65,6 +66,13 @@ public unitsInfo getComplexity(set[Declaration] declarations) {
 	    		}
 	    		units += <x.decl, lc, cc>;
     		}
+    	case Declaration x:class(_, /simpleName(a), _, body) : {
+    		if(contains(a, "TestCase")){
+	    		visit(body) {
+	    			case /assert/ : numberOfAsserts += 1;
+	    		}
+    		}
+    	}
 	}
-	return units;
+	return <units, numberOfAsserts>;
 }	

@@ -25,8 +25,6 @@ import Types;
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer;
-import TestingAnalyzer;
-
 /**
  * Tetst code (java projects) location
  */
@@ -51,10 +49,11 @@ public void generteReport(loc location) {
 	set[Declaration] declarations = createAstsFromFiles(files, true);		
 	
 	// units analysis 
-	unitsCompleity = getComplexity(declarations);
+	astInfo ai = analyzeAST(declarations);
+	unitsCompleity = ai.ui;
 	
 	// testing analysis
-	int numberOfAsserts = getAsserts(declarations);
+	int numberOfAsserts = ai.numberOfAsserts;
 	int numberOfUnits = size(unitsCompleity);
 	
 	// TODO add the duplication calculation
@@ -94,10 +93,11 @@ public void generateReport(loc location, loc reportFile){
 	set[Declaration] declarations = createAstsFromFiles(files, true);		
 	
 	// units analysis 
-	unitsCompleity = getComplexity(declarations);
+	astInfo ai = analyzeAST(declarations);
+	unitsCompleity = ai.ui;
 	
 	// testing analysis
-	int numberOfAsserts = getAsserts(declarations);
+	int numberOfAsserts = ai.numberOfAsserts;
 	int numberOfUnits = size(unitsCompleity);
 	
 	// TODO add the duplication calculation
