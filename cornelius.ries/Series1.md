@@ -17,17 +17,16 @@ For information on how to compute this metric we have looked for different paper
 For unit iterfacing we count all the parameters for all methods in the system using the AST.
 After gathering the information we calculate a risk profile based on the following scheme:
 
-+----------------------------------------------------------+
+
 | number of parameters      | Risk evaluation              |
 | <  2 						          | simple, without much risk    |
 | == 2                      | more complex, moderate risk  |
 | == 3                      | complex, high risk           |
 | >  4                      | untestable, very high risk   |
-+----------------------------------------------------------+
 
 After that we calculate the score based ont the folowing threshold:
 
-+--------------------------------------+
+
 |      |     maximum relative LOC      |
 +--------------------------------------+
 | rank | moderate | high   | very high |
@@ -37,4 +36,4 @@ After that we calculate the score based ont the folowing threshold:
 | o    |   17.7%  | 10.2%  |   4.8%   |
 | -    |   25.2%  | 15.3%  |   7.1%   |
 | --   |    -     |   -    |   -       |
-+--------------------------------------+
+
