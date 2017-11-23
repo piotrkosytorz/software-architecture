@@ -179,7 +179,7 @@ public unitScore unitSizeScore(unitsInfo ui, int totalProcjectLOC){
 	
 	/**
 	 * Last: return the appropriate score
-	 * Source: [Benchmark-based aggregation of metrics to ratings, 2007]
+	 * Source: [Benchmark-based aggregation of metrics to ratings, 2011]
 	 *
 	+--------------------------------------+
 	|      |     maximum relative LOC      |
@@ -241,17 +241,17 @@ public unitScore unitInterfaceScore(unitsInfo ui){
 	
 	/**
 	 * Last: return the appropriate score
-	 * Source: [Benchmark-based aggregation of metrics to ratings, 2007]
+	 * Source: [Benchmark-based aggregation of metrics to ratings, 2011]
 	 *
 	+--------------------------------------+
 	|      |     maximum relative LOC      |
 	+--------------------------------------+
 	| rank | moderate | high   | very high |
 	+--------------------------------------+
-	| ++   |   %  | %  |   %    |
-	| +    |   %  | %  |   %    |
-	| o    |   %  | %  |   %   |
-	| -    |   %  | %  |   %   |
+	| ++   |   12.1%  |  5.4%  |   2.2%    |
+	| +    |   14.9%  |  7.2%  |   3.1%    |
+	| o    |   17.7%  | 10.2%  |   4.8%   |
+	| -    |   25.2%  | 15.3%  |   7.1%   |
 	| --   |    -     |   -    |   -       |
 	+--------------------------------------+
 	 */
