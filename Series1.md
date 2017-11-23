@@ -2,6 +2,10 @@
 
 This documents contains our notes and answers to the questions about software metrics (practical lab Series 1).
 
+**Authors**
+* Cornelius Ries
+* Piotr Kosytorz
+
 ## Relevant questions
 
 The following are the questions stated in practical lab Series 1:
@@ -186,7 +190,13 @@ The first and the easiest way that we came up with was to extract code blocks fr
 
 This method has delivered the most code duplicated blocks, but is extremaly slow, as it requires to compare most of lines with each other. 
 
-***TODO***: *Explain*
+The algorithm:
+
+1. Purify the code by removing comments and empty lines and trimming every line.
+1. Store all files (as lists of lines) in one list of lines (combo).
+1. Iterate from the top of the list and compare each line with all lines that are placed beneath it.
+1. When the lines are idential then compare the consecutive lines of each parts (the one that you iterating over and the one that you are comaparing) - in other words - expand the comparision window. 
+1. Each window that is longer than 5 lines is marked as a duplicate, and all lines that have been deteced as duplicates are marked, so that they won't be used as comparision source for further comparision. 
 
 **Method 3: 6-lines duplication cadidates***
 
