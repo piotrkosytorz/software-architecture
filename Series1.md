@@ -200,7 +200,16 @@ The algorithm:
 
 **Method 3: 6-lines duplication cadidates***
 
-***TODO***: *Explain*
+We eventually decided to take another approach that counts code duplicates in decent time. 
+
+The algorithm is presented below:
+
+1. Purify the code by removing comments and empty lines and trimming every line.
+1. For all files create a list of blocks of 6 consecutive lines and save the line numbers and file locations where they start. 
+1. Merge all those files into one big list
+1. Create a list of clone candidates woth the following method: `cloneCandidates = distribution(blob.content - dup(blob.content));`, which means: show the distribution of blocks that are duplicated. The number of occurences of certain block in this operation will be equal to numbers of copies of a certain block. 
+1. In extracted list of blocks, merge all blocks that start on consecutive lines of the same file (to achieve the biggest possible chunks of duplicated code). 
+1. Finally we sum up the number of lines of the extracted chunks.
 
 #### Maintanability
 
