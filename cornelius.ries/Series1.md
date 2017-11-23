@@ -27,10 +27,8 @@ After gathering the information we calculate a risk profile based on the followi
 
 After that we calculate the score based ont the folowing threshold:
 
-
-|       maximum relative LOC           |
-|------|----------|--------|-----------|
 | rank | moderate | high   | very high |
+|------|----------|--------|-----------|
 | ++   |   12.1%  |  5.4%  |   2.2%    |
 | +    |   14.9%  |  7.2%  |   3.1%    |
 | o    |   17.7%  | 10.2%  |   4.8%    |
