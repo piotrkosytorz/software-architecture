@@ -203,6 +203,68 @@ public unitScore unitSizeScore(unitsInfo ui, int totalProcjectLOC){
 }
 
 /**
+ * Calculates unit volume score
+ * 
+ */
+public unitScore unitInterfaceScore(unitsInfo ui){
+
+	// total number of units
+	int totalUnits = size(ui);
+
+	/**
+	 *  First: evaluate units interface risks based on threshold
+    +----------------------------------------------------------+
+	| number of parameters      | Risk evaluation              |
+	| <  2 						| simple, without much risk    |
+	| == 2                      | more complex, moderate risk  |
+	| == 3                      | complex, high risk           |
+	| >  4                      | untestable, very high risk   |
+	+----------------------------------------------------------+
+	 */	
+	// count number of units per treshold risk
+	
+	// sum of lines of code of units with moderate risk
+	// sum of lines of code of units with high risk
+	// sum of lines of code of units with very high risk
+	
+	int moderateRiskUnits = 	(0 | it + 1 | i <- ui, i.np == 2);
+	int highRiskUnits = 		(0 | it + 1 | i <- ui, i.np == 3);
+	int veryHighRiskUnits = 	(0 | it + 1 | i <- ui, i.np > 4);
+	
+	// count size (as percentage) of risk treshold per total number of LOC in the system
+	int moderateRiskUnitsPercentage = percent(moderateRiskUnits, totalUnits);
+	int highRiskUnitsPercentage = percent(highRiskUnits, totalUnits);
+	int veryHighRiskUnitsPercentage = percent(veryHighRiskUnits, totalUnits);
+	
+	// count the aggregated score 
+	score totalScore = scores.vl;	// defaul score = very low (--)
+	
+	/**
+	 * Last: return the appropriate score
+	 * Source: [Benchmark-based aggregation of metrics to ratings, 2007]
+	 *
+	+--------------------------------------+
+	|      |     maximum relative LOC      |
+	+--------------------------------------+
+	| rank | moderate | high   | very high |
+	+--------------------------------------+
+	| ++   |   %  | %  |   %    |
+	| +    |   %  | %  |   %    |
+	| o    |   %  | %  |   %   |
+	| -    |   %  | %  |   %   |
+	| --   |    -     |   -    |   -       |
+	+--------------------------------------+
+	 */
+	
+	if		(moderateRiskUnitsPercentage <= 12 &&	highRiskUnitsPercentage <= 5	&& veryHighRiskUnitsPercentage <= 2) totalScore = scores.vh;	// very high (++)
+	else if	(moderateRiskUnitsPercentage <= 15 &&	highRiskUnitsPercentage <= 7	&& veryHighRiskUnitsPercentage <= 3) totalScore = scores.h;		// high (+)
+	else if	(moderateRiskUnitsPercentage <= 18 &&	highRiskUnitsPercentage <= 10	&& veryHighRiskUnitsPercentage <= 5) totalScore = scores.m;	// moderate (o)
+	else if	(moderateRiskUnitsPercentage <= 25 &&	highRiskUnitsPercentage <= 15	&& veryHighRiskUnitsPercentage <= 7) totalScore = scores.l;	// low (-)
+	
+	return <moderateRiskUnitsPercentage, highRiskUnitsPercentage, veryHighRiskUnitsPercentage, totalScore>;
+}
+
+/**
 	Calculates the duplication score based on the amount of duplicated code
 	and the total lines of code in the system
 */

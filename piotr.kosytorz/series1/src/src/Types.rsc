@@ -6,7 +6,8 @@ module Types
  * Provides custom types for Analyzer and Rater.
  */
  
-alias unitsInfo = list[tuple[loc l, int lc, int cc]];
+alias unitInfo = tuple[loc l, int lc, int cc, int np];
+alias unitsInfo = list[unitInfo];
 alias astInfo = tuple[unitsInfo ui, int numberOfAsserts];
 alias dupsInfo = set[set[loc]];
 alias analysisInfo = tuple[unitsInfo units, dupsInfo dups];

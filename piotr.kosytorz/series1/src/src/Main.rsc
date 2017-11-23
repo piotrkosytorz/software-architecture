@@ -110,6 +110,7 @@ public void generateReport(loc location, loc reportFile){
 	unitScore unitSS = unitSizeScore(unitsCompleity, volume);
 	dupScore dupS = duplicationScore(dupCount, volume);
 	testingScore testingS = testingScore(numberOfAsserts, numberOfUnits);
+	unitScore interfaceS = unitInterfaceScore(unitsCompleity);
 	
 	score maintainability = avarageScore([volumeS, unitCCS.s, unitSS.s, dupS.s, testingS.s]);
 	score analysability = avarageScore([volumeS, unitSS.s, dupS.s, testingS.s]);
@@ -218,6 +219,18 @@ public void generateReport(loc location, loc reportFile){
 		'                        <unitSS.s.s>
 		'                    \</td\>
 		'                \</tr\>
+		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
+		'                    \<td class=\"test-result-step-command-cell\"\>
+		'                        Unit Interfacing
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell\"\>
+		'                        Low: <100-interfaceS.m-interfaceS.h-interfaceS.vh>% Medium: <interfaceS.m>% High: <interfaceS.h>% Very High: <interfaceS.vh>% 
+		'                    \</td\>
+		'                    \<td class=\"test-result-step-description-cell\"\>
+		'                        <interfaceS.s.s>
+		'                    \</td\>
+		'                \</tr\>
+
 		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
 		'                    \<td class=\"test-result-step-command-cell test-result-describe-cell\"\>
 		'                        Units
