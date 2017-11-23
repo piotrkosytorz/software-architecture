@@ -7,16 +7,7 @@ Authors
 * Cornelius Ries
 * Piotr Kosytorz
 
-## Relevant questions
-
-The following are the questions stated in practical lab Series 1:
-
-1. Which metrics are used?
-1. How are these metrics computed?
-1. How well do these metrics indicate what we really want to know about these systems and how can we judge that?
-1. How can we improve any of the above?
-
-## Answers
+## Decisions and motivations
 
 ### Which metrics are used?
 
