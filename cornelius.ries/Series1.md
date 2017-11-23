@@ -14,7 +14,7 @@ For benchmarking the test quality we have used the following tresholds:
 
 #### Unit Interfacing
 For information on how to compute this metric we have looked for different papers and found \[3\].
-For unit iterfacing we count all the parameters for all methods in the system using the AST.
+For unit interfacing we count all the parameters for all methods in the system using the AST.
 After gathering the information we calculate a risk profile based on the following scheme:
 
 
