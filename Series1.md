@@ -80,6 +80,7 @@ Maximum relative LOC:
 #### Unit Complexity
 The default code complexity per unit is defined to be 1. A unit in this case are methods and constructors.
 Based on information provided in \[1\] and \[2\], we decided to count the following statements as an increment of code complexity per unit: 
+
 * case
 * catch
 * do
@@ -190,7 +191,7 @@ The algorithm:
 1. When the lines are idential then compare the consecutive lines of each parts (the one that you iterating over and the one that you are comaparing) - in other words - expand the comparision window. 
 1. Each window that is longer than 5 lines is marked as a duplicate, and all lines that have been deteced as duplicates are marked, so that they won't be used as comparision source for further comparision. 
 
-**Method 3: 6-lines duplication cadidates***
+**Method 3: 6-lines duplication cadidates**
 
 We eventually decided to take another approach that counts code duplicates in decent time. 
 
