@@ -2,6 +2,10 @@
 
 This documents contains our notes and answers to the questions about software metrics (practical lab Series 1).
 
+**Authors**
+* Cornelius Ries
+* Piotr Kosytorz
+
 ## Relevant questions
 
 The following are the questions stated in practical lab Series 1:
@@ -15,19 +19,22 @@ The following are the questions stated in practical lab Series 1:
 
 ### Which metrics are used?
 
-The following metrics were proposed: 
+The following metrics are calculated: 
 
 * Volume,
 * Unit Size,
 * Unit Complexity,
-* Duplication.
+* Duplication,
+* Test Quality,
+* Unit Interfacing.
 
 SIG model metrics:
 
 * Maintainability (overall),
 * Analysability,
 * Changeability,
-* Testability.
+* Testability
+* Stability.
 
 ### How are these metrics computed?
 
@@ -41,9 +48,9 @@ To reach the best results we purify the source code files before counting the nu
 * After trimming - removing all empty lines in given file
 * Removing single-line comment (where the line starts with `//`)
 * Removing multi-line comments - `/* ... */`(in all variants such as a comment beginning in one line just after code, etc.)
-We *do count curly braces* as lines of code.  
+**We do count curly braces** as lines of code.  
 
-**Volume rating per unit**
+**Volume rating**
 
 As given in \[1\], we use the following table to as conversion basis to obtain the SIG volume score:
 
@@ -79,10 +86,9 @@ Maximum relative LOC:
 
 
 #### Unit Complexity
-The default code complexity per unit is defined to be 1.
+The default code complexity per unit is defined to be 1. A unit in this case are methods and constructors.
 Based on information provided in \[1\] and \[2\], we decided to count the following statements as an increment of code complexity per unit: 
 * case
-* defaultCase
 * catch
 * do
 * if
@@ -92,6 +98,24 @@ Based on information provided in \[1\] and \[2\], we decided to count the follow
 * while
 * &&
 * ||
+
+The original rascal code responsible for counting of cyclomatic complexity:
+```
+int cc = 1;
+visit(implementation) {
+	case /\case(_) 					: cc += 1;	// params: (Expression expression)
+	case /\catch(_,_)				: cc += 1;	// params: (Declaration exception, Statement body)
+	case /\do(_,_)					: cc += 1;	// params: (Statement body, Expression condition)
+	case /\if(_,_) 					: cc += 1;	// params: (Expression condition, Statement thenBranch)
+	case /\if(_,_,_) 				: cc += 1;	// params: (Expression condition, Statement thenBranch, Statement elseBranch)
+	case /\conditional(_, _, _)			: cc += 1; 	// params: (Expression expression, Expression thenBranch, Expression elseBranch), example: a ? b : c
+	case /\for(_,_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body)
+	case /\for(_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, list[Expression] updaters, Statement body)
+	case /\foreach(_,_,_) 				: cc += 1;	// params: (Declaration parameter, Expression collection, Statement body)
+	case /\while(_,_) 				: cc += 1;	// params: (Expression condition, Statement body)
+	case \infix(_, /^\|\||&&$/, _) 	: cc += 1; 	// params: (Expression lhs, str operator, Expression rhs), example: (a && b ), (a || b)
+}
+```
 
 According to \[1\] we perform the following operations to optain the SIG score for CC:
 
@@ -116,6 +140,44 @@ Maximum relative LOC:
 | -    | 50%      | 15%  | 5%          |
 | --   | -        | -    | -           |
 
+#### Test Quality
+For test quality we count all the assert statements in test classes in the code \[1\].
+After counting the assert statements we calculate the percentage based on the total number of units in the system.
+
+For benchmarking the test quality we have used the following tresholds:
+
+| rank | percentage |
+|------|------------|
+| ++   |   95-100%  |
+| +    |   80-95%   |
+| o    |   60-80%   |
+| -    |   20-60%   |
+| --   |   0-20%    |
+
+#### Unit Interfacing
+For information on how to compute this metric we have looked for different papers and found \[3\].
+For unit interfacing we count all the parameters for all methods in the system using the AST.
+After gathering the information we calculate a risk profile based on the following scheme:
+
+We seperate the units based on the information below and calculate a percentage against the whole number of units.
+
+| number of parameters      | Risk evaluation              |
+|---------------------------|------------------------------|
+| <  2 						          | without much risk    |
+| == 2                      | moderate risk  |
+| == 3                      | high risk           |
+| >  4                      | very high risk   |
+
+After that we calculate the score based on the following thresholds:
+
+| rank | moderate | high   | very high |
+|------|----------|--------|-----------|
+| ++   |   12.1%  |  5.4%  |   2.2%    |
+| +    |   14.9%  |  7.2%  |   3.1%    |
+| o    |   17.7%  | 10.2%  |   4.8%    |
+| -    |   25.2%  | 15.3%  |   7.1%    |
+| --   |    -     |   -    |   -       |
+
 #### Duplication
 
 We've came up with three different ways of counting duplicaed lines. Different methods can lead to very different results, which shows that counting duplicated lines based only on the textual representation of tested programs is prone to errors and should be taken with much reserve. 
@@ -128,23 +190,134 @@ The first and the easiest way that we came up with was to extract code blocks fr
 
 This method has delivered the most code duplicated blocks, but is extremaly slow, as it requires to compare most of lines with each other. 
 
-***TODO***: *Explain*
+The algorithm:
+
+1. Purify the code by removing comments and empty lines and trimming every line.
+1. Store all files (as lists of lines) in one list of lines (combo).
+1. Iterate from the top of the list and compare each line with all lines that are placed beneath it.
+1. When the lines are idential then compare the consecutive lines of each parts (the one that you iterating over and the one that you are comaparing) - in other words - expand the comparision window. 
+1. Each window that is longer than 5 lines is marked as a duplicate, and all lines that have been deteced as duplicates are marked, so that they won't be used as comparision source for further comparision. 
 
 **Method 3: 6-lines duplication cadidates***
 
-***TODO***: *Explain*
+We eventually decided to take another approach that counts code duplicates in decent time. 
+
+The algorithm is presented below:
+
+1. Purify the code by removing comments and empty lines and trimming every line.
+1. For all files create a list of blocks of 6 consecutive lines and save the line numbers and file locations where they start. 
+1. Merge all those files into one big list
+1. Create a list of clone candidates woth the following method: `cloneCandidates = distribution(blob.content - dup(blob.content));`, which means: show the distribution of blocks that are duplicated. The number of occurences of certain block in this operation will be equal to numbers of copies of a certain block. 
+1. In extracted list of blocks, merge all blocks that start on consecutive lines of the same file (to achieve the biggest possible chunks of duplicated code). 
+1. Finally we sum up the number of lines of the extracted chunks.
 
 #### Maintanability
 
+To calculate the maintainability scores we compute the avarage of the relevant scores. Those are:
+
+* Maintainability : Volume, Unit-Cyclomatic-Complexity, Unit-Size, Duplication, Test-Quality
+* Analysability   : Volume, Unit-Size, Duplication, Test-Quality
+* Changeability   : Unit-Cyclomatic-Complexity, Duplication
+* Stability       : Test-Quality 
+* Testability     : Unit-Cyclomatic-Complexity, Unit-Size, Test-Quality
+
+To easily compute the avarage a score is represented as a tuple of <int,str> e.g.: <-2,"--">
+By doing this we can use one method to compute the avarage score 
+by summing up the int values of the scores and dividing by the count of scores.
+Afterwards we round the number with the haskell round method and select the appropriate score.
+
+There is also a variable list "scores" included in the Types.rsc file, that contains all the scores as a handy list.
+
+## Results
+
+### SmallSQL
+
+|Metric|Result|Score|
+|--- |--- |--- |
+|Volume|24048 LOCs|++|
+|Unit Complexity|Low: 64% Medium: 13% High: 14% Very High: 9%|--|
+|Unit Size|Low: 71% Medium: 7% High: 11% Very High: 11%|o|
+|Unit Interfacing|Low: 82% Medium: 12% High: 5% Very High: 1%|++|
+|Units|2337||
+|Duplication|14% (3385 duplicated lines)|-|
+|Testing|42% (973 assert statements)|-|
+
+|SIG Rating|Score|
+|--- |--- |
+|Maintainability|o|
+|Analysability|o|
+|Changeability|--|
+|Testability|-|
+|Stability|-|
+
+### HSQLDB
+
+|Metric|Result|Score|
+|--- |--- |--- |
+|Volume|167916 LOCs|+|
+|Unit Complexity|Low: 49% Medium: 19% High: 17% Very High: 15%|--|
+|Unit Size|Low: 55% Medium: 10% High: 12% Very High: 23%|--|
+|Unit Interfacing|Low: 75% Medium: 16% High: 7% Very High: 2%|o|
+|Units|10248||
+|Duplication|21% (35562 duplicated lines)|--|
+|Testing|6% (631 assert statements)|--|
+
+|SIG Rating|Score|
+|--- |--- |
+|Maintainability|-|
+|Analysability|-|
+|Changeability|--|
+|Testability|--|
+|Stability|--|
 
 
-### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
+## Tool usage
 
-**TODO**: *Explain per metric and case, give examples.*
+To generate a report just import the Main file in the root folder of the source code.
+Then run the function generateReport(loc location, loc reportFile)
+* first argument being a eclipse project
+* second argument where you want the  html report to be stored (file has to exist)
 
-### How can we improve any of the above?
+The code is structured in 7 files.
 
-**TODO**: *Propose improvements, give examples.*
+### Main.rsc
+
+Entry point that contains the generateReport method.
+
+### ComplexityAnalyzer.rsc
+
+Contains the AST analyzing. This includes 
+* unit cyclomatic complexity
+* unit size
+* unit interfacing
+* test quality
+
+### DuplicationsAnalyzer2.rsc
+
+Contains the duplication analyzing.
+
+### VolumeAnalyzer.rsc
+
+Contains the Volume Analyzer for the complete project that is analyzed.
+
+### Rater.rsc
+
+Contains all the raters for the individual metrics as well as the avarage function.
+
+### Types.rsc
+
+Contains all the custom types that are used in our code. This makes the code more readable and maintainable.
+
+For example to extend the information that is returned for the unit interfacing we only had to change the type once here and where done instead of going through all the code and change the returns, signatures and so on.
+
+### Utils.rsc
+
+Contains some helper functions to purify code and count lines.
+
+## Tests
+
+For methods with our own types we wrote some basic tests and even found a mistake with that in the avarageScore function.
+We were not able to come up with a tester for methods that use Rascal M3/AST signatures.
 
 ## References
 

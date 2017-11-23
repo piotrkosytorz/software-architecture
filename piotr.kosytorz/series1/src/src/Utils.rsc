@@ -55,13 +55,13 @@ public list[str] purifyContents(list[str] contents, bool ignoreImports) {
 	return pureContent;
 }
 
-test bool purifyContentsTest(list[str] contents){
-	list[str] pcontents = purifyContents(contents, false);
+test bool purifyContentsTest(list[str] contents, bool ignoreImports){
+	list[str] pcontents = purifyContents(contents, ignoreImports);
 	return size(pcontents) <= size(contents);
 }
 
-test bool purifyContentsTest2(list[str] contents){
-	list[str] pcontents = purifyContents(contents, false);
+test bool purifyContentsTest2(list[str] contents, bool ignoreImports){
+	list[str] pcontents = purifyContents(contents, ignoreImports);
 	for(line <- pcontents){
 		if(startsWith(line, "*")) return false;
 		if(startsWith(line, "/*")) return false;
