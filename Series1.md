@@ -259,16 +259,17 @@ There is also a variable list "scores" included in the Types.rsc file, that cont
 |Unit Size|Low: 55% Medium: 10% High: 12% Very High: 23%|--|
 |Unit Interfacing|Low: 75% Medium: 16% High: 7% Very High: 2%|o|
 |Units|10248||
-|Duplication|8% (12904 duplicated lines)|o|
+|Duplication|21% (35562 duplicated lines)|--|
 |Testing|6% (631 assert statements)|--|
 
 |SIG Rating|Score|
 |--- |--- |
 |Maintainability|-|
 |Analysability|-|
-|Changeability|-|
+|Changeability|--|
 |Testability|--|
 |Stability|--|
+
 
 ## Tool usage
 
@@ -315,8 +316,8 @@ Contains some helper functions to purify code and count lines.
 
 ## Tests
 
-We were not able to come up with a tester for methods that use Rascal M3/AST signatures.
 For methods with our own types we wrote some basic tests and even found a mistake with that in the avarageScore function.
+We were not able to come up with a tester for methods that use Rascal M3/AST signatures.
 
 ## References
 
