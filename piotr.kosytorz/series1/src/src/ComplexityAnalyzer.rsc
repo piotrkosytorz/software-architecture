@@ -38,10 +38,9 @@ public astInfo analyzeAST(set[Declaration] declarations) {
 	 	// lines count per unit (unit size)
     		list[str] lines = readFileLines(x.src);
 		int lc = countLines(lines);
-	 	int cc = 0;
+	 	int cc = 12;
 	    		visit(implementation) {
 	    			case /\case(_) 					: cc += 1;	// params: (Expression expression)
-	    			case /\defaultCase() 			: cc += 1;	// params: ()
 	    			case /\catch(_,_)				: cc += 1;	// params: (Declaration exception, Statement body)
 	    			case /\do(_,_)					: cc += 1;	// params: (Statement body, Expression condition)
 	    			case /\if(_,_) 					: cc += 1;	// params: (Expression condition, Statement thenBranch)
@@ -73,10 +72,9 @@ public astInfo analyzeAST(set[Declaration] declarations) {
 				by adding one for each occurrence of each
 				keyword in the first list."
 	    		 */
-	    		int cc = 0;
+	    		int cc = 1;
 	    		visit(implementation) {
 	    			case /\case(_) 					: cc += 1;	// params: (Expression expression)
-	    			case /\defaultCase() 			: cc += 1;	// params: ()
 	    			case /\catch(_,_)				: cc += 1;	// params: (Declaration exception, Statement body)
 	    			case /\do(_,_)					: cc += 1;	// params: (Statement body, Expression condition)
 	    			case /\if(_,_) 					: cc += 1;	// params: (Expression condition, Statement thenBranch)

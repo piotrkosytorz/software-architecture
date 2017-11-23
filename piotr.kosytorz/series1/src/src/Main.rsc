@@ -201,7 +201,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Unit Complexity
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Medium: <unitCCS.m>% High: <unitCCS.h>% Very High: <unitCCS.vh>% 
+		'                        Low: <100-unitCCS.m-unitCCS.h-unitCCS.vh>% Medium: <unitCCS.m>% High: <unitCCS.h>% Very High: <unitCCS.vh>% 
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <unitCCS.s.s>
@@ -212,7 +212,7 @@ public void generateReport(loc location, loc reportFile){
 		'                        Unit Size
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Medium: <unitSS.m>% High: <unitSS.h>% Very High: <unitSS.vh>% 
+		'                        Low: <100-unitSS.m-unitSS.h-unitSS.vh>% Medium: <unitSS.m>% High: <unitSS.h>% Very High: <unitSS.vh>% 
 		'                    \</td\>
 		'                    \<td class=\"test-result-step-description-cell\"\>
 		'                        <unitSS.s.s>
