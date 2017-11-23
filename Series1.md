@@ -44,7 +44,7 @@ To reach the best results we purify the source code files before counting the nu
 * After trimming - removing all empty lines in given file
 * Removing single-line comment (where the line starts with `//`)
 * Removing multi-line comments - `/* ... */`(in all variants such as a comment beginning in one line just after code, etc.)
-We *do count curly braces* as lines of code.  
+**We do count curly braces** as lines of code.  
 
 **Volume rating**
 
@@ -82,7 +82,7 @@ Maximum relative LOC:
 
 
 #### Unit Complexity
-The default code complexity per unit is defined to be 1.
+The default code complexity per unit is defined to be 1. A unit in this case are methods and constructors.
 Based on information provided in \[1\] and \[2\], we decided to count the following statements as an increment of code complexity per unit: 
 * case
 * catch
@@ -94,6 +94,24 @@ Based on information provided in \[1\] and \[2\], we decided to count the follow
 * while
 * &&
 * ||
+
+The original rascal code responsible for counting of cyclomatic complexity:
+```
+int cc = 1;
+visit(implementation) {
+	case /\case(_) 					: cc += 1;	// params: (Expression expression)
+	case /\catch(_,_)				: cc += 1;	// params: (Declaration exception, Statement body)
+	case /\do(_,_)					: cc += 1;	// params: (Statement body, Expression condition)
+	case /\if(_,_) 					: cc += 1;	// params: (Expression condition, Statement thenBranch)
+	case /\if(_,_,_) 				: cc += 1;	// params: (Expression condition, Statement thenBranch, Statement elseBranch)
+	case /\conditional(_, _, _)		: cc += 1; 	// params: (Expression expression, Expression thenBranch, Expression elseBranch), example: a ? b : c
+	case /\for(_,_,_,_) 			: cc += 1;	// params: (list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body)
+	case /\for(_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, list[Expression] updaters, Statement body)
+	case /\foreach(_,_,_) 			: cc += 1;	// params: (Declaration parameter, Expression collection, Statement body)
+	case /\while(_,_) 				: cc += 1;	// params: (Expression condition, Statement body)
+		case \infix(_, /^\|\||&&$/, _) 	: cc += 1; 	// params: (Expression lhs, str operator, Expression rhs), example: (a && b ), (a || b)
+}
+```
 
 According to \[1\] we perform the following operations to optain the SIG score for CC:
 
