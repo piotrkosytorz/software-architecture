@@ -70,12 +70,12 @@ public int detectClones(set[loc] files) {
 	list[lrel[int index, str content, loc fileLoc, int lineNumber, int occurs]] grouped = [];
 	
 	cloneCandidates = distribution(blob.content - dup(blob.content));
-	
+		
 	// extract clone candidates
 	int index = 0;
 	for (element <- blob) {
 		if (element.content in cloneCandidates) {
-			blob2 += <index, element.content, element.fileLoc, element.lineNumber, cloneCandidates[element.content]>; 
+			blob2 += <index, element.content, element.fileLoc, element.lineNumber, cloneCandidates[element.content]+1>; 
 			index += 1;
 		}
 	}
@@ -118,37 +118,16 @@ public int detectClones(set[loc] files) {
 	
 	for (chunk <- chunks) {
 		chunksMap += (chunk.content: <chunk.fileLoc, chunk.lineNumberBegin, chunk.lineNumberEnd, chunk.occurs >);
-	}
-	
-	// loop - remove elements that are substrings of other 	
-	
-	for (chunk <- chunksMap) {
-		bool found = false;
-		
-		for (chunk2 <- delete(chunksMap, chunk)) {
-			if(contains(chunk2, chunk)) {
-				found = true;
-			}
-		}
-		if (!found) {
-			finalChunks += (chunk: chunksMap[chunk]);
-		}
-	}
+	}	
 	
 	int duplicatesCount = 0;
 	
 	// sum 
-	for (chunk <- toList(finalChunks)) {
+	for (chunk <- toList(chunksMap)) {
 		duplicatesCount += (6+chunk[1].lineNumberEnd - chunk[1].lineNumberBegin) * chunk[1].occurs;
 	}
 	
 	return duplicatesCount;
-	
-	//text (grouped);
-	//text (chunks);
-	//text(chunksMap);
-	//text(toList(finalChunks));
+
 }
 
-// the extractBlocks function iterates from the top to bottom, so the blocks are always sorted
-// to count the total number of 
