@@ -17,6 +17,7 @@ For information on how to compute this metric we have looked for different paper
 For unit interfacing we count all the parameters for all methods in the system using the AST.
 After gathering the information we calculate a risk profile based on the following scheme:
 
+We seperate the units based on the information below and calculate a percentage against the whole number of units.
 
 | number of parameters      | Risk evaluation              |
 |---------------------------|------------------------------|
@@ -25,7 +26,7 @@ After gathering the information we calculate a risk profile based on the followi
 | == 3                      | high risk           |
 | >  4                      | very high risk   |
 
-After that we calculate the score based ont the following thresholds:
+After that we calculate the score based on the following thresholds:
 
 | rank | moderate | high   | very high |
 |------|----------|--------|-----------|
