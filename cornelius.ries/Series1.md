@@ -1,5 +1,5 @@
 #### Test Quality
-For test quality we count all the assert statements Test classes in the code.
+For test quality we count all the assert statements Test classes in the code \[1\].
 After counting the assert statements we calculate the percentage based on the total number of units in the system.
 
 For benchmarking the test quality we have used the following tresholds:
@@ -13,7 +13,7 @@ For benchmarking the test quality we have used the following tresholds:
 | --   |   0-20%    |
 
 #### Unit Interfacing
-For information on how to compute this metric we have looked for different papers and found 
+For information on how to compute this metric we have looked for different papers and found \[3\].
 For unit iterfacing we count all the parameters for all methods in the system using the AST.
 After gathering the information we calculate a risk profile based on the following scheme:
 
