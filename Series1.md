@@ -2,7 +2,8 @@
 
 This documents contains our notes and answers to the questions about software metrics (practical lab Series 1).
 
-**Authors**
+Authors
+
 * Cornelius Ries
 * Piotr Kosytorz
 
