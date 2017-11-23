@@ -186,8 +186,8 @@ To calculate the maintainability scores we compute the avarage of the relevant s
 
 To easily compute the avarage a score is represented as a tuple of <int,str> e.g.: <-2,"--">
 By doing this we can use one method to compute the avarage score 
-by summing up the int values of the scores and dividing by the number of score.
-Afterwards we round the number with the haskell round method and select the appropriate score again.
+by summing up the int values of the scores and dividing by the count of scores.
+Afterwards we round the number with the haskell round method and select the appropriate score.
 
 There is also a variable list "scores" included in the Types.rsc file, that contains all the scores as a handy list.
 
@@ -198,6 +198,55 @@ There is also a variable list "scores" included in the Types.rsc file, that cont
 ### How can we improve any of the above?
 
 **TODO**: *Propose improvements, give examples.*
+
+## How to use
+
+To generate a report just import the Main file in the root folder of the source code.
+Then run the function generateReport(loc location, loc reportFile)
+* first argument being a eclipse project
+* second argument where you want the  html report to be stored (file has to exist)
+
+
+The code is structured in 7 files.
+
+### Main.rsc
+
+Entry point that contains the generateReport method.
+
+### ComplexityAnalyzer.rsc
+
+Contains the AST analyzing. This includes 
+* unit cyclomatic complexity
+* unit size
+* unit interfacing
+* test quality
+
+### DuplicationsAnalyzer2.rsc
+
+Contains the duplication analyzing.
+
+### VolumeAnalyzer.rsc
+
+Contains the Volume Analyzer for the complete project that is analyzed.
+
+### Rater.rsc
+
+Contains all the raters for the individual metrics as well as the avarage function.
+
+### Types.rsc
+
+Contains all the custom types that are used in our code. This makes the code more readable and maintainable.
+
+For example to extend the information that is returned for the unit interfacing we only had to change the type once here and where done instead of going through all the code and change the returns, signatures and so on.
+
+### Utils.rsc
+
+Contains some helper functions to purify code and count lines.
+
+## Tests
+
+We were not able to come up with a tester for methods that use Rascal M3/AST signatures.
+For methods with our own types we wrote some basic tests and even found a mistake with that in the avarageScore function.
 
 ## References
 
