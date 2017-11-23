@@ -20,18 +20,18 @@ After gathering the information we calculate a risk profile based on the followi
 
 | number of parameters      | Risk evaluation              |
 |---------------------------|------------------------------|
-| <  2 						          | simple, without much risk    |
-| == 2                      | more complex, moderate risk  |
-| == 3                      | complex, high risk           |
-| >  4                      | untestable, very high risk   |
+| <  2 						          | without much risk    |
+| == 2                      | moderate risk  |
+| == 3                      | high risk           |
+| >  4                      | very high risk   |
 
 After that we calculate the score based ont the folowing threshold:
 
 
 |      |     maximum relative LOC      |
-+--------------------------------------+
+|--------------------------------------|
 | rank | moderate | high   | very high |
-+--------------------------------------+
+|--------------------------------------|
 | ++   |   12.1%  |  5.4%  |   2.2%    |
 | +    |   14.9%  |  7.2%  |   3.1%    |
 | o    |   17.7%  | 10.2%  |   4.8%   |
