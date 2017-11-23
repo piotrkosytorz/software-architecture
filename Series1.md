@@ -104,12 +104,12 @@ visit(implementation) {
 	case /\do(_,_)					: cc += 1;	// params: (Statement body, Expression condition)
 	case /\if(_,_) 					: cc += 1;	// params: (Expression condition, Statement thenBranch)
 	case /\if(_,_,_) 				: cc += 1;	// params: (Expression condition, Statement thenBranch, Statement elseBranch)
-	case /\conditional(_, _, _)		: cc += 1; 	// params: (Expression expression, Expression thenBranch, Expression elseBranch), example: a ? b : c
-	case /\for(_,_,_,_) 			: cc += 1;	// params: (list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body)
+	case /\conditional(_, _, _)			: cc += 1; 	// params: (Expression expression, Expression thenBranch, Expression elseBranch), example: a ? b : c
+	case /\for(_,_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, Expression condition, list[Expression] updaters, Statement body)
 	case /\for(_,_,_) 				: cc += 1;	// params: (list[Expression] initializers, list[Expression] updaters, Statement body)
-	case /\foreach(_,_,_) 			: cc += 1;	// params: (Declaration parameter, Expression collection, Statement body)
+	case /\foreach(_,_,_) 				: cc += 1;	// params: (Declaration parameter, Expression collection, Statement body)
 	case /\while(_,_) 				: cc += 1;	// params: (Expression condition, Statement body)
-		case \infix(_, /^\|\||&&$/, _) 	: cc += 1; 	// params: (Expression lhs, str operator, Expression rhs), example: (a && b ), (a || b)
+	case \infix(_, /^\|\||&&$/, _) 	: cc += 1; 	// params: (Expression lhs, str operator, Expression rhs), example: (a && b ), (a || b)
 }
 ```
 
