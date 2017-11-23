@@ -228,14 +228,6 @@ Afterwards we round the number with the haskell round method and select the appr
 
 There is also a variable list "scores" included in the Types.rsc file, that contains all the scores as a handy list.
 
-### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
-
-**TODO**: *Explain per metric and case, give examples.*
-
-### How can we improve any of the above?
-
-**TODO**: *Propose improvements, give examples.*
-
 ## Results
 
 ### SmallSQL
@@ -247,14 +239,14 @@ There is also a variable list "scores" included in the Types.rsc file, that cont
 |Unit Size|Low: 71% Medium: 7% High: 11% Very High: 11%|o|
 |Unit Interfacing|Low: 82% Medium: 12% High: 5% Very High: 1%|++|
 |Units|2337||
-|Duplication|5% (1226 duplicated lines)|+|
+|Duplication|14% (3385 duplicated lines)|-|
 |Testing|42% (973 assert statements)|-|
 
-|SIG rating|Score|
+|SIG Rating|Score|
 |--- |--- |
 |Maintainability|o|
-|Analysability|+|
-|Changeability|-|
+|Analysability|o|
+|Changeability|--|
 |Testability|-|
 |Stability|-|
 
@@ -284,7 +276,6 @@ To generate a report just import the Main file in the root folder of the source 
 Then run the function generateReport(loc location, loc reportFile)
 * first argument being a eclipse project
 * second argument where you want the  html report to be stored (file has to exist)
-
 
 The code is structured in 7 files.
 
