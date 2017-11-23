@@ -91,7 +91,7 @@ public astInfo analyzeAST(set[Declaration] declarations) {
 	    		units += <x.decl, lc, cc>;
     		}
     	case Declaration x:class(_, /simpleName(a), _, body) : {
-    		if(contains(a, "TestCase")){
+    		if(contains(a, "Test")){
 	    		visit(body) {
 	    			case /assert/ : numberOfAsserts += 1;
 	    		}
