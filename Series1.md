@@ -199,7 +199,49 @@ There is also a variable list "scores" included in the Types.rsc file, that cont
 
 **TODO**: *Propose improvements, give examples.*
 
-## How to use
+## Results
+
+### SmallSQL
+
+|Metric|Result|Score|
+|--- |--- |--- |
+|Volume|24048 LOCs|++|
+|Unit Complexity|Low: 64% Medium: 13% High: 14% Very High: 9%|--|
+|Unit Size|Low: 71% Medium: 7% High: 11% Very High: 11%|o|
+|Unit Interfacing|Low: 82% Medium: 12% High: 5% Very High: 1%|++|
+|Units|2337||
+|Duplication|5% (1226 duplicated lines)|+|
+|Testing|42% (973 assert statements)|-|
+
+|SIG rating|Score|
+|--- |--- |
+|Maintainability|o|
+|Analysability|+|
+|Changeability|-|
+|Testability|-|
+|Stability|-|
+
+### HSQLDB
+
+|Metric|Result|Score|
+|--- |--- |--- |
+|Volume|167916 LOCs|+|
+|Unit Complexity|Low: 49% Medium: 19% High: 17% Very High: 15%|--|
+|Unit Size|Low: 55% Medium: 10% High: 12% Very High: 23%|--|
+|Unit Interfacing|Low: 75% Medium: 16% High: 7% Very High: 2%|o|
+|Units|10248||
+|Duplication|8% (12904 duplicated lines)|o|
+|Testing|6% (631 assert statements)|--|
+
+|SIG Rating|Score|
+|--- |--- |
+|Maintainability|-|
+|Analysability|-|
+|Changeability|-|
+|Testability|--|
+|Stability|--|
+
+## Tool usage
 
 To generate a report just import the Main file in the root folder of the source code.
 Then run the function generateReport(loc location, loc reportFile)
