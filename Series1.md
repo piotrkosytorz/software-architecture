@@ -46,7 +46,7 @@ To reach the best results we purify the source code files before counting the nu
 * Removing multi-line comments - `/* ... */`(in all variants such as a comment beginning in one line just after code, etc.)
 We *do count curly braces* as lines of code.  
 
-**Volume rating per unit**
+**Volume rating**
 
 As given in \[1\], we use the following table to as conversion basis to obtain the SIG volume score:
 
@@ -85,7 +85,6 @@ Maximum relative LOC:
 The default code complexity per unit is defined to be 1.
 Based on information provided in \[1\] and \[2\], we decided to count the following statements as an increment of code complexity per unit: 
 * case
-* defaultCase
 * catch
 * do
 * if
@@ -157,8 +156,6 @@ After that we calculate the score based on the following thresholds:
 | -    |   25.2%  | 15.3%  |   7.1%    |
 | --   |    -     |   -    |   -       |
 
-
-
 #### Duplication
 
 We've came up with three different ways of counting duplicaed lines. Different methods can lead to very different results, which shows that counting duplicated lines based only on the textual representation of tested programs is prone to errors and should be taken with much reserve. 
@@ -179,7 +176,20 @@ This method has delivered the most code duplicated blocks, but is extremaly slow
 
 #### Maintanability
 
+To calculate the maintainability scores we compute the avarage of the relevant scores. Those are:
 
+* Maintainability : Volume, Unit-Cyclomatic-Complexity, Unit-Size, Duplication, Test-Quality
+* Analysability   : Volume, Unit-Size, Duplication, Test-Quality
+* Changeability   : Unit-Cyclomatic-Complexity, Duplication
+* Stability       : Test-Quality 
+* Testability     : Unit-Cyclomatic-Complexity, Unit-Size, Test-Quality
+
+To easily compute the avarage a score is represented as a tuple of <int,str> e.g.: <-2,"--">
+By doing this we can use one method to compute the avarage score 
+by summing up the int values of the scores and dividing by the number of score.
+Afterwards we round the number with the haskell round method and select the appropriate score again.
+
+There is also a variable list "scores" included in the Types.rsc file, that contains all the scores as a handy list.
 
 ### How well do these metrics indicate what we really want to know about these systems and how can we judge that?
 
