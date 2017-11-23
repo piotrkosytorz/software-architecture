@@ -2,7 +2,7 @@
 For test quality we count all the assert statements Test classes in the code.
 After counting the assert statements we calculate the percentage based on the total number of units in the system.
 
-For benchmarking the test quality we have used the following treshold:
+For benchmarking the test quality we have used the following tresholds:
 
 | rank | percentage |
 |------|------------|
@@ -25,7 +25,7 @@ After gathering the information we calculate a risk profile based on the followi
 | == 3                      | high risk           |
 | >  4                      | very high risk   |
 
-After that we calculate the score based ont the folowing threshold:
+After that we calculate the score based ont the following thresholds:
 
 | rank | moderate | high   | very high |
 |------|----------|--------|-----------|
