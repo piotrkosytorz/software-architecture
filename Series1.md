@@ -280,6 +280,7 @@ Entry point that contains the generateReport method.
 ### ComplexityAnalyzer.rsc
 
 Contains the AST analyzing. This includes 
+
 * unit cyclomatic complexity
 * unit size
 * unit interfacing
