@@ -30,7 +30,7 @@ SIG model metrics:
 
 ### How are these metrics computed?
 
-We used the following strategies to count specific metrics:
+We used the following strategies to calculate specific metrics:
 
 #### Volume
 The basic measure for volume (according to \[1\]) is the number of lines of code in the project. 
@@ -55,7 +55,7 @@ As given in \[1\], we use the following table to as conversion basis to obtain t
 |  --  | > 160    | > 1, 310  |
 
 #### Unit Size
-Simillary to volume, Uint size is a count of lines of code per unit. We use Rascal's AST parser and retrieve units it. We purify each unit in simmilar way as described above (see: Volume) and count number of lines per unit. 
+Simillary to volume, Unit size is a count of lines of code per unit. We use Rascal's AST parser and retrieve units with it. We purify each unit in simmilar way as described above (see: Volume) and count number of lines per unit. 
 
 For benchmarking the unit size (possibly simmilar to SIG standards) we have used the following tresholds taken from \[3\]:
 
@@ -173,15 +173,15 @@ After that we calculate the score based on the following thresholds:
 
 #### Duplication
 
-We've came up with three different ways of counting duplicaed lines. Different methods can lead to very different results, which shows that counting duplicated lines based only on the textual representation of tested programs is prone to errors and should be taken with much reserve. 
+We've come up with three different ways of counting duplicated lines. Different methods can lead to very different results, which shows that counting duplicated lines based only on the textual representation of tested programs is prone to errors and the results obtained should be taken into account with much reserve. 
 
 **Method 1: Comparing duplicated blocks**
 
-The first and the easiest way that we came up with was to extract code blocks from the AST and then, after code purification per block, we were simply comparing the blocks whether they contain each other - if yes, then such a block wyould be trated as a duplicated one. 
+The first and the easiest way that we came up with was to extract code blocks from the AST and then, after code purification per block, we were simply comparing the blocks whether they contain each other - if yes, then such a block would be trated as a duplicated one. 
 
 **Method 2: Line per line text searching (top-to-bottom)**
 
-This method has delivered the most code duplicated blocks, but is extremaly slow, as it requires to compare most of lines with each other. 
+This method has delivered the most code duplicated blocks, but is extremely slow, as it requires to compare most of lines with each other. 
 
 The algorithm:
 
@@ -200,7 +200,7 @@ The algorithm is presented below:
 1. Purify the code by removing comments and empty lines and trimming every line.
 1. For all files create a list of blocks of 6 consecutive lines and save the line numbers and file locations where they start. 
 1. Merge all those files into one big list
-1. Create a list of clone candidates woth the following method: `cloneCandidates = distribution(blob.content - dup(blob.content));`, which means: show the distribution of blocks that are duplicated. The number of occurences of certain block in this operation will be equal to numbers of copies of a certain block. 
+1. Create a list of clone candidates with the following method: `cloneCandidates = distribution(blob.content - dup(blob.content));`, which means: show the distribution of blocks that are duplicated. The number of occurences of certain block in this operation will be equal to numbers of copies of a certain block. 
 1. In extracted list of blocks, merge all blocks that start on consecutive lines of the same file (to achieve the biggest possible chunks of duplicated code). 
 1. Finally we sum up the number of lines of the extracted chunks.
 
@@ -287,7 +287,12 @@ Contains the AST analyzing. This includes
 
 ### DuplicationsAnalyzer2.rsc
 
-Contains the duplication analyzing.
+The code is usually running with "Method 3: 6-lines duplication cadidates" (see Duplication section).
+
+To use one of the other methods you can change the import statement in Main.rsc from  "import DuplicationsAnalyzer2;" to one of the following:
+
+Method 1: DuplicationsAnalyzer3
+Method 2: DuplicationsAnalyzer
 
 ### VolumeAnalyzer.rsc
 
