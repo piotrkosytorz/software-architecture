@@ -291,8 +291,8 @@ The code is usually running with "Method 3: 6-lines duplication cadidates" (see 
 
 To use one of the other methods you can change the import statement in Main.rsc from  `import DuplicationsAnalyzer2;` to one of the following:
 
-Method 1: DuplicationsAnalyzer3
-Method 2: DuplicationsAnalyzer
+* Method 1: DuplicationsAnalyzer3
+* Method 2: DuplicationsAnalyzer
 
 ### VolumeAnalyzer.rsc
 
