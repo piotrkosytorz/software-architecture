@@ -36,10 +36,12 @@ We used the following strategies to calculate specific metrics:
 The basic measure for volume (according to \[1\]) is the number of lines of code in the project. 
 In our soultion we count all lines of code in the whole project of all `.java` files (including tests). 
 To reach the best results we purify the source code files before counting the number of lines per file by:
+
 * Trimming all lines of code (removing white spaces from the beginning and the end of line)
 * After trimming - removing all empty lines in given file
 * Removing single-line comment (where the line starts with `//`)
 * Removing multi-line comments - `/* ... */`(in all variants such as a comment beginning in one line just after code, etc.)
+
 **We do count curly braces** as lines of code.  
 
 **Volume rating**
@@ -268,8 +270,9 @@ There is also a variable list "scores" included in the Types.rsc file, that cont
 
 To generate a report just import the Main file in the root folder of the source code.
 Then run the function generateReport(loc location, loc reportFile)
-* first argument being a eclipse project
-* second argument where you want the  html report to be stored (file has to exist)
+
+* First argument being a eclipse project
+* Second argument where you want the  html report to be stored (file has to exist)
 
 The code is structured in 7 files.
 
@@ -281,10 +284,10 @@ Entry point that contains the generateReport method.
 
 Contains the AST analyzing. This includes 
 
-* unit cyclomatic complexity
-* unit size
-* unit interfacing
-* test quality
+* Unit cyclomatic complexity
+* Unit size
+* Unit interfacing
+* Test quality
 
 ### DuplicationsAnalyzer2.rsc
 
