@@ -40,5 +40,10 @@ public class Document {
 			break;
 		}
 	}
+	
+	private int[] value;
+	public void blabla() {
+		long temp = (((long)value[0]) << 32) | (value[1] & 0xFFFFFFFFL);
+	}
 
 }

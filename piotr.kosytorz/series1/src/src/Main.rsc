@@ -9,8 +9,9 @@ module Main
 
 import IO;
 import lang::java::m3::Core;
-import lang::java::jdt::m3::Core;
 import lang::java::m3::AST;
+import lang::java::jdt::m3::Core;
+import lang::java::jdt::m3::AST;
 import List;
 
 import util::ValueUI;
@@ -24,7 +25,7 @@ import Types;
 
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
-import DuplicationsAnalyzer2;
+import DuplicationsAnalyzer3;
 
 /**
  * Tetst code (java projects) location
@@ -91,7 +92,7 @@ public void generateReport(loc location, loc reportFile){
 	int volume = getVolume(files);	
 	
 	// create the ast
-	set[Declaration] declarations = createAstsFromFiles(files, true);		
+	set[Declaration] declarations = createAstsFromEclipseProject(location, true);		
 	
 	// units analysis 
 	astInfo ai = analyzeAST(declarations);
@@ -102,7 +103,7 @@ public void generateReport(loc location, loc reportFile){
 	int numberOfUnits = size(unitsCompleity);
 	
 	// duplications count
-	int dupCount = detectClones(files);
+	int dupCount = detectClones(declarations);
 	
 	// scores
 	score volumeS = volumeScore(volume);
