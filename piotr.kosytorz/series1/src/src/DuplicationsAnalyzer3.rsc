@@ -18,52 +18,13 @@ import lang::java::jdt::m3::Core;
 import lang::java::m3::AST;
 import analysis::m3::AST;
 
-private map[node, lrel[node, loc]] buckets = ();
 private int sizeThreshold = 20;
 
 public int detectClones(set[Declaration] decs){
 
-	buckets = ();
+	map[node, lrel[node, loc]] buckets = collectBuckets(decs);
 
-	visit(decs){
-		// collect all possible duplication blocks
-		case Declaration n : {
-			if(getSize(n) >= sizeThreshold){
-				loc src = n.src;
-				if(src == unknownSource){
-					// bugfix for variables
-					top-down-break visit(n) {
-						case Expression e: variable(_,_,_) : {
-							src = e.src;
-						}
-					}
-				}	
-				collectBucket(n, src);
-			}
-		}
-		case Statement n : {
-			if(getSize(n) >= sizeThreshold){
-				loc src = n.src;
-				collectBucket(n, src);
-			}
-		}
-		case Expression n : {
-			if(getSize(n) >= sizeThreshold){
-				loc src = n.src;
-				collectBucket(n, src);
-			}
-		}
-		
-	}
-	
-	set[lrel[node,loc]] dups = {};
-	
-	for(bucket <- buckets){
-		lrel[node,loc] buks = buckets[bucket];
-		if(size(buks) > 1){
-			dups += buks;
-		}
-	}
+	set[lrel[node,loc]] dups = toSet(collectDuplications(buckets));
 	
 	set[lrel[node,loc]] filteredDups = filterSubClones(dups);
 	
@@ -82,29 +43,42 @@ public int detectClones(set[Declaration] decs){
 	return duplicatedCode;
 }
 
-private set[lrel[node,loc]] filterSubClones(set[lrel[node,loc]] duplicates){
-	set[lrel[node,loc]] filteredDups = {};
-	for(lrel[node,loc] duplicate <- duplicates){
-		add = true;
-		for(<n,l> <- duplicate)
-			for(duplicate2 <- duplicates)
-				for(<n2,l2> <- duplicate2)
-					if(contains(l2, l))
-						add = false;	
-		if(add)
-			filteredDups += duplicate;
+private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs){
+	map[node, lrel[node, loc]] buckets = ();
+	visit(decs){
+		// collect all possible duplication blocks
+		case Declaration n : {
+			if(getSize(n) >= sizeThreshold){
+				loc src = n.src;
+				if(src == unknownSource){
+					// bugfix for variables
+					top-down-break visit(n) {
+						case Expression e: variable(_,_,_) : {
+							src = e.src;
+						}
+					}
+				}	
+				buckets = collectBucket(buckets, n, src);
+			}
+		}
+		case Statement n : {
+			if(getSize(n) >= sizeThreshold){
+				loc src = n.src;
+				buckets = collectBucket(buckets, n, src);
+			}
+		}
+		case Expression n : {
+			if(getSize(n) >= sizeThreshold){
+				loc src = n.src;
+				buckets = collectBucket(buckets, n, src);
+			}
+		}
+		
 	}
-	return filteredDups;
+	return buckets;
 }
 
-private bool contains(loc l1, loc l2){
-	if(l1.uri == l2.uri && l2 < l1)
-		return true;
-	else
-		return false;
-}
-
-private void collectBucket(node n, loc src){
+private map[node, lrel[node, loc]] collectBucket(map[node, lrel[node, loc]] buckets, node n, loc src){
 	node nn = cleanNode(n, true);
 	nn = cleanNodeType2(nn);
 	if (buckets[nn]?) {
@@ -112,6 +86,38 @@ private void collectBucket(node n, loc src){
 	} else {
 		buckets[nn] = [<n, src>];
 	}
+	return buckets;
+}
+
+private list[lrel[node,loc]] collectDuplications(map[node, lrel[node, loc]] buckets){
+	return for(bucket <- buckets){
+		lrel[node,loc] buks = buckets[bucket];
+		if(size(buks) > 1){
+			append buks;
+		}
+	}
+}
+
+private set[lrel[node,loc]] filterSubClones(set[lrel[node,loc]] duplicates){
+	return ({} | it + duplicate1 | lrel[node,loc] duplicate1 <- duplicates, 
+		!any(duplicate2 <- duplicates, 
+			all(<n,l> <- duplicate1, contains(duplicate2, l))
+		)
+	);
+}
+
+private bool contains(lrel[node,loc] duplicate2, loc l){
+	for(<n2,l2> <- duplicate2)
+		if(contains(l2, l))
+			return true;
+	return false;
+}
+
+private bool contains(loc l1, loc l2){
+	if(l1.uri == l2.uri && l1 > l2)
+		return true;
+	else
+		return false;
 }
 
 private node cleanNode(node n, bool type2){
