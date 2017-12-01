@@ -19,10 +19,11 @@ import lang::java::m3::AST;
 import analysis::m3::AST;
 
 private int sizeThreshold = 20;
+private bool type2 = false;
 
 public int detectClones(set[Declaration] decs){
 
-	map[node, lrel[node, loc]] buckets = collectBuckets(decs);
+	map[node, lrel[node, loc]] buckets = collectBuckets(decs, type2);
 
 	set[lrel[node,loc]] dups = toSet(collectDuplications(buckets));
 	
@@ -43,7 +44,7 @@ public int detectClones(set[Declaration] decs){
 	return duplicatedCode;
 }
 
-private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs){
+private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs, bool type2){
 	map[node, lrel[node, loc]] buckets = ();
 	visit(decs){
 		// collect all possible duplication blocks
@@ -58,19 +59,19 @@ private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs){
 						}
 					}
 				}	
-				buckets = collectBucket(buckets, n, src);
+				buckets = collectBucket(buckets, n, src, type2);
 			}
 		}
 		case Statement n : {
 			if(getSize(n) >= sizeThreshold){
 				loc src = n.src;
-				buckets = collectBucket(buckets, n, src);
+				buckets = collectBucket(buckets, n, src, type2);
 			}
 		}
 		case Expression n : {
 			if(getSize(n) >= sizeThreshold){
 				loc src = n.src;
-				buckets = collectBucket(buckets, n, src);
+				buckets = collectBucket(buckets, n, src, type2);
 			}
 		}
 		
@@ -78,9 +79,10 @@ private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs){
 	return buckets;
 }
 
-private map[node, lrel[node, loc]] collectBucket(map[node, lrel[node, loc]] buckets, node n, loc src){
-	node nn = cleanNode(n, true);
-	nn = cleanNodeType2(nn);
+private map[node, lrel[node, loc]] collectBucket(map[node, lrel[node, loc]] buckets, node n, loc src, bool type2){
+	node nn = cleanNode(n, type2);
+	if(type2)
+		nn = cleanNodeType2(nn);
 	if (buckets[nn]?) {
 		buckets[nn] += <n, src>;	
 	} else {
