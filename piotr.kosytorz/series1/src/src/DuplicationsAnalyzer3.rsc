@@ -10,6 +10,7 @@ import Type;
 import Node;
 
 import Utils;
+import Types;
 
 import util::ValueUI;
 
@@ -18,33 +19,23 @@ import lang::java::jdt::m3::Core;
 import lang::java::m3::AST;
 import analysis::m3::AST;
 
+import lang::json::IO;
+
 private int sizeThreshold = 20;
-private bool type2 = false;
 
-public int detectClones(set[Declaration] decs){
+public void detectClones(set[Declaration] decs, loc cloneReport){
 
-	map[node, lrel[node, loc]] buckets = collectBuckets(decs, type2);
+	map[node, lrel[node, loc]] buckets = collectBuckets(decs);
 
 	set[lrel[node,loc]] dups = toSet(collectDuplications(buckets));
 	
 	set[lrel[node,loc]] filteredDups = filterSubClones(dups);
 	
-	int duplicatedCode = 0;
-	
-	for(lrel[node,loc] dup <- filteredDups){
-		println("Match");
-		for(<n,l> <- dup){
-			if(l != unknownSource){	
-				iprintln(l);
-				duplicatedCode += 1 + l.end.line - l.begin.line;
-			}
-		}
-	}
-	
-	return duplicatedCode;
+	generateOutput(filteredDups, cloneReport);
+
 }
 
-private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs, bool type2){
+private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs){
 	map[node, lrel[node, loc]] buckets = ();
 	visit(decs){
 		// collect all possible duplication blocks
@@ -59,19 +50,19 @@ private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs, bool ty
 						}
 					}
 				}	
-				buckets = collectBucket(buckets, n, src, type2);
+				buckets = collectBucket(buckets, n, src);
 			}
 		}
 		case Statement n : {
 			if(getSize(n) >= sizeThreshold){
 				loc src = n.src;
-				buckets = collectBucket(buckets, n, src, type2);
+				buckets = collectBucket(buckets, n, src);
 			}
 		}
 		case Expression n : {
 			if(getSize(n) >= sizeThreshold){
 				loc src = n.src;
-				buckets = collectBucket(buckets, n, src, type2);
+				buckets = collectBucket(buckets, n, src);
 			}
 		}
 		
@@ -79,10 +70,9 @@ private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs, bool ty
 	return buckets;
 }
 
-private map[node, lrel[node, loc]] collectBucket(map[node, lrel[node, loc]] buckets, node n, loc src, bool type2){
-	node nn = cleanNode(n, type2);
-	if(type2)
-		nn = cleanNodeType2(nn);
+private map[node, lrel[node, loc]] collectBucket(map[node, lrel[node, loc]] buckets, node n, loc src){
+	node nn = cleanNode(n);
+	nn = cleanNodeType2(nn);
 	if (buckets[nn]?) {
 		buckets[nn] += <n, src>;	
 	} else {
@@ -122,16 +112,14 @@ private bool contains(loc l1, loc l2){
 		return false;
 }
 
-private node cleanNode(node n, bool type2){
+private node cleanNode(node n){
 	return visit(n){
 		case Declaration x : {
 			x.src = unknownSource;
 			x.decl = unresolvedDecl;
-			if(type2) {
-				x.typ = \any();
-				x.modifiers = [];
-				x.messages = [];
-			}
+			x.typ = \any();
+			x.modifiers = [];
+			x.messages = [];
 			insert x;
 		}
 		case Statement x : {
@@ -142,16 +130,12 @@ private node cleanNode(node n, bool type2){
 		case Expression x : {
 			x.src = unknownSource;
 			x.decl = unresolvedDecl;
-			if(type2) {
-				x.typ = \any();
-			}
+			x.typ = \any();
 			insert x;
 		}
 		case Type x : {
-			if(type2) {
-				x.name = unresolvedType;
-				x.typ = \any();
-			}
+			x.name = unresolvedType;
+			x.typ = \any();
 			insert x;
 		}
 		
@@ -191,5 +175,35 @@ private int getSize(node n){
 	visit(n){
 		case node x : ret+=1;
 	}
+	return ret;
+}
+
+private void generateOutput(set[lrel[node,loc]] duplications, loc reportFile){
+	int i = 0;
+	list[Duplication] jsonFormat = [];
+	for(lrel[node,loc] duplication <- duplications){
+		list[loc] locs = ([] | it + l | <n,l> <- duplication, l != unknownSource);
+		int cloneType = detectCloneType(duplication);
+		int lines = 1 + duplication[0][1].end.line - duplication[0][1].begin.line;
+		Duplication output = Duplication(i, locs, cloneType, lines);
+		jsonFormat += output;
+		i += 1;
+	}
+	writeJSON(reportFile, jsonFormat);
+}
+
+private int detectCloneType(lrel[node,loc] duplication){
+	int ret = 0;
+	
+	tuple[node n, loc l] node1 = duplication[0];
+	tuple[node n, loc l] node2 = duplication[1];
+	node1Clean = cleanNode(node1.n);
+	node2Clean = cleanNode(node2.n);
+
+	if(node1Clean == node2Clean) 
+		ret = 1;
+	else
+		ret = 2;
+	
 	return ret;
 }

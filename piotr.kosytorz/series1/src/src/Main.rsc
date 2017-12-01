@@ -28,59 +28,15 @@ import ComplexityAnalyzer;
 import DuplicationsAnalyzer3;
 
 /**
- * Tetst code (java projects) location
+ * Test code (java projects) location
  */
 public loc smallSqlLoc = |project://smallsql0.21_src/src/smallsql|;
 public loc hsqldbLoc = |project://src/org/hsqldb|;
  
 /**
- * The main method
+ * The main method generates some nice html for the analysis and json for the duplication
  */
-public void generteReport(loc location) {
- 	
- 	// m3 object
- 	M3 m = createM3FromEclipseProject(location);
-
-	// project files
- 	set[loc] files = extractFilesFromM3(m);	
- 	
- 	// project volume (sum)
-	int volume = getVolume(files);			
-	
-	// create the ast
-	set[Declaration] declarations = createAstsFromFiles(files, true);		
-	
-	// units analysis 
-	astInfo ai = analyzeAST(declarations);
-	unitsCompleity = ai.ui;
-	
-	// testing analysis
-	int numberOfAsserts = ai.numberOfAsserts;
-	int numberOfUnits = size(unitsCompleity);
-	
-	// duplications count
-	int dupCount = detectClones(files);
-	
-	// scores
-	score volumeS = volumeScore(volume);
-	unitScore unitCCS = unitCCScore(unitsCompleity, volume);
-	unitScore unitSS = unitSizeScore(unitsCompleity, volume);
-	dupScore dupS = duplicationScore(dupCount, volume);
-	testingScore testingS = testingScore(numberOfAsserts, numberOfUnits);
-		
-	// report generation
-	println("Project volume (LOCs): <volume>.");
-	println("Project volume score: <volumeS>");
-	println("Cyclomatic complexity score: <unitCCS>");
-	println("Unit size score: <unitSS>");
-	println("Duplication score: <dupS>");
-	println("Testing score: <testingS>");
- }
- 
-/**
- * The same as main but generates some nice html
- */
-public void generateReport(loc location, loc reportFile){
+public void generateReport(loc location, loc reportFile, loc cloneReportFile){
 	
 	// m3 object
  	M3 m = createM3FromEclipseProject(location);
@@ -103,7 +59,8 @@ public void generateReport(loc location, loc reportFile){
 	int numberOfUnits = size(unitsCompleity);
 	
 	// duplications count
-	int dupCount = detectClones(declarations);
+	int dupCount = 0;
+	detectClones(declarations, cloneReportFile);
 	
 	// scores
 	score volumeS = volumeScore(volume);

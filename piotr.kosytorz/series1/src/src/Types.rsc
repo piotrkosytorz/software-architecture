@@ -18,3 +18,12 @@ public tuple[score vh, score h, score m , score l, score vl, score e] scores = <
 alias unitScore = tuple[int m, int h, int vh, score s];
 alias dupScore = tuple[int p, score s];
 alias testingScore = tuple[int p, score s];
+
+data Duplication(
+	int cloneId = 0,
+	list[loc] locations = [],
+	int cloneType = 0,
+	int lines = 0
+);
+
+data Duplication = Duplication(int cloneId, list[loc] locations, int cloneType, int lines);
