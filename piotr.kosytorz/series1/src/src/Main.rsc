@@ -36,16 +36,16 @@ public loc hsqldbLoc = |project://src/org/hsqldb|;
 /**
  * The main method generates some nice html for the analysis and json for the duplication
  */
-public void generateReport(loc location, loc reportFile, loc cloneReportFile){
+public void generateReport(loc location, loc reportFolder){
 	
 	// m3 object
  	M3 m = createM3FromEclipseProject(location);
 
 	// project files
- 	set[loc] files = extractFilesFromM3(m);	
+ 	set[loc] files = extractFilesFromM3(m);
  	
  	// project volume (sum)
-	int volume = getVolume(files);	
+	int volume = getVolume(files, reportFolder, location);	
 	
 	// create the ast
 	set[Declaration] declarations = createAstsFromEclipseProject(location, true);		
@@ -60,7 +60,7 @@ public void generateReport(loc location, loc reportFile, loc cloneReportFile){
 	
 	// duplications count
 	int dupCount = 0;
-	detectClones(declarations, cloneReportFile);
+	detectClones(declarations, reportFolder);
 	
 	// scores
 	score volumeS = volumeScore(volume);
@@ -83,10 +83,19 @@ public void generateReport(loc location, loc reportFile, loc cloneReportFile){
 		'        \<title\>
 		'            Test Report
 		'        \</title\>
+		'
+		'		\<script src=\"http://d3js.org/d3.v4.min.js\"\>\</script\>
+		'		\<script src=\"index.js\"\>\</script\>
+		'
+		'		\<link rel=\"stylesheet\" type=\"text/css\" href=\"http://fonts.googleapis.com/css?family=Allura|Raleway\" /\>
+		'		\<link rel=\"stylesheet\" type=\"text/css\" href=\"http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css\" /\>
+		'		\<link rel=\"stylesheet\" type=\"text/css\" href=\"index.css\" /\>
+		'
 		'        \<style type=\"text/css\"\>
 		'        .test-result-table {
 		'            border: 1px solid black;
 		'            width: 800px;
+		'			 margin: auto;
 		'        }
 		'        .test-result-table-header-cell {
 		'            border-bottom: 1px solid black;
@@ -128,7 +137,7 @@ public void generateReport(loc location, loc reportFile, loc cloneReportFile){
 		'        \<h1 class=\"test-results-header\"\>
 		'            Analysis Report
 		'        \</h1\>
-		'
+		'		 \<div style=\" margin-top:75px \" \>\</div\>
 		'        \<table class=\"test-result-table\" cellspacing=\"0\"\>
 		'            \<thead\>
 		'                \<tr\>
@@ -224,7 +233,7 @@ public void generateReport(loc location, loc reportFile, loc cloneReportFile){
 		'                \</tr\>
 		'            \</tbody\>
 		'        \</table\>
-		'		 \<div style=\" margin-top:25px \" \>
+		'		 \<div style=\" margin-top:25px \" \>\</div\>
 		'        \<table class=\"test-result-table\" cellspacing=\"0\"\>
 		'            \<thead\>
 		'                \<tr\>
@@ -279,10 +288,12 @@ public void generateReport(loc location, loc reportFile, loc cloneReportFile){
 		'                \</tr\>
 		'            \</tbody\>
 		'        \</table\>
-		'		 \<div style=\" margin-top:25px \" \>
+		'		 \<div style=\" margin-top:25px \" \>\</div\>
+		'		\<svg id=\"chart\" width=\"1200\" height=\"500\"\>\</svg\>
+		'		\<div id=\"selected\"\>\</div\>
 		'    \</body\>
 		'\</html\>
 		";
 	
-	writeFile(reportFile, html);
+	writeFile(reportFolder + "index.html", html);
 }

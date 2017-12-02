@@ -21,9 +21,19 @@ alias testingScore = tuple[int p, score s];
 
 data Duplication(
 	int cloneId = 0,
-	list[loc] locations = [],
-	int cloneType = 0,
-	int lines = 0
+	list[Location] locations = [],
+	int cloneType = 0
 );
 
-data Duplication = Duplication(int cloneId, list[loc] locations, int cloneType, int lines);
+data Duplication = Duplication(int cloneId, list[Location] locations, int cloneType);
+
+data Location(
+	str file = "",
+	int lineStart = 0,
+	int lineEnd = 0
+);
+
+data Location = Location(str file, int lineStart, int lineEnd);
+
+
+

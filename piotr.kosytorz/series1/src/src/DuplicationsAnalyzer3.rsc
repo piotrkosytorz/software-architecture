@@ -23,7 +23,7 @@ import lang::json::IO;
 
 private int sizeThreshold = 20;
 
-public void detectClones(set[Declaration] decs, loc cloneReport){
+public void detectClones(set[Declaration] decs, loc reportFolder){
 
 	map[node, lrel[node, loc]] buckets = collectBuckets(decs);
 
@@ -31,7 +31,7 @@ public void detectClones(set[Declaration] decs, loc cloneReport){
 	
 	set[lrel[node,loc]] filteredDups = filterSubClones(dups);
 	
-	generateOutput(filteredDups, cloneReport);
+	generateOutput(filteredDups, reportFolder);
 
 }
 
@@ -178,18 +178,17 @@ private int getSize(node n){
 	return ret;
 }
 
-private void generateOutput(set[lrel[node,loc]] duplications, loc reportFile){
+private void generateOutput(set[lrel[node,loc]] duplications, loc reportFolder){
 	int i = 0;
 	list[Duplication] jsonFormat = [];
 	for(lrel[node,loc] duplication <- duplications){
-		list[loc] locs = ([] | it + l | <n,l> <- duplication, l != unknownSource);
+		list[Location] locs = ([] | it + Location(l.uri, l.begin.line, l.end.line) | <n,l> <- duplication, l != unknownSource);
 		int cloneType = detectCloneType(duplication);
-		int lines = 1 + duplication[0][1].end.line - duplication[0][1].begin.line;
-		Duplication output = Duplication(i, locs, cloneType, lines);
+		Duplication output = Duplication(i, locs, cloneType);
 		jsonFormat += output;
 		i += 1;
 	}
-	writeJSON(reportFile, jsonFormat);
+	writeJSON(reportFolder + "duplications.json", jsonFormat);
 }
 
 private int detectCloneType(lrel[node,loc] duplication){
