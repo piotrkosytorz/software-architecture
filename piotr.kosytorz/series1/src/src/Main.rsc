@@ -28,7 +28,7 @@ import Types;
 
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
-import DuplicationsAnalyzer3;
+import DuplicationsAnalyzer;
 
 private loc smallSqlProject = |project://smallsql0.21_src|;
 private loc hqSqlProject = |project://hsqldb-2.3.1|;
@@ -109,7 +109,6 @@ public void generateReport(loc location, int duplicationThreshold){
 	score changeability = avarageScore([unitCCS.s, dupS.s]);
 	score stability = testingS.s;
 	score testability = avarageScore([unitCCS.s, unitSS.s, testingS.s]);
-	
 	
 	scores = ();
 	scores["volumeS"] = volumeS;
