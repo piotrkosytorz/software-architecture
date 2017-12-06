@@ -30,17 +30,30 @@ import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer3;
 
-public map[str, value] scores = ();
+private loc smallSqlProject = |project://smallsql0.21_src|;
+private loc hqSqlProject = |project://hsqldb-2.3.1|;
+
+private map[str, loc] projects = ();
+private map[str, value] scores = ();
+
+private void addProject(str key, loc l){
+	projects[key] = l;
+}
 
 public void startServe(){
+
+	addProject("smallSQL", smallSqlProject);
+	addProject("hsqlDB", hqSqlProject);
 
 	serve(|http://localhost:5433|, Response (Request r){
 		switch(r){
 			case get(/analyze/) : return {
+				str project = r.parameters["project"];
 				int threshold = toInt(r.parameters["threshold"]);
-				generateReport(|project://JavaTestProject|, threshold);
+				generateReport(projects[project], threshold);
 				return response("done");
 			}
+			case get(/projects/) : return response(projects);
 			case get(/scores/) : return response(scores);
 			case get(/files/) : return response(filesResult);
 			case get(/duplications/) : return response(duplicationResult);
@@ -51,6 +64,7 @@ public void startServe(){
 
 public void stopServe(){
 	shutdown(|http://localhost:5433|);
+	projects = ();
 }
  
 /**
