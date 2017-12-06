@@ -9,6 +9,7 @@ module Main
 
 import IO;
 import List;
+import String;
 
 import lang::java::m3::Core;
 import lang::java::m3::AST;
@@ -29,14 +30,18 @@ import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer3;
 
+public map[str, value] scores = ();
+
 public void startServe(){
 
-	serve(|http://localhost:5432|, Response (Request r){
+	serve(|http://localhost:5433|, Response (Request r){
 		switch(r){
 			case get(/analyze/) : return {
-				generateReport(|project://JavaTestProject|, 20);
+				int threshold = toInt(r.parameters["threshold"]);
+				generateReport(|project://JavaTestProject|, threshold);
 				return response("done");
 			}
+			case get(/scores/) : return response(scores);
 			case get(/files/) : return response(filesResult);
 			case get(/duplications/) : return response(duplicationResult);
 		}
@@ -45,7 +50,7 @@ public void startServe(){
 }
 
 public void stopServe(){
-	shutdown(|http://localhost:5432|);
+	shutdown(|http://localhost:5433|);
 }
  
 /**
@@ -91,224 +96,19 @@ public void generateReport(loc location, int duplicationThreshold){
 	score stability = testingS.s;
 	score testability = avarageScore([unitCCS.s, unitSS.s, testingS.s]);
 	
-	str html = 
-		"
-		'\<html\>
-		'    \<head\>
-		'        \<title\>
-		'            Test Report
-		'        \</title\>
-		'
-		'		\<script src=\"http://d3js.org/d3.v4.min.js\"\>\</script\>
-		'		\<script src=\"index.js\"\>\</script\>
-		'
-		'		\<link rel=\"stylesheet\" type=\"text/css\" href=\"http://fonts.googleapis.com/css?family=Allura|Raleway\" /\>
-		'		\<link rel=\"stylesheet\" type=\"text/css\" href=\"http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css\" /\>
-		'		\<link rel=\"stylesheet\" type=\"text/css\" href=\"index.css\" /\>
-		'
-		'        \<style type=\"text/css\"\>
-		'        .test-result-table {
-		'            border: 1px solid black;
-		'            width: 800px;
-		'			 margin: auto;
-		'        }
-		'        .test-result-table-header-cell {
-		'            border-bottom: 1px solid black;
-		'            background-color: silver;
-		'        }
-		'        .test-result-step-command-cell {
-		'            border-bottom: 1px solid gray;
-		'        }
-		'        .test-result-step-description-cell {
-		'            border-bottom: 1px solid gray;
-		'        }
-		'        .test-result-step-result-cell-ok {
-		'            border-bottom: 1px solid gray;
-		'            background-color: green;
-		'        }
-		'        .test-result-step-result-cell-failure {
-		'            border-bottom: 1px solid gray;
-		'            background-color: red;
-		'        }
-		'        .test-result-step-result-cell-notperformed {
-		'            border-bottom: 1px solid gray;
-		'            background-color: white;
-		'        }
-		'        .test-result-describe-cell {
-		'            background-color: tan;
-		'            font-style: italic;
-		'        }
-		'        .test-cast-status-box-ok {
-		'            border: 1px solid black;
-		'            float: left;
-		'            margin-right: 10px;
-		'            width: 45px;
-		'            height: 25px;
-		'            background-color: green;
-		'        }
-		'        \</style\>
-		'    \</head\>
-		'    \<body\>
-		'        \<h1 class=\"test-results-header\"\>
-		'            Analysis Report
-		'        \</h1\>
-		'		 \<div style=\" margin-top:75px \" \>\</div\>
-		'        \<table class=\"test-result-table\" cellspacing=\"0\"\>
-		'            \<thead\>
-		'                \<tr\>
-		'                    \<td class=\"test-result-table-header-cell\"\>
-		'                        Metric
-		'                    \</td\>
-		'                    \<td class=\"test-result-table-header-cell\"\>
-		'                        Result
-		'                    \</td\>
-		'                    \<td class=\"test-result-table-header-cell\"\>
-		'                        Score
-		'                    \</td\>
-		'                \</tr\>
-		'            \</thead\>
-		'            \<tbody\>
-		'                \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Volume
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <volume> LOCs
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <volumeS.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Unit Complexity
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Low: <100-unitCCS.m-unitCCS.h-unitCCS.vh>% Medium: <unitCCS.m>% High: <unitCCS.h>% Very High: <unitCCS.vh>% 
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <unitCCS.s.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Unit Size
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Low: <100-unitSS.m-unitSS.h-unitSS.vh>% Medium: <unitSS.m>% High: <unitSS.h>% Very High: <unitSS.vh>% 
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <unitSS.s.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Unit Interfacing
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        Low: <100-interfaceS.m-interfaceS.h-interfaceS.vh>% Medium: <interfaceS.m>% High: <interfaceS.h>% Very High: <interfaceS.vh>% 
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <interfaceS.s.s>
-		'                    \</td\>
-		'                \</tr\>
-
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell test-result-describe-cell\"\>
-		'                        Units
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell test-result-describe-cell\"\>
-		'                        <numberOfUnits>
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell test-result-describe-cell\"\>
-		'                        
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Duplication
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <dupS.p>% (<dupCount> duplicated lines)
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <dupS.s.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Testing
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <testingS.p>% (<numberOfAsserts> assert statements)
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <testingS.s.s>
-		'                    \</td\>
-		'                \</tr\>
-		'            \</tbody\>
-		'        \</table\>
-		'		 \<div style=\" margin-top:25px \" \>\</div\>
-		'        \<table class=\"test-result-table\" cellspacing=\"0\"\>
-		'            \<thead\>
-		'                \<tr\>
-		'                    \<td class=\"test-result-table-header-cell\"\>
-		'                        SIG Rating
-		'                    \</td\>
-		'                    \<td class=\"test-result-table-header-cell\"\>
-		'                        Score
-		'                    \</td\>
-		'                \</tr\>
-		'            \</thead\>
-		'            \<tbody\>
-		'                \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Maintainability
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <maintainability.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Analysability
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <analysability.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Changeability
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <changeability.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Testability
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <testability.s>
-		'                    \</td\>
-		'                \</tr\>
-		'				 \<tr class=\"test-result-step-row test-result-step-row-altone\"\>
-		'                    \<td class=\"test-result-step-command-cell\"\>
-		'                        Stability
-		'                    \</td\>
-		'                    \<td class=\"test-result-step-description-cell\"\>
-		'                        <stability.s>
-		'                    \</td\>
-		'                \</tr\>
-		'            \</tbody\>
-		'        \</table\>
-		'		 \<div style=\" margin-top:25px \" \>\</div\>
-		'		\<svg id=\"chart\" width=\"1200\" height=\"500\"\>\</svg\>
-		'		\<div id=\"selected\"\>\</div\>
-		'    \</body\>
-		'\</html\>
-		";
 	
-	// TODO
+	scores = ();
+	scores["volumeS"] = volumeS;
+	scores["unitCCS"] = unitCCS;
+	scores["unitSS"] = unitSS;
+	scores["dupS"] = dupS;
+	scores["testingS"] = testingS;
+	scores["interfaceS"] = interfaceS;
+	
+	scores["maintainability"] = maintainability;
+	scores["analysability"] = analysability;
+	scores["changeability"] = changeability;
+	scores["stability"] = stability;
+	scores["testability"] = testability;
+		
 }
