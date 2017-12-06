@@ -42,6 +42,7 @@ private void addProject(str key, loc l){
 
 public void startServe(){
 
+	addProject("test", |project://JavaTestProject|);
 	addProject("smallSQL", smallSqlProject);
 	addProject("hsqlDB", hqSqlProject);
 
