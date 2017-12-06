@@ -82,10 +82,10 @@ private map[node, lrel[node, loc]] collectBucket(map[node, lrel[node, loc]] buck
 }
 
 private list[lrel[node,loc]] collectDuplications(map[node, lrel[node, loc]] buckets){
-	return for(bucket <- buckets){
-		lrel[node,loc] buks = buckets[bucket];
-		if(size(buks) > 1){
-			append buks;
+	return for(key <- buckets){
+		lrel[node,loc] duplications = buckets[key];
+		if(size(duplications) > 1){
+			append duplications;
 		}
 	}
 }
@@ -182,7 +182,7 @@ private void generateOutput(set[lrel[node,loc]] duplications, loc reportFolder){
 	int i = 0;
 	list[Duplication] jsonFormat = [];
 	for(lrel[node,loc] duplication <- duplications){
-		list[Location] locs = ([] | it + Location(l.uri, l.begin.line, l.end.line) | <n,l> <- duplication, l != unknownSource);
+		list[Location] locs = ([] | it + Location(l.uri, l.begin.line, l.end.line, readFile(l)) | <n,l> <- duplication, l != unknownSource);
 		int cloneType = detectCloneType(duplication);
 		Duplication output = Duplication(i, locs, cloneType);
 		jsonFormat += output;

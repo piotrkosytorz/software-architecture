@@ -28,7 +28,7 @@ public int getVolume(set[loc] files, loc reportFolder, loc project) {
 	for(f <- files) {
 		int fileVolume = getFileVolume(f);
 		volume += fileVolume;
-		locs += Location(replaceFirst(f.uri, "java+compilationUnit://", project.uri), 0, fileVolume);
+		locs += Location(replaceFirst(f.uri, "java+compilationUnit://", project.uri), 0, fileVolume, "");
 	}
 	writeJSON(reportFolder + "files.json", locs);
 	

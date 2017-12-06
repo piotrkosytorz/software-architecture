@@ -30,10 +30,11 @@ data Duplication = Duplication(int cloneId, list[Location] locations, int cloneT
 data Location(
 	str file = "",
 	int lineStart = 0,
-	int lineEnd = 0
+	int lineEnd = 0,
+	str code = ""
 );
 
-data Location = Location(str file, int lineStart, int lineEnd);
+data Location = Location(str file, int lineStart, int lineEnd, str code);
 
 
 
