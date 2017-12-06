@@ -9,6 +9,8 @@ import lang::json::IO;
 import Utils;
 import Types;
 
+public list[Location] filesResult = [];
+
 /**
  * Calculates file volume
  */
@@ -20,17 +22,15 @@ public int getFileVolume(loc file) {
 /**
  * Calculates the total volume of all files
  */
-public int getVolume(set[loc] files, loc reportFolder, loc project) {
+public int getVolume(set[loc] files, loc project) {
 	int volume = 0;
 	
-	// write a report of all files to json
- 	list[Location] locs = [];
+ 	filesResult = [];
 	for(f <- files) {
 		int fileVolume = getFileVolume(f);
 		volume += fileVolume;
-		locs += Location(replaceFirst(f.uri, "java+compilationUnit://", project.uri), 0, fileVolume, "");
+		filesResult += Location(replaceFirst(f.uri, "java+compilationUnit://", project.uri), 0, fileVolume, "");
 	}
-	writeJSON(reportFolder + "files.json", locs);
 	
 	return volume;
 }

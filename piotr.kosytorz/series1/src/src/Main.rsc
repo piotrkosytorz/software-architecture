@@ -8,12 +8,14 @@ module Main
  */
 
 import IO;
+import List;
+
 import lang::java::m3::Core;
 import lang::java::m3::AST;
 import lang::java::jdt::m3::Core;
 import lang::java::jdt::m3::AST;
-import List;
 
+import util::Webserver;
 import util::ValueUI;
 
 /**
@@ -27,16 +29,29 @@ import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer3;
 
-/**
- * Test code (java projects) location
- */
-public loc smallSqlLoc = |project://smallsql0.21_src/src/smallsql|;
-public loc hsqldbLoc = |project://src/org/hsqldb|;
+public void startServe(){
+
+	serve(|http://localhost:5432|, Response (Request r){
+		switch(r){
+			case get(/analyze/) : return {
+				generateReport(|project://JavaTestProject|, 20);
+				return response("done");
+			}
+			case get(/files/) : return response(filesResult);
+			case get(/duplications/) : return response(duplicationResult);
+		}
+    });
+
+}
+
+public void stopServe(){
+	shutdown(|http://localhost:5432|);
+}
  
 /**
  * The main method generates some nice html for the analysis and json for the duplication
  */
-public void generateReport(loc location, loc reportFolder){
+public void generateReport(loc location, int duplicationThreshold){
 	
 	// m3 object
  	M3 m = createM3FromEclipseProject(location);
@@ -45,7 +60,7 @@ public void generateReport(loc location, loc reportFolder){
  	set[loc] files = extractFilesFromM3(m);
  	
  	// project volume (sum)
-	int volume = getVolume(files, reportFolder, location);	
+	int volume = getVolume(files, location);	
 	
 	// create the ast
 	set[Declaration] declarations = createAstsFromEclipseProject(location, true);		
@@ -60,7 +75,7 @@ public void generateReport(loc location, loc reportFolder){
 	
 	// duplications count
 	int dupCount = 0;
-	detectClones(declarations, reportFolder);
+	detectClones(declarations, duplicationThreshold);
 	
 	// scores
 	score volumeS = volumeScore(volume);
@@ -295,5 +310,5 @@ public void generateReport(loc location, loc reportFolder){
 		'\</html\>
 		";
 	
-	writeFile(reportFolder + "index.html", html);
+	// TODO
 }

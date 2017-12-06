@@ -21,21 +21,21 @@ import analysis::m3::AST;
 
 import lang::json::IO;
 
-private int sizeThreshold = 20;
+public list[Duplication] duplicationResult = [];
 
-public void detectClones(set[Declaration] decs, loc reportFolder){
+public void detectClones(set[Declaration] decs, int sizeThreshold){
 
-	map[node, lrel[node, loc]] buckets = collectBuckets(decs);
+	map[node, lrel[node, loc]] buckets = collectBuckets(decs, sizeThreshold);
 
 	set[lrel[node,loc]] dups = toSet(collectDuplications(buckets));
 	
 	set[lrel[node,loc]] filteredDups = filterSubClones(dups);
 	
-	generateOutput(filteredDups, reportFolder);
+	generateOutput(filteredDups);
 
 }
 
-private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs){
+private map[node, lrel[node, loc]] collectBuckets(set[Declaration] decs, int sizeThreshold){
 	map[node, lrel[node, loc]] buckets = ();
 	visit(decs){
 		// collect all possible duplication blocks
@@ -178,17 +178,16 @@ private int getSize(node n){
 	return ret;
 }
 
-private void generateOutput(set[lrel[node,loc]] duplications, loc reportFolder){
+private void generateOutput(set[lrel[node,loc]] duplications){
 	int i = 0;
-	list[Duplication] jsonFormat = [];
+	duplicationResult = [];
 	for(lrel[node,loc] duplication <- duplications){
 		list[Location] locs = ([] | it + Location(l.uri, l.begin.line, l.end.line, readFile(l)) | <n,l> <- duplication, l != unknownSource);
 		int cloneType = detectCloneType(duplication);
 		Duplication output = Duplication(i, locs, cloneType);
-		jsonFormat += output;
+		duplicationResult += output;
 		i += 1;
 	}
-	writeJSON(reportFolder + "duplications.json", jsonFormat);
 }
 
 private int detectCloneType(lrel[node,loc] duplication){
