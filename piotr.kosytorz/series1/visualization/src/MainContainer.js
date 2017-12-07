@@ -1,6 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import DataList from './VisualizationComponents/DataList'
+import DataList from './VisualizationComponents/DataList/DataList'
 import HeatmapSingle from './VisualizationComponents/HeatmapSingle'
 import HeatmapCross from './VisualizationComponents/HeatmapCross'
 import BibleWiz from './VisualizationComponents/BibleWiz'

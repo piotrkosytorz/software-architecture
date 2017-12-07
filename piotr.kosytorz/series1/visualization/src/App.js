@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import NavigationMenu from './NavigationMenu';
 import TopNavbar from './TopNavbar'
 import MainContainer from "./MainContainer";
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap-theme.css';
+import './App.css';
 
 class App extends Component {
 
