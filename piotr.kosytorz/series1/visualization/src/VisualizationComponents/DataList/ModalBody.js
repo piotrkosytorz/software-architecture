@@ -41,7 +41,6 @@ class ModalBody extends React.Component {
         if (typeof clone === "undefined") {
             return(<div></div>);
         }
-        console.log("x", clone);
         return (
             <div>
                 <ul>
@@ -52,7 +51,7 @@ class ModalBody extends React.Component {
 
                 {clone.locations.map((item, index) => (
 
-                    <Table striped bordered condensed hover>
+                    <Table striped bordered condensed hover key={index}>
                         <thead>
                         <tr>
                             <th style={{color: "#b50a0a"}}>{item.Location.file}</th>

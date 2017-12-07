@@ -16,7 +16,6 @@ class GeneralStats extends React.Component {
             .then(res => {
                 const data = res.data;
                 this.setState({data});
-                console.log(data);
             })
             .catch(error => {
                 console.log(error.response)

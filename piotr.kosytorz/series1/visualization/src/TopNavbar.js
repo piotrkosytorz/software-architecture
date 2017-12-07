@@ -1,36 +1,63 @@
 import React from 'react';
-import {Navbar, FormGroup, FormControl, Button, ControlLabel} from 'react-bootstrap';
+import {Panel, FormGroup, Button} from 'react-bootstrap';
+import axios from 'axios';
 
 class TopNavbar extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            status: 'none',
+            projectValue: 'smallSQL',
+            thresholdValue: 20
+        };
+
+        this.handleProjectChange = this.handleProjectChange.bind(this);
+        this.handleThresholdChange = this.handleThresholdChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleProjectChange(event) {
+        this.setState({projectValue: event.target.value});
+    }
+
+    handleThresholdChange(event) {
+        this.setState({thresholdValue: event.target.value});
+    }
+
     handleSubmit(event) {
-        alert(`submitted ${event}`);
+        event.preventDefault();
+        this.setState({status: 'waiting for reascal to analyze project...'});
+        axios.get(`http://localhost:5433/analyze/?project=${this.state.projectValue}&threshold=${this.state.thresholdValue}`)
+            .then(res => {
+                this.setState({status: 'done'});
+                console.log(res);
+            })
+            .catch(error => {
+                console.log(error.response)
+                alert("Error: unable to reach the server.");
+            });
     }
 
     render() {
         return (
-            <Navbar className="text-center navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-                <Navbar.Header>
-
-                    <Navbar.Toggle/>
-                </Navbar.Header>
-                <Navbar.Collapse>
-                    <Navbar.Form>
-                        <FormGroup>
-                            <FormGroup controlId="formControlsSelect">
-                                <ControlLabel>Select</ControlLabel>
-                                <FormControl componentClass="select" placeholder="Project">
-                                    <option value="smallSQL">smallSQL</option>
-                                    <option value="hsqlDB">hsqlDB</option>
-                                </FormControl>
-                            </FormGroup>
-                            <FormControl type="number" placeholder="Threshold" defaultValue="20"/>
+            <Panel header="Request data" bsStyle="success">
+                <form onSubmit={this.handleSubmit} className="form-inline">
+                    <FormGroup>
+                        <FormGroup controlId="formControlsSelect">
+                            <label>Select</label>
+                            <select value={this.state.projectValue} onChange={this.handleProjectChange}>
+                                <option value="smallSQL">smallSQL</option>
+                                <option value="hsqlDB">hsqlDB</option>
+                            </select>
                         </FormGroup>
-                        {' '}
-                        <Button type="submit">Run analyzer</Button>
-                    </Navbar.Form>
-                </Navbar.Collapse>
-            </Navbar>
+                        <input type="number"  value={this.state.thresholdValue} onChange={this.handleThresholdChange} />
+                    </FormGroup>
+                    {' '}
+                    <Button type="submit">Run analyzer</Button>
+                </form>
+                <span>Status: {this.state.status}</span>
+            </Panel>
         );
     }
 }
