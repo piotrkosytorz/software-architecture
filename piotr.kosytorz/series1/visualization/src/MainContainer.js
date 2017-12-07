@@ -4,6 +4,7 @@ import DataList from './VisualizationComponents/DataList/DataList'
 import HeatmapSingle from './VisualizationComponents/HeatmapSingle'
 import HeatmapCross from './VisualizationComponents/HeatmapCross'
 import BibleWiz from './VisualizationComponents/BibleWiz'
+import GeneralStats from "./VisualizationComponents/GeneralStats";
 
 class MainContainer extends React.Component {
 
@@ -11,6 +12,7 @@ class MainContainer extends React.Component {
         return (
             <main>
                 <Switch>
+                    <Route exact path='/' component={GeneralStats}/>
                     <Route exact path='/list' component={DataList}/>
                     <Route path='/heatmap-single' component={HeatmapSingle}/>
                     <Route path='/heatmap-cross' component={HeatmapCross}/>

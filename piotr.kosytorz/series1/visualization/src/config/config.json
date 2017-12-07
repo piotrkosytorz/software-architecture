@@ -1,0 +1,7 @@
+{
+  "analyzer_url": "http://localhost:5433/analyze/",
+  "scores_url": "http://localhost:5433/scores/",
+  "duplicates_url": "http://localhost:5433/duplications/",
+  "files_url": "http://localhost:5433/files/",
+  "projects_url": "http://localhost:5433/projects/"
+}

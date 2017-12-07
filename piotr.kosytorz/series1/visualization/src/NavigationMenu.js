@@ -18,10 +18,11 @@ class NavigationMenu extends React.Component {
     render() {
         return (
             <Nav bsStyle="pills" stacked activeKey={1}>
-                <NavItem eventKey={1} href="#/list">Data list</NavItem>
-                <NavItem eventKey={2} href="#/heatmap-single">Clones within one file</NavItem>
-                <NavItem eventKey={3} href="#/heatmap-cross">Cross files clones</NavItem>
-                <NavItem eventKey={4} href="#/biblewiz">Arcs</NavItem>
+                <NavItem eventKey={2} href="#/">General statistics</NavItem>
+                <NavItem eventKey={2} href="#/list">Details</NavItem>
+                <NavItem eventKey={3} href="#/heatmap-single">Visualization: Heatmap 1</NavItem>
+                <NavItem eventKey={4} href="#/heatmap-cross">Visualization: Heatmap 2</NavItem>
+                <NavItem eventKey={5} href="#/biblewiz">Visualization: Arcs</NavItem>
             </Nav>
         );
     }
