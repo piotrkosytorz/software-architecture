@@ -188,6 +188,10 @@ private void generateOutput(set[lrel[node,loc]] duplications){
 private int detectCloneType(lrel[node,loc] duplication){
 	int ret = 0;
 	
+	if(size(duplication) < 2){
+		return ret;
+	}
+	
 	tuple[node n, loc l] node1 = duplication[0];
 	tuple[node n, loc l] node2 = duplication[1];
 	node1Clean = cleanNode(node1.n);
