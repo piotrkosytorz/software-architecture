@@ -176,10 +176,12 @@ private void generateOutput(set[lrel[node,loc]] duplications){
 	duplicationResult = [];
 	for(lrel[node,loc] duplication <- duplications){
 		list[Location] locs = ([] | it + Location(l.uri, l.begin.line, l.end.line, readFile(l)) | <n,l> <- duplication, l != unknownSource);
-		int cloneType = detectCloneType(duplication);
-		Duplication output = Duplication(i, locs, cloneType);
-		duplicationResult += output;
-		i += 1;
+		if(size(locs) > 1){
+			int cloneType = detectCloneType(duplication);
+			Duplication output = Duplication(i, locs, cloneType);
+			duplicationResult += output;
+			i += 1;
+		}
 	}
 }
 

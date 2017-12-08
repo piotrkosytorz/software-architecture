@@ -26,13 +26,11 @@ import Utils;
 import Rater;
 import Types;
 import Type;
+import Configuration;
 
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer;
-
-private loc smallSqlProject = |project://smallsql0.21_src|;
-private loc hqSqlProject = |project://src/org/hsqldb|;
 
 private map[str, loc] projects = ();
 private map[str, value] scores = ();
@@ -45,27 +43,26 @@ private Response proceedRequest(Request r) {
 	
 	str path = "";
 	get(path) = r; 
-	str filePath = "project://Series1/www/"+path;
-	println(toLocation(filePath));
+	loc localPath  = analyzeProject + "/www/" + path;
 	
-	if (endsWith(filePath, ".css")) {
-		return response(ok(), "text/css", (), readFile(toLocation(filePath)));
+	if (endsWith(localPath.uri, ".css")) {
+		return response(ok(), "text/css", (), readFile(localPath));
 	}
 	
-	if (endsWith(filePath, ".html")) {
-		return response(ok(), "text/html", (), readFile(toLocation(filePath)));
+	if (endsWith(localPath.uri, ".html")) {
+		return response(ok(), "text/html", (), readFile(localPath));
 	}
 	
-	if (endsWith(filePath, ".js")) {
-		return response(ok(), "text/javascript", (), readFile(toLocation(filePath)));
+	if (endsWith(localPath.uri, ".js")) {
+		return response(ok(), "text/javascript", (), readFile(localPath));
 	}
 
-	return response(readFile(toLocation(filePath)));
+	return response(readFile(localPath));
 }
 
 public void startServe(){
 
-	addProject("test", |project://JavaTestProject|);
+	addProject("test", testProject);
 	addProject("smallSQL", smallSqlProject);
 	addProject("hsqlDB", hqSqlProject);
 
