@@ -7,6 +7,15 @@ Authors
 * Cornelius Ries
 * Piotr Kosytorz
 
+## Tests
+
+All tests are in seperate files that extend their original rascal module:
+
+* DuplicationsAnalyzerTests
+* RaterTests
+* UtilsTests
+
+To run the tests, import all the modules above and execute :test in the rascal console.
 
 ## References
 
