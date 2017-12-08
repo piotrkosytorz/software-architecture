@@ -20,9 +20,8 @@ class NavigationMenu extends React.Component {
             <Nav bsStyle="pills" stacked activeKey={this.state.activeKey} >
                 <NavItem eventKey={1} href="#/">General statistics</NavItem>
                 <NavItem eventKey={2} href="#/list">Detailed data table</NavItem>
-                <NavItem eventKey={4} href="#/vis-force-graph">Visualization: Graph</NavItem>
-                <NavItem eventKey={3} href="#/heatmap-single">Visualization: Heatmap 1</NavItem>
-                <NavItem eventKey={5} href="#/biblewiz">Visualization: Arcs</NavItem>
+                <NavItem eventKey={3} href="#/vis-force-graph">Visualization: Graph</NavItem>
+                <NavItem eventKey={4} href="#/biblewiz">Visualization: Arcs</NavItem>
             </Nav>
         );
     }
