@@ -139,7 +139,8 @@ class HeatmapSingle extends React.Component {
     render() {
         return(
             <div className='container'>
-                <h1>Monthly Global Land-Surface Temperature</h1>
+                <h1>TODO</h1>
+                <h2>Monthly Global Land-Surface Temperature</h2>
                 <svg className='chart'></svg>
             </div>
         );

@@ -4,7 +4,10 @@ class BibleWiz extends React.Component {
 
     render() {
         return (
-            <div>BibleWiz</div>
+            <div>
+                <h1>TODO</h1>
+                BibleViz
+            </div>
         );
     }
 }

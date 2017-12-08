@@ -6,22 +6,22 @@ class NavigationMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeKey: 1
+            activeKey: 0
         };
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
-    handleSelect() {
-   //     console.log(this);
-        //this= selectedKey;
+    handleSelect(eventKey) {
+        this.setState({activeKey: eventKey});
         }
 
     render() {
         return (
-            <Nav bsStyle="pills" stacked activeKey={1}>
-                <NavItem eventKey={2} href="#/">General statistics</NavItem>
-                <NavItem eventKey={2} href="#/list">Details</NavItem>
+            <Nav bsStyle="pills" stacked activeKey={this.state.activeKey} >
+                <NavItem eventKey={1} href="#/">General statistics</NavItem>
+                <NavItem eventKey={2} href="#/list">Detailed data table</NavItem>
+                <NavItem eventKey={4} href="#/vis-force-graph">Visualization: Graph</NavItem>
                 <NavItem eventKey={3} href="#/heatmap-single">Visualization: Heatmap 1</NavItem>
-                <NavItem eventKey={4} href="#/heatmap-cross">Visualization: Heatmap 2</NavItem>
                 <NavItem eventKey={5} href="#/biblewiz">Visualization: Arcs</NavItem>
             </Nav>
         );

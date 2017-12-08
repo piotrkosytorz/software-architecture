@@ -19,6 +19,8 @@
     "json-loader": "^0.5.7",
     "lodash": "^4.17.4",
     "match-sorter": "^2.2.0",
+    "moment": "^2.19.3",
+    "momentjs": "^2.0.0",
     "namor": "^1.0.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.31.5",

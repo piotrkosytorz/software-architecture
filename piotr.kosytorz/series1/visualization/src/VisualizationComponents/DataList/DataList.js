@@ -29,15 +29,17 @@ class DataList extends React.Component {
                 let data = res.data.map(obj => obj.Duplication);
                 for (let entry in data) {
                     const locationArray = Array.from(new Set(data[entry].locations.map(obj => obj.Location.file)));
-                    const linesCount = data[entry].locations[0].Location.lineEnd - data[entry].locations[0].Location.lineStart + 1;
-                    data[entry].locationsString = locationArray.join(",");
-                    data[entry].linesCount = linesCount;
-                    data[entry].numberOfFiles = locationArray.length;
+                    if (typeof data[entry] !== "undefined" && data[entry].locations.length) {
+                        const linesCount = data[entry].locations[0].Location.lineEnd - data[entry].locations[0].Location.lineStart + 1;
+                        data[entry].locationsString = locationArray.join(",");
+                        data[entry].linesCount = linesCount;
+                        data[entry].numberOfFiles = locationArray.length;
+                    }
                 }
                 this.setState({originalData, data});
             })
             .catch(error => {
-                console.log(error.response)
+                console.log(error)
             });
     }
 

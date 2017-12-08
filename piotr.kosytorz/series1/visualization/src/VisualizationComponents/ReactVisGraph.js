@@ -6,9 +6,11 @@ import _ from 'lodash';
 /**
  * Use this:
  * https://github.com/uber/react-vis-force
+ * More here:
+ * https://github.com/uber/react-vis-force/blob/master/docs/InteractiveForceGraph.md
  */
 
-class HeatmapCross extends React.Component {
+class ReactVisGraph extends React.Component {
 
     constructor() {
         super();
@@ -93,7 +95,7 @@ class HeatmapCross extends React.Component {
     }
 
     render() {
-        
+
 
         return (
             <InteractiveForceGraph
@@ -118,4 +120,4 @@ class HeatmapCross extends React.Component {
     }
 }
 
-export default HeatmapCross;
+export default ReactVisGraph;
