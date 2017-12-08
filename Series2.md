@@ -7,6 +7,26 @@ Authors
 * Cornelius Ries
 * Piotr Kosytorz
 
+## About
+
+TODO
+
+## Tool usage
+
+TODO
+
+## Results
+
+TODO
+
+## Duplication Detection
+
+TODO
+
+## Visualization
+
+TODO
+
 ## Tests
 
 All tests are in seperate files that extend their original rascal module:
