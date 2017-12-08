@@ -6,7 +6,7 @@ class NavigationMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeKey: 0
+            activeKey: 0    
         };
         this.handleSelect = this.handleSelect.bind(this);
     }

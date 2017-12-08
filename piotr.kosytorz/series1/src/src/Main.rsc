@@ -25,19 +25,42 @@ import util::ValueUI;
 import Utils;
 import Rater;
 import Types;
+import Type;
 
 import VolumeAnalyzer;
 import ComplexityAnalyzer;
 import DuplicationsAnalyzer;
 
 private loc smallSqlProject = |project://smallsql0.21_src|;
-private loc hqSqlProject = |project://hsqldb-2.3.1|;
+private loc hqSqlProject = |project://src/org/hsqldb|;
 
 private map[str, loc] projects = ();
 private map[str, value] scores = ();
 
 private void addProject(str key, loc l){
 	projects[key] = l;
+}
+
+private Response proceedRequest(Request r) {
+	
+	str path = "";
+	get(path) = r; 
+	str filePath = "project://Series1/www/"+path;
+	println(toLocation(filePath));
+	
+	if (endsWith(filePath, ".css")) {
+		return response(ok(), "text/css", (), readFile(toLocation(filePath)));
+	}
+	
+	if (endsWith(filePath, ".html")) {
+		return response(ok(), "text/html", (), readFile(toLocation(filePath)));
+	}
+	
+	if (endsWith(filePath, ".js")) {
+		return response(ok(), "text/javascript", (), readFile(toLocation(filePath)));
+	}
+
+	return response(readFile(toLocation(filePath)));
 }
 
 public void startServe(){
@@ -58,6 +81,8 @@ public void startServe(){
 			case get(/scores/) : return response(scores);
 			case get(/files/) : return response(filesResult);
 			case get(/duplications/) : return response(duplicationResult);
+			default: return proceedRequest(r);
+	
 		}
     });
 
@@ -112,12 +137,14 @@ public void generateReport(loc location, int duplicationThreshold){
 	score testability = avarageScore([unitCCS.s, unitSS.s, testingS.s]);
 	
 	scores = ();
+	scores["volume"] = volume;
 	scores["volumeS"] = volumeS;
 	scores["unitCCS"] = unitCCS;
 	scores["unitSS"] = unitSS;
 	scores["dupS"] = dupS;
 	scores["testingS"] = testingS;
 	scores["interfaceS"] = interfaceS;
+	scores["numberOfUnits"] = numberOfUnits;
 	
 	scores["maintainability"] = maintainability;
 	scores["analysability"] = analysability;
