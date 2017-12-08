@@ -17,6 +17,7 @@
     "d3-svg-legend": "^2.25.1",
     "d3-transition": "^1.1.1",
     "json-loader": "^0.5.7",
+    "lodash": "^4.17.4",
     "match-sorter": "^2.2.0",
     "namor": "^1.0.1",
     "react": "^16.2.0",
@@ -24,7 +25,8 @@
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
-    "react-table": "^6.7.4"
+    "react-table": "^6.7.4",
+    "react-vis-force": "^0.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
