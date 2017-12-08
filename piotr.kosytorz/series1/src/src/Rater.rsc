@@ -37,12 +37,6 @@ public score avarageScore(list[score] scs){
 	return scores.e;
 }
 
-test bool testAvarageScore(list[score] scs){
-	score s = avarageScore(scs);
-	if(s.v notin [-2,-1,0,1,2,-99]) return false;
-	return true;
-}
-
 /**
  * Calculates volume rating 
  * ==========================
@@ -69,18 +63,6 @@ public score volumeScore(int volume){
 	if(volume < 665000) return scores.m;
 	if(volume < 1310000) return scores.l;
 	return scores.vl;
-}
-
-test bool testVolumeValues(int volume){
-	score s = volumeScore(volume);
-	if(s.v notin [-2,-1,0,1,2]) return false;
-	return true;
-}
-
-test bool testVolumeString(int volume){
-	score s = volumeScore(volume);
-	if(s.s notin ["--","-","o","+","++"]) return false;
-	return true;
 }
 
 /**
