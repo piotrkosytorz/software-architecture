@@ -21,7 +21,11 @@ TODO
 
 ## Duplication Detection
 
-The idea or algotihm of our duplication detection is based on the information from \[1\] and \[2\] 
+The idea and algorithm of our duplication detection is based on the information from \[1\] and \[2\]. The main idea behind this approach is to hash the nodes of an ast into different buckets and collect the duplications if a bucket has more than 1 element. For type 2 the papers suggest to clear unneccesary information from the nodes (variable names, type etc.).
+
+For our implementation we decided to use a map as a utility to do the matching. We also had to clean the nodes initially because of a change in rascal that shifted the loc and other informations of a node from annotations on the node to information contained in the node. This messed up the matching because every location was unique.
+
+A more detailed explanation can be found in the next chapter.
 
 ### How it works (Pseudocode)
 
