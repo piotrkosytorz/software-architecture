@@ -4,7 +4,7 @@ module Configuration
 public loc serveAddress = |http://localhost:5433|;
 
 // The rascal location of the Project
-public loc projectLocation = |project://piotr-series1|;
+public loc projectLocation = |project://Series1|;
 
 // Rascal locations of the eclipse projects to be analyzed
 public loc testProject = |project://JavaTestProject|;

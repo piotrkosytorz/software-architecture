@@ -21,7 +21,7 @@ class NavigationMenu extends React.Component {
                 <NavItem eventKey={1} href="#/">General statistics</NavItem>
                 <NavItem eventKey={2} href="#/list">Detailed data table</NavItem>
                 <NavItem eventKey={3} href="#/vis-force-graph">Visualization: Constellations</NavItem>
-                <NavItem eventKey={4} href="#/biblewiz">Visualization: Arcs</NavItem>
+                {/*<NavItem eventKey={4} href="#/biblewiz">Visualization: Arcs</NavItem>*/}
             </Nav>
         );
     }

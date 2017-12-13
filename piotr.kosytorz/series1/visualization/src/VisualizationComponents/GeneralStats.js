@@ -55,6 +55,17 @@ class GeneralStats extends React.Component {
                     </tr>
                     <tr>
                         <td>
+                            Duplicated lines
+                        </td>
+                        <td>
+                            {this.state.data.duplications ? this.state.data.duplications : ""} ({this.state.data.volume && this.state.data.duplications ? (Math.round(100*this.state.data.duplications/this.state.data.volume))+"%" : ''})
+                        </td>
+                        <td>
+                            {this.state.data.dupS ? this.state.data.dupS[1][1] : ""}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             Unit Complexity
                         </td>
                         <td>

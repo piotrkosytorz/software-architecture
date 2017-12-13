@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="NavigationMenu.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="NavigationMenu.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/NavigationMenu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="18" lean-forward="true" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
+            <state relative-caret-position="405">
+              <caret line="27" column="1" lean-forward="true" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -80,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BibleWiz.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/BibleWiz.js">
+      <file leaf-file-name="ReactVisGraph.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="24" lean-forward="false" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="24" />
+            <state relative-caret-position="2032">
+              <caret line="151" column="54" lean-forward="false" selection-start-line="151" selection-start-column="54" selection-end-line="151" selection-end-column="54" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -92,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ReactVisGraph.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js">
+      <file leaf-file-name="GeneralStats.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="423">
-              <caret line="151" column="54" lean-forward="false" selection-start-line="151" selection-start-column="54" selection-end-line="151" selection-end-column="54" />
+            <state relative-caret-position="455">
+              <caret line="60" column="226" lean-forward="false" selection-start-line="60" selection-start-column="226" selection-end-line="60" selection-end-column="226" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -147,9 +147,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>class</find>
-      <find>class=&quot;test-result-step-command-cell&quot;</find>
-      <find>class=&quot;test-result-step-command-cell test-result-describe-cell&quot;</find>
       <find>'-'</find>
       <find>class=&quot;test-result-table-header-cell&quot;</find>
       <find>class=&quot;test-result-step-description-cell&quot;</find>
@@ -177,6 +174,9 @@
       <find>console.lo</find>
       <find>style</find>
       <find>&quot;</find>
+      <find>dup</find>
+      <find>duplica</find>
+      <find>unit in</find>
     </findStrings>
     <replaceStrings>
       <replace>className</replace>
@@ -205,7 +205,6 @@
         <option value="$PROJECT_DIR$/src/VisualizationComponents/DataList/DetailsModal.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/config/config.json" />
-        <option value="$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js" />
         <option value="$PROJECT_DIR$/src/TopNavbar.js" />
         <option value="$PROJECT_DIR$/src/VisualizationComponents/HeatmapCross.js" />
         <option value="$PROJECT_DIR$/src/VisualizationComponents/HeatmapSingle.js" />
@@ -216,10 +215,11 @@
         <option value="$PROJECT_DIR$/node_modules/match-sorter/dist/match-sorter.esm.js" />
         <option value="$PROJECT_DIR$/src/VisualizationComponents/DataList/DataList.js" />
         <option value="$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph.js" />
-        <option value="$PROJECT_DIR$/src/NavigationMenu.js" />
         <option value="$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ModalBody.js" />
         <option value="$PROJECT_DIR$/src/App.css" />
         <option value="$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js" />
+        <option value="$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js" />
+        <option value="$PROJECT_DIR$/src/NavigationMenu.js" />
       </list>
     </option>
   </component>
@@ -354,12 +354,12 @@
       <workItem from="1512559454399" duration="9465000" />
       <workItem from="1512653487917" duration="34818000" />
       <workItem from="1512733674145" duration="2705000" />
-      <workItem from="1513166346924" duration="10128000" />
+      <workItem from="1513166346924" duration="11693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57116000" />
+    <option name="totallyTimeSpent" value="58681000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="23" width="1623" height="962" extended-state="0" />
@@ -625,16 +625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="15" lean-forward="false" selection-start-line="14" selection-start-column="8" selection-end-line="21" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/lodash/lodash.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="263">
@@ -683,16 +673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="621">
           <caret line="175" column="24" lean-forward="true" selection-start-line="159" selection-start-column="16" selection-end-line="175" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/NavigationMenu.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="18" lean-forward="true" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="18" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -763,8 +743,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="423">
+        <state relative-caret-position="2032">
           <caret line="151" column="54" lean-forward="false" selection-start-line="151" selection-start-column="54" selection-end-line="151" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="60" column="226" lean-forward="false" selection-start-line="60" selection-start-column="226" selection-end-line="60" selection-end-column="226" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/NavigationMenu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="1" lean-forward="true" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
