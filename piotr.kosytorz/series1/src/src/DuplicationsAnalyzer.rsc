@@ -19,7 +19,7 @@ import analysis::m3::AST;
 
 public list[Duplication] duplicationResult = [];
 
-public void detectClones(set[Declaration] decs, int sizeThreshold){
+public int detectClones(set[Declaration] decs, int sizeThreshold){
 
 	map[node, lrel[node, loc]] buckets = collectBuckets(decs, sizeThreshold);
 
@@ -27,7 +27,7 @@ public void detectClones(set[Declaration] decs, int sizeThreshold){
 	
 	set[lrel[node,loc]] filteredDups = filterSubClones(dups);
 	
-	generateOutput(filteredDups);
+	return generateOutput(filteredDups);
 
 }
 
@@ -171,18 +171,21 @@ private int getSize(node n){
 	return ret;
 }
 
-private void generateOutput(set[lrel[node,loc]] duplications){
+private int generateOutput(set[lrel[node,loc]] duplications){
 	int i = 0;
 	duplicationResult = [];
+	int lineCount = 0;
 	for(lrel[node,loc] duplication <- duplications){
 		list[Location] locs = ([] | it + Location(l.uri, l.begin.line, l.end.line, readFile(l)) | <n,l> <- duplication, l != unknownSource);
 		if(size(locs) > 1){
 			int cloneType = detectCloneType(duplication);
 			Duplication output = Duplication(i, locs, cloneType);
+			lineCount += (0 | it + 1 + location.lineEnd - location.lineStart | location <- locs);
 			duplicationResult += output;
 			i += 1;
 		}
 	}
+	return lineCount;
 }
 
 private int detectCloneType(lrel[node,loc] duplication){

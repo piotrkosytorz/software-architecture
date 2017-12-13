@@ -116,8 +116,7 @@ public void generateReport(loc location, int duplicationThreshold){
 	int numberOfUnits = size(unitsCompleity);
 	
 	// duplications count
-	int dupCount = 0;
-	detectClones(declarations, duplicationThreshold);
+	int dupCount = detectClones(declarations, duplicationThreshold);
 	
 	// scores
 	score volumeS = volumeScore(volume);
@@ -135,6 +134,8 @@ public void generateReport(loc location, int duplicationThreshold){
 	
 	scores = ();
 	scores["volume"] = volume;
+	scores["duplications"] = dupCount;
+	
 	scores["volumeS"] = volumeS;
 	scores["unitCCS"] = unitCCS;
 	scores["unitSS"] = unitSS;
