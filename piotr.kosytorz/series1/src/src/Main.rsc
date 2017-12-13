@@ -43,7 +43,7 @@ private Response proceedRequest(Request r) {
 	
 	str path = "";
 	get(path) = r; 
-	loc localPath  = analyzeProject + "/www/" + path;
+	loc localPath  = projectLocation + "/www/" + path;
 	
 	if (endsWith(localPath.uri, ".css")) {
 		return response(ok(), "text/css", (), readFile(localPath));
@@ -66,7 +66,7 @@ public void startServe(){
 	addProject("smallSQL", smallSqlProject);
 	addProject("hsqlDB", hqSqlProject);
 
-	serve(|http://localhost:5433|, Response (Request r){
+	serve(serveAddress, Response (Request r){
 		switch(r){
 			case get(/analyze/) : return {
 				str project = r.parameters["project"];
@@ -86,7 +86,7 @@ public void startServe(){
 }
 
 public void stopServe(){
-	shutdown(|http://localhost:5433|);
+	shutdown(serveAddress);
 	projects = ();
 }
  
