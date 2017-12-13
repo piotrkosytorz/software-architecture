@@ -78,6 +78,7 @@ All tests are in seperate files that extend their original rascal module:
 * VolumeAnalyzerTests
 
 To run the tests, import all the modules above and execute :test in the rascal console.
+The `projectLocation` in `Configuration.rsc` has to be set to the projects location in your eclipse!
 
 ## References
 
