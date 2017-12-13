@@ -11,13 +11,24 @@ Authors
 
 TODO
 
-## Tool usage
+## Design Desicions
 
 TODO
 
 ## Results
 
 TODO
+
+## Tool usage
+
+To use the tool we provide the source code as a eclipse project
+
+1. Please import the project into your eclipse with a working rascal installation. 
+2. Open `Configuration.rsc` and adjust the location of the `projectLocation` to match the path of the project to your eclise
+3. Do the same for the `smallSqlProject` and `hqSqlProject`
+4. Start a rascal console and import the `Main` module
+5. run `startServe();`
+6. open a browser and point it towards `http://localhost:5433` or to the location of `serveAddress` in case you changed it
 
 ## Duplication Detection
 
