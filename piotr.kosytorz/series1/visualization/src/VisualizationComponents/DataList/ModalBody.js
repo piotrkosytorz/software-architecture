@@ -26,11 +26,9 @@ class ModalBody extends React.Component {
 
     extractCloneDetails(data, cloneId) {
 
-        const clone = data.find(function(el) {
+        return data.find(function(el) {
             return el.cloneId === cloneId;
         })
-
-        return clone;
 
     }
 
@@ -39,7 +37,7 @@ class ModalBody extends React.Component {
         const clone = this.extractCloneDetails(this.state.data, this.props.currentCloneId);
 
         if (typeof clone === "undefined") {
-            return(<div></div>);
+            return(<div/>);
         }
         return (
             <div>

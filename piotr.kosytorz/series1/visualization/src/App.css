@@ -1,0 +1,47 @@
+ul.color-legend li {
+    color: #3c3c3c;
+    /* set color of list item text */
+
+    list-style: none;
+}
+
+ul.color-legend li::before {
+    content: "\2022";
+    font-size: 4em;
+    line-height: 0;
+    padding-right: 0.1225em;
+    position: relative;
+    top: 0.3em;
+}
+
+ul.color-legend li.l1::before {
+    color: #ffc7c6;
+}
+
+ul.color-legend li.l2::before {
+    color: #f4bcbb;
+}
+
+ul.color-legend li.l3::before {
+    color: #e97b7c;
+}
+
+ul.color-legend li.l4::before {
+    color: #de3636;
+}
+
+ul.color-legend li.l5::before {
+    color: #90181a;
+}
+
+ul.color-legend li.l6::before {
+    color: #621110;
+}
+
+ul.color-legend li.l7::before {
+    color: #420b0c;
+}
+
+ul.color-legend li.l8::before {
+    color: #2c0808;
+}

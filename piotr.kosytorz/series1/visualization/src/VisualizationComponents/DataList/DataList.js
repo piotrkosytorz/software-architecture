@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactTable from 'react-table'
-import matchSorter from 'match-sorter';
 import "react-table/react-table.css";
 import axios from 'axios';
 import {Button, Modal} from 'react-bootstrap';
@@ -44,13 +43,12 @@ class DataList extends React.Component {
     }
 
     showModal() {
-        this.setState({ show: true });
+        this.setState({show: true});
     }
 
     hideModal() {
-        this.setState({ show: false });
+        this.setState({show: false});
     }
-
 
     onRowClickHandler = (state, rowInfo, column, instance) => {
         return {
@@ -67,8 +65,6 @@ class DataList extends React.Component {
             }
         }
     }
-
-
 
     renderFileNames(str) {
         if (typeof str !== "undefined") {
@@ -149,8 +145,9 @@ class DataList extends React.Component {
                                     accessor: "locationsString",
                                     Cell: props =>
                                         <span>{this.renderFileNames(props.value)}</span>,
-                                    filterMethod: (filter, rows) =>
-                                        matchSorter(rows, filter.value, {keys: ["locationsString"]}),
+                                    filterMethod: (filter, row) => {
+                                        return row.filter(r => r.locationsString.toLowerCase().includes(filter.value.toLowerCase()));
+                                    },
                                     filterAll: true
                                 }
                             ]
