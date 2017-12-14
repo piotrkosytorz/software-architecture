@@ -39,7 +39,12 @@ citestyle=numeric
     showspaces=false,                
     showstringspaces=false,
     showtabs=false,                  
-    tabsize=2
+    tabsize=2,
+    frame=single
+}
+
+\lstdefinestyle{pseudocodeStyle}{
+    frame=single
 }
 
 \addbibresource{citations.bib}
@@ -140,8 +145,6 @@ are per definition from \cite{koschke2008identifying} copies with further change
 
 \todo {
 	\begin{itemize}
-		\item{Type-3 clean method (pseudocode) / We dont have it yet }
-		\item{Formalised algorithm (pseudocode with references to type-1, type-2 clean methods)}
 		\item{Describe how the algorithm is covered in the literature (and provide references).}
 	\end{itemize}
 }
@@ -151,27 +154,28 @@ are per definition from \cite{koschke2008identifying} copies with further change
 The idea and algorithm of our duplication detection is based on the
 information from \cite{lazar2014clone} and \cite{baxter1998clone}. 
 The main idea behind this approach is to use the abstract syntax tree for clone detection.
-After creating the ast from the source files,  the nodes are hashed into different buckets.
+After creating the AST from the source files, the nodes are hashed into different buckets.
 If a bucket has more than one element, it follows, that there are multiple locations in the source code of this node.
 This counts as one clone class. There are multiple types of clones that our tool can detect.
 These are type 1 and type 2 clones.
 
-For our implementation we only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the subnodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
+For our implementation we only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the sub-nodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
 
 \subsection{Type-1 cleaning}
 
-If using the AST approach, the bucket key is in general just the node itself. With rascal though, there was a change in the implementation
-that shifted the \texttt{loc} and other informations of a node from the annotations on the node, to information contained in the node.
-This messed up the matching because every location was unique, which resulted in every node (because of subnodes) being unique. 
-To circumvante the problem we remove the unnessecary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done
-by visiting all the subnodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
+\todo{\textbf{@Cornelius}: This text is difficult to read. Could you rephrase it?}
+
+If using the AST approach, the bucket key is in general just the node itself. 
+With rascal though, there was a change in the implementation that shifted the \texttt{loc} and other informations of a node from the annotations on the node, to information contained in the node.
+This messed up the matching because every location was unique, which resulted in every node (because of sub-nodes) being unique. 
+To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done
+by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
 
 \subsection{Type-2 cleaning}
 
-For type 2 detection we also use the AST. To streamline all the information that is contained in the node we visit all the subnodes of a node
-and replace specific variables/identifiers/types with a general one. The replacement is done using the rascal \texttt{visit - case => } notation.
+For type 2 detection we also use the AST. To streamline all the information that is contained in the node we visit all the sub-nodes of a node,  and replace specific variables/identifiers/types with a general one. The replacement is done using the rascal \texttt{visit - case => } notation.
 
-\begin{lstlisting}[language=Java, style=mystyle]
+\begin{lstlisting}[language=Java, style=mystyle,caption={Node elements stripping method for type-2 clone detection.},captionpos=b]
 case Type _ => lang::java::m3::AST::float()
 case Modifier _ => lang::java::m3::AST::\public()
 case \method(_, _, a, b) => \method(lang::java::m3::AST::float(), "method", a, b)
@@ -199,9 +203,9 @@ case \characterLiteral(_) => \characterLiteral("a")
 
 \subsection{The main algorithm}
 
-Here we provide a textual representation of our main algorithm. For further information please have a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
+In this section we provide a textual representation of our main algorithm. For further information please take a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
 
-\begin{lstlisting}
+\begin{lstlisting}[style=pseudocodeStyle,caption={General algorithm preudocode},captionpos=b]
 Build the AST of the project.
 
 For all nodes in AST 
@@ -286,6 +290,22 @@ To run the tests, import all the modules below and execute :test in the rascal c
 \end{itemize}
 }
 
+\subsection{Introduction}
+As it is stated in the assignment, we were supposed to provide a tool for clone detection that we actually would use ourselves.  Since web technologies provide currently the best tools to present data and are easy to implement, and since there is a web server in Rascal, we have decided to provide a JavaScript application as the user interface for our tool. 
+
+The front-end application is served directly from our Rascal application, which means that no extra configuration is required to use it with the provided clone detector. It is written ReactJS \footnote{Facebook Inc. 2017. React. [ONLINE] Available at: https://reactjs.org/. [Accessed 14 December 2017].
+}. The main (Rascal) application provides a number of REST API endpoints that the JavaScript application uses to obtain data and request a project analysis. 
+
+\subsection{Requirements}
+The main requirements that we 
+
+\subsection{Implementation choices}
+
+\subsubsection{Rascal's Web Server & REST API}
+
+\subsubsection{Data table}
+
+\subsubsection{Visualization: Constellation}
 
 \section{Tool manual}
 \todo {
