@@ -22,6 +22,8 @@ citestyle=numeric
 
 \usepackage{xcolor}
 \usepackage{geometry}
+\usepackage{amsmath}
+\usepackage[linesnumbered,ruled]{algorithm2e}
 \newcommand\todo[1]{\textcolor{red}{#1}}
 
 \addbibresource{citations.bib}
@@ -147,8 +149,25 @@ messed up the matching because every location was unique.
 A more detailed explanation can be found in the next chapter.
 
 
-\subsubsection{How it works
-(Pseudocode)}
+\subsubsection{How it works (Pseudocode)}
+
+
+\begin{algorithm}
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output}
+
+    \underline{function Euclid} $(a,b)$\;
+    \Input{Two nonnegative integers $a$ and $b$}
+    \Output{$\gcd(a,b)$}
+    \eIf{$b=0$}
+      {
+        return $a$\;
+      }
+      {
+        return Euclid$(b,a\mod b)$\;
+      }
+    \caption{AST based clone detection algorithm}
+\end{algorithm}
 
 \begin{verbatim}
 Build the AST of the project.
