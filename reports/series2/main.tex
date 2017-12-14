@@ -143,12 +143,6 @@ are per definition from \cite{koschke2008identifying} copies with further change
 
 \section{Algorithm design}
 
-\todo {
-	\begin{itemize}
-		\item{Describe how the algorithm is covered in the literature (and provide references).}
-	\end{itemize}
-}
-
 \subsection{General algorithm design}
 
 The idea and algorithm of our duplication detection is based on the
@@ -156,20 +150,15 @@ information from \cite{lazar2014clone} and \cite{baxter1998clone}.
 The main idea behind this approach is to use the abstract syntax tree for clone detection.
 After creating the AST from the source files, the nodes are hashed into different buckets.
 If a bucket has more than one element, it follows, that there are multiple locations in the source code of this node.
-This counts as one clone class. There are multiple types of clones that our tool can detect.
-These are type 1 and type 2 clones.
+This counts as one clone class. 
 
-For our implementation we only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the sub-nodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
+For our implementation we decided to use the map feature of rascal to represent the different buckets. The key of the map is the bucket and a relation of nodes to locations is the value. This approach allows use to easily select all matching nodes using the key.  We also only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the sub-nodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
+
+There are also multiple types of clones that our tool can detect. These are type 1 and type 2 clones. The next two chapters explain the detection of type 1 and type 2 clones. Last but not least, we provide a short rationale, why we did not go for type 3 detection. We end this section by providing a textual representation of our main algorithm.
 
 \subsection{Type-1 cleaning}
 
-\todo{\textbf{@Cornelius}: This text is difficult to read. Could you rephrase it?}
-
-If using the AST approach, the bucket key is in general just the node itself. 
-With rascal though, there was a change in the implementation that shifted the \texttt{loc} and other informations of a node from the annotations on the node, to information contained in the node.
-This messed up the matching because every location was unique, which resulted in every node (because of sub-nodes) being unique. 
-To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done
-by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
+If using the AST approach, the bucket key is in general just the node itself. There was a change in the implementation of rascal that shifted the \texttt{loc} (location of a node) and other informations of a node, from the annotations on the node, to information contained in the node. This leads to the problem, that matching of nodes or comparison between nodes is not possible anymore, because every location is unique. To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
 
 \subsection{Type-2 cleaning}
 
@@ -237,7 +226,7 @@ For all previously detected clone classes filter subclone classes
 Collect all filtered clone classes in output format
 	- Collect locations
 	- Determine line statistics
-	- Determine clone type
+	- Determine clone type by applying the clean method of type 1 detection
 
 \end{lstlisting}
 
@@ -326,24 +315,18 @@ To run and use the tool we provide the source code with this report as an eclips
 In order to run the program, please follow the steps:
 
 \begin{enumerate}
+\item Please import the rascal part as a project into your eclipse with a working rascal installation.
 \item
-  Please import the project into your eclipse with a working rascal
-  installation.
-\item
-  Open \texttt{Configuration.rsc} and adjust the location of the
-  \texttt{projectLocation} to match the path of the project to your
-  eclise
-\item
-  Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}
-\item
-  Start a rascal console and import the \texttt{Main} module
-\item
-  run \texttt{startServe();}
-\item
-  open a browser and point it towards \texttt{http://localhost:5433} or
-  to the location of \texttt{serveAddress} in case you changed it
+  Open \texttt{Configuration.rsc} and adjust the location of the \texttt{projectLocation} to match the path of the project to your eclise workspace.
+\item Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}.
+\item Start a rascal console and import the \texttt{Main} module.
+\item run \texttt{startServe();}
+\item open a browser and point it towards \texttt{http://localhost:5433} or to the location of \texttt{serveAddress} in case you changed it.
 \end{enumerate}
 
+\subsection{How to use}
+
+\todo{TODO - add some screenshots and so on}
 
 \section{Summary}
 \todo {
