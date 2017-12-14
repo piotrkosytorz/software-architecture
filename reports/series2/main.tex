@@ -156,6 +156,8 @@ If a bucket has more than one element, it follows, that there are multiple locat
 This counts as one clone class. There are multiple types of clones that our tool can detect.
 These are type 1 and type 2 clones.
 
+For our implementation we only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the subnodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
+
 \subsection{Type-1 cleaning}
 
 If using the AST approach, the bucket key is in general just the node itself. With rascal though, there was a change in the implementation
@@ -294,7 +296,7 @@ To run the tests, import all the modules below and execute :test in the rascal c
 	\end{itemize}
 }
 
-To run and use the tool we provide the source code as a eclipse project.
+To run and use the tool we provide the source code with this report as a eclipse project. The source code for the rascal part of the project can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src/src. The source code for the visualisation part can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization.
 
 \subsection{How to run}
 
