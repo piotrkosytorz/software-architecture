@@ -196,29 +196,29 @@ Build the AST of the project.
 
 For all nodes in AST 
 - If size of node > threshold
-- Clean node for type 1 detection.
-- Clean node for type 2 detection.
-- Collect node in map with cleaned node as key, 
-  relation of original node and location as value
+	- Clean node for type 1 detection.
+	- Clean node for type 2 detection.
+	- Collect node in map with cleaned node as key, 
+  	  relation of original node and location as value
 
 For all keys in Map build a set of clone classes
 - Collect all values from the map for current key
-- If size of collected values > 1 Then add values 
-  as a new clone class to set
+- If size of collected values > 1 
+	Then 
+		add values as a new clone class to set
 
-Filter subclone classes
-- For all previously detected clone classes
+For all previously detected clone classes filter subclone classes
 - If another clone class exists for which all locations 
-  include the locations of the current one Then
--
-Else
-Add to new Set
+  include the locations of the current one 
+ 	Then
+		-
+	Else
+		Add to new Set
 
-For all filtered clone classes
-- Collect them in output format
-- Collect locations
-- Determine line statistics
-- Determine clone type
+Collect all filtered clone classes in output format
+	- Collect locations
+	- Determine line statistics
+	- Determine clone type
 
 \end{lstlisting}
 
