@@ -302,39 +302,26 @@ The main requirements that we
 \subsubsection{Visualization: Constellation}
 
 \section{Tool manual}
-\todo {
-	\begin{itemize}
-		\item{How to use}
-		\item{Where is the Rascal project}
-		\item{Where is the original visualisation project }
-	\end{itemize}
-}
 
-To run and use the tool we provide the source code with this report as a eclipse project. The source code for the rascal part of the project can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src/src. The source code for the visualisation part can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization.
+To run and use the tool we provide the source code of the rascal part and a compiled version of the visualization part with this report. The source code for the rascal part of the project can also be found at \url{https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src}. The source code for the visualization part can be found at \url{https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization}.
 
 \subsection{How to run}
 
 In order to run the program, please follow the steps:
 
 \begin{enumerate}
+\item Please import the rascal part as a project into your eclipse with a working rascal installation.
 \item
-  Please import the project into your eclipse with a working rascal
-  installation.
-\item
-  Open \texttt{Configuration.rsc} and adjust the location of the
-  \texttt{projectLocation} to match the path of the project to your
-  eclise
-\item
-  Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}
-\item
-  Start a rascal console and import the \texttt{Main} module
-\item
-  run \texttt{startServe();}
-\item
-  open a browser and point it towards \texttt{http://localhost:5433} or
-  to the location of \texttt{serveAddress} in case you changed it
+  Open \texttt{Configuration.rsc} and adjust the location of the \texttt{projectLocation} to match the path of the project to your eclise workspace.
+\item Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}.
+\item Start a rascal console and import the \texttt{Main} module.
+\item run \texttt{startServe();}
+\item open a browser and point it towards \texttt{http://localhost:5433} or to the location of \texttt{serveAddress} in case you changed it.
 \end{enumerate}
 
+\subsection{How to use}
+
+\todo{TODO - add some screenshots and so on}
 
 \section{Summary}
 \todo {
