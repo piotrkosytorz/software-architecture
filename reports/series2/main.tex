@@ -25,6 +25,7 @@ citestyle=numeric
 \usepackage{amsmath}
 \usepackage[linesnumbered,ruled]{algorithm2e}
 \usepackage{listings}
+
 \newcommand\todo[1]{\textcolor{red}{#1}}
 
 
@@ -258,7 +259,7 @@ To run the tests, import all the modules below and execute :test in the rascal c
 \subsection{Introduction}
 As it is stated in the assignment, we were supposed to provide a tool for clone detection that we actually would use ourselves.  Since web technologies provide currently the best tools to present data and are easy to implement, and since there is a web server in Rascal, we have decided to provide a JavaScript application as the user interface for our tool. 
 
-The front-end application is served directly from our Rascal application, which means that no extra configuration is required to use it with the provided clone detector. It is written ReactJS \footnote{Facebook Inc. 2017. React. [ONLINE] Available at: https://reactjs.org/. [Accessed 14 December 2017].
+The front-end application is served directly from our Rascal application, which means that no extra configuration is required to use it with the provided clone detector. It is written ReactJS \footnote{Facebook Inc. 2017. React. [ONLINE] Available at: \url{https://reactjs.org/}. [Accessed 14 December 2017].
 }. The main (Rascal) application provides a number of REST API endpoints that the JavaScript application uses to obtain data and request a project analysis. 
 
 \subsection{Requirements}
@@ -287,9 +288,9 @@ As it is well explained in Baxter et al., reduction of the maintainer's cognitiv
 We consider the data table to be actually the most handy and practical tool a software maintainer might desire. Even though its simplicity, it is an extremely flexible tool that allows the user to get   all available details of a clone detection result.
 
 \subsubsection{Insight int clones sharing among project's files}
-This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footnote{Wikipedia. 2017. Force-directed graph drawing. [ONLINE] Available at: https://en.wikipedia.org/wiki/Force-directed\_graph\_drawing. [Accessed 14 December 2017].} for this purpose .
+This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footnote{Wikipedia. 2017. Force-directed graph drawing. [ONLINE] Available at: \url{https://en.wikipedia.org/wiki/Force-directed\_graph\_drawing}. [Accessed 14 December 2017].} for this purpose .
 
-In our implementation we have used a React Component provided by Uber\footnote{https://github.com/uber/react-vis-force}, which after some modifications made a perfect solution to our needs. 
+In our implementation we have used a React Component provided by Uber\footnote{\url{https://github.com/uber/react-vis-force}}, which after some modifications made a perfect solution to our needs. 
 
 In our solution, each node (dot) represents a single file in the project, which contains at least one clone. Each line between two nodes represents a shared clone. Colour of each node represents the number of related files - the darker, the more nodes. A legend provided in our tool explains in detail the meaning of each colour. 
 
@@ -300,17 +301,20 @@ Our approach to visualization made it possible to quickly and easily determine g
 The tool provides also an extremely handy details preview for files in this visualization. After clicking on a single node (representing a file), the tool will show file details with all clones identified in this file, a list files that share clone classes with this file, and clone details per each related file. 
 
 \section{Tool manual}
-\todo {
-	\begin{itemize}
-		\item{Usage}	
-		\item{Where is the Rascal project}
-		\item{Where is the original visualisation project }
-	\end{itemize}
-}
 
-To run and use the tool we provide the source code with this report as an eclipse project. The source code for the rascal part of the project can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src/src. The source code for the visualisation part can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization.
+\subsection{Installation}
 
-\subsection{How to run}
+The Rascal clone detector is provided with a built of our visualization tool. Source code for that part of the project is available at: \url{https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src/src}. The source code for the visualisation part can be found at \url{https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization}.
+
+If you prefer to use \texttt{git}, you can clone the whole project in your console with:
+
+\begin{verbatim}
+git clone https://github.com/piotrkosytorz/software-evolution.git
+\end{verbatim}
+
+The Rascal source code is in \texttt{piotr.kosytorz/series1/src/src}.
+
+\subsection{Program setup}
 
 In order to run the program, please follow the steps:
 
@@ -320,13 +324,28 @@ In order to run the program, please follow the steps:
   Open \texttt{Configuration.rsc} and adjust the location of the \texttt{projectLocation} to match the path of the project to your eclise workspace.
 \item Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}.
 \item Start a rascal console and import the \texttt{Main} module.
-\item run \texttt{startServe();}
-\item open a browser and point it towards \texttt{http://localhost:5433} or to the location of \texttt{serveAddress} in case you changed it.
+\item Run \texttt{startServe();}
+\item Open a browser and point it towards \url{http://localhost:5433/index.hmtl}.
 \end{enumerate}
 
 \subsection{How to use}
 
-\todo{TODO - add some screenshots and so on}
+The application opens in web browser as a web application. Figure \ref{screenshot1} presents the initial view of the application:
+
+\begin{itemize}
+
+\item{In the top left corner (box marked with \textbf{1}) of the view, a form is placed. From the dropdown list on the left side the user can select one of the pre configured projects, and in the field that's located next to it, he may adjust the unit size threshold for the clone detector. Clicking on the \textbf{Run analyser} button will start the detector. After the analysis is finished, the stratus changes. Since that moment all data generated by the code detector are available in the visualization tool for further investigation. }
+
+\item{On the left side (box marked with \textbf{2}), a menu with available tools is located. }
+\item{The rest of the view (box marked with \textbf{3}) presents the chosen tools. }
+\end{itemize}
+
+\begin{figure}[t]
+\includegraphics[width=\textwidth]{visualization1}
+\centering
+\caption{Clone detection tool screenshot.}
+\label{screenshot1}
+\end{figure}
 
 \section{Summary}
 \todo {
