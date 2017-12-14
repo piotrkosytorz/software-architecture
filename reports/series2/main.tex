@@ -201,6 +201,11 @@ case \stringLiteral(_) => \stringLiteral("stringLiteral")
 case \characterLiteral(_) => \characterLiteral("a")
 \end{lstlisting}
 
+\subsection{Type-3 approach}
+While the tool does not detect type 3 clones, the basic idea behind type 3 detection is, that it should compute some sort of similarity between who nodes and consider it a duplication if the similarity is inside a specified threshold. The paper \cite{baxter1998clone} gives an idea on how to approach this. We tried to implement this, but it slowed down our clone detection by such a degree, that we decided to drop it and focus more on the visualizations and usability of the presentation. 
+
+Also looking at the approach from \cite{baxter1998clone}, which relies on the size of node, it comes to question if using this approach is really sensible, because the size of a node does not really say anything about its contents. Two completely different nodes could be detected as clones, just because they share the same size.
+
 \subsection{The main algorithm}
 
 In this section we provide a textual representation of our main algorithm. For further information please take a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
@@ -260,35 +265,6 @@ To run the tests, import all the modules below and execute :test in the rascal c
 
 
 \section{The tool}
-\todo{
-\begin{itemize}
-\item{General description and purpose, used solutions (webserver, REST api, ReactJS app, d3 graphs, etc)}
-\item{The 3 main requirements (your tool satises from the perspective of a maintainer) [ref to storey1999cognitive]:
-  \begin{enumerate}
-    \item{Get a comprehensible overview (of code quality and duplications) 
-      \begin{itemize}
-        \item{Readable table}
-        \item{SIG maintanability index}
-      \end{itemize}
-      }
-    \item{Get a deep insight into the clones 
-      \begin{itemize}
-        \item{navigate easily through them}
-        \item{provide and extended search function (easy to use = we reduce eort)}
-      \end{itemize}
-     }
-    \item{See how the clones spread over my project (=Improve comprehension ) 
-      \begin{itemize}
-        \item{provide insightful visualization = Provide eective presentation styles (graph)}
-        \item{show how the les containing clones relate to each other (=indicate options for further exploration)}
-      \end{itemize}
-      }
-  \end{enumerate}
-}
-\item{Implementation choices}
-\item{The visualisation (constellation) - how does it help a maintainer or a developer?}
-\end{itemize}
-}
 
 \subsection{Introduction}
 As it is stated in the assignment, we were supposed to provide a tool for clone detection that we actually would use ourselves.  Since web technologies provide currently the best tools to present data and are easy to implement, and since there is a web server in Rascal, we have decided to provide a JavaScript application as the user interface for our tool. 
@@ -300,29 +276,50 @@ The front-end application is served directly from our Rascal application, which 
 The main requirements from the perspective of code maintainer that we wanted to address with our tool are the following: 
 
 \begin{itemize}
-    \item{To get a comprehensible overview (of code quality and duplications) }
-    \item{To get insight into the clones}
-    \item{See how the clones spread over the project (to improve comprehension ) }
+    \item{To get a comprehensible overview (of code quality and duplications)}
+    \item{To get insight into the clones and navigate effortlessly through elements}
+    \item{See how the clones are shared among files in the project (to improve comprehension ) }
 \end{itemize}
 
-\subsection{Implementation choices}
+The following paragraphs describe how the tool that we've created satisfies the stated requirements. 
 
-\subsubsection{Rascal's Web Server \& REST API}
+\subsubsection{Comprehensible overview}
+The first portion of information that maintainer receives after running a code analysis should be comprehensive and valuable. For this matter we have decided to extend the overview of code quality factors from series 1, and except the general statistics and SIG rating table we provide an additional overview of clones statistics, that contains the following metrics: 
+\begin{itemize}
+	\item{Number of clones}
+	\item{Number of clone classes}
+	\item{Biggest clone and its location}
+	\item{Biggest clone class and its location}
+\end{itemize}
 
-\subsubsection{Data table}
+\subsubsection{Insight and effortless navigation}
+As it is well explained in Baxter et al., reduction of the maintainer's cognitive overhead is one of the main branches of Cognitive Design Elements for Software Exploration \cite{baxter1998clone}. We provide therefore a searchable data table that contains clone classes and containing files with some extra metadata, like clone type, number of lines per clone and number of files per clone class. All fields in the table are searchable, and after clicking on a certain row, the tool presents clone details in a pop-up window. 
 
-\subsubsection{Visualization: Constellation}
+We consider the data table to be actually the most handy and practical tool a software maintainer might desire. Even though its simplicity, it is an extremely flexible tool that allows the user to get   all available details of a clone detection result.
+
+\subsubsection{Insight int clones sharing among project's files}
+This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footnote{Wikipedia. 2017. Force-directed graph drawing. [ONLINE] Available at: https://en.wikipedia.org/wiki/Force-directed\_graph\_drawing. [Accessed 14 December 2017].} for this purpose .
+
+In our implementation we have used a React Component provided by Uber\footnote{https://github.com/uber/react-vis-force}, which after some modifications made a perfect solution to our needs. 
+
+In our solution, each node (dot) represents a single file in the project, which contains at least one clone. Each line between two nodes represents a shared clone. Colour of each node represents the number of related files - the darker, the more nodes. A legend provided in our tool explains in detail the meaning of each colour. 
+
+In the visualization files with only internal clones are represented as single dots with no relations to other files. Files that share one or more clones form subgraphs. The very nice property of a force directed graph is, that the elements with the most relations to each other are being attracted to each other. They form subgraphs. On the other hand, the subgraphs repel each other, what makes a visual effect of multiple separate constellations of items that share common value (in our case - clones). 
+
+Our approach to visualization made it possible to quickly and easily determine groups of files that share clones, and have partially probably similar purpose in the project. Such groups of files are clearly refactoring candidates. 
+
+The tool provides also an extremely handy details preview for files in this visualization. After clicking on a single node (representing a file), the tool will show file details with all clones identified in this file, a list files that share clone classes with this file, and clone details per each related file. 
 
 \section{Tool manual}
 \todo {
 	\begin{itemize}
-		\item{How to use}
+		\item{Usage}	
 		\item{Where is the Rascal project}
 		\item{Where is the original visualisation project }
 	\end{itemize}
 }
 
-To run and use the tool we provide the source code with this report as a eclipse project. The source code for the rascal part of the project can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src/src. The source code for the visualisation part can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization.
+To run and use the tool we provide the source code with this report as an eclipse project. The source code for the rascal part of the project can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/src/src. The source code for the visualisation part can be found at https://github.com/piotrkosytorz/software-evolution/tree/master/piotr.kosytorz/series1/visualization.
 
 \subsection{How to run}
 

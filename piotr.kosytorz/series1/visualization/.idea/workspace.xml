@@ -40,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/Downloads.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="495">
-              <caret line="33" column="15" lean-forward="true" selection-start-line="26" selection-start-column="8" selection-end-line="33" selection-end-column="15" />
+              <caret line="33" column="15" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="33" selection-end-column="15" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -48,7 +48,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ModalBody.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ModalBody.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ModalBody.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
@@ -74,20 +74,8 @@
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
-              <caret line="25" column="31" lean-forward="true" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
+              <caret line="25" column="31" lean-forward="false" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainContainer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MainContainer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="65" lean-forward="false" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="65" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -96,10 +84,20 @@
         <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="520">
-              <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+              <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReactVisGraph.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="11" column="32" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -333,12 +331,12 @@
       <workItem from="1512559454399" duration="9465000" />
       <workItem from="1512653487917" duration="34818000" />
       <workItem from="1512733674145" duration="2705000" />
-      <workItem from="1513166346924" duration="19530000" />
+      <workItem from="1513166346924" duration="19911000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66518000" />
+    <option name="totallyTimeSpent" value="66899000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="23" width="1623" height="962" extended-state="0" />
@@ -390,9 +388,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1785">
           <caret line="122" column="28" lean-forward="false" selection-start-line="122" selection-start-column="28" selection-end-line="122" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -604,16 +600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2032">
-          <caret line="151" column="54" lean-forward="false" selection-start-line="151" selection-start-column="54" selection-end-line="151" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/BibleWiz.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -627,7 +613,7 @@
         <state relative-caret-position="270">
           <caret line="18" column="65" lean-forward="false" selection-start-line="18" selection-start-column="65" selection-end-line="18" selection-end-column="65" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -655,7 +641,7 @@
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="25" column="31" lean-forward="true" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
+          <caret line="25" column="31" lean-forward="false" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -679,7 +665,7 @@
     <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/Downloads.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
-          <caret line="33" column="15" lean-forward="true" selection-start-line="26" selection-start-column="8" selection-end-line="33" selection-end-column="15" />
+          <caret line="33" column="15" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="33" selection-end-column="15" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -689,7 +675,7 @@
     <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/GeneralStats.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="520">
-          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -721,6 +707,14 @@
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/VisualizationComponents/ReactVisGraph/ReactVisGraph.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="11" column="32" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
