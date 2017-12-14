@@ -1,41 +1,112 @@
-\include{report.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LATEX-TEMPLATE TECHNISCH RAPPORT
+%-------------------------------------------------------------------------------
+% Voor informatie over het technisch rapport, zie
+% http://practicumav.nl/onderzoeken/rapport.html
+% Voor readme en meest recente versie van het template, zie
+% https://gitlab-fnwi.uva.nl/informatica/LaTeX-template.git
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------
+%	PACKAGES EN DOCUMENT CONFIGURATIE
+%-------------------------------------------------------------------------------
+
+\documentclass{uva-inf-article}
+\usepackage[english]{babel}
+
+\usepackage[
+backend=biber,
+style=numeric,
+citestyle=numeric 
+]{biblatex}
+
+\usepackage{xcolor}
+\usepackage{geometry}
+\newcommand\todo[1]{\textcolor{red}{#1}}
+
+\addbibresource{citations.bib}
+
+%-------------------------------------------------------------------------------
+%	GEGEVENS VOOR IN DE TITEL
+%-------------------------------------------------------------------------------
+
+% Vul de naam van de opdracht in.
+\assignment{Software Evolution Series 2}
+% Vul het soort opdracht in.
+\assignmenttype{Report}
+% Vul de titel van de eindopdracht in.
+\title{Report}
+
+% Vul de volledige namen van alle auteurs in.
+\authors{Cornelius Ries; Piotr Kosytorz}
+% Vul de corresponderende UvAnetID's in.
+\uvanetids{11884827; 11876964}
+
+% Vul altijd de naam in van diegene die het nakijkt, tutor of docent.
+\tutor{Riemer van Rozen}
+% Vul eventueel ook de naam van de docent of vakcoordinator toe.
+\docent{}
+% Vul hier de naam van de PAV-groep  in.
+% \group{Group 7}
+% Vul de naam van de cursus in.
+\course{Software Evolution}
+% Te vinden op onder andere Datanose.
+\courseid{}
+
+% Dit is de datum die op het document komt te staan. Standaard is dat vandaag.
+\date{\today}
+
+%-------------------------------------------------------------------------------
+%	VOORPAGINA
+%-------------------------------------------------------------------------------
 
 \begin{document}
+\maketitle
 
-\section{Series 2}\label{series-2}}
+%-------------------------------------------------------------------------------
+%	INHOUDSOPGAVE EN ABSTRACT
+%-------------------------------------------------------------------------------
+
+% Niet doen bij korte verslagen en rapporten
+%\tableofcontents
+%\begin{abstract}
+%\lipsum[13]
+%\end{abstract}
+
+%-------------------------------------------------------------------------------
+%	INTRODUCTIE
+%-------------------------------------------------------------------------------
+
+\section{Introduction}
 
 This documents contains our notes and answers to the questions about
 software metrics (practical lab Series 2).
 
-Authors
 
-\begin{itemize}
-\tightlist
-\item
-  Cornelius Ries
-\item
-  Piotr Kosytorz
-\end{itemize}
+\subsection{About}
 
-\subsection{About}\label{about}}
+\todo{TODO}
 
-TODO
 
-\subsection{Design Desicions}\label{design-desicions}}
+\subsection{Design Desicions}
 
-TODO
+\todo{TODO}
 
-\subsection{Results}\label{results}}
 
-TODO
+\subsection{Results}
 
-\subsection{Tool usage}\label{tool-usage}}
+\todo{TODO}
+
+
+\subsection{Tool usage}
+
+
+\subsubsection{How to run}
 
 To use the tool we provide the source code as a eclipse project
 
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
+
 \item
   Please import the project into your eclipse with a working rascal
   installation.
@@ -54,10 +125,14 @@ To use the tool we provide the source code as a eclipse project
   to the location of \texttt{serveAddress} in case you changed it
 \end{enumerate}
 
-\subsection{Duplication Detection}\label{duplication-detection}}
+
+\subsubsection{How to use}
+
+
+\subsection{Duplication Detection}
 
 The idea and algorithm of our duplication detection is based on the
-information from {[}1{]} and {[}2{]}. The main idea behind this approach
+information from \cite{lazar2014clone} and \cite{baxter1998clone}. The main idea behind this approach
 is to hash the nodes of an ast into different buckets and collect the
 duplications if a bucket has more than 1 element. For type 2 the papers
 suggest to clear unneccesary information from the nodes (variable names,
@@ -71,8 +146,9 @@ messed up the matching because every location was unique.
 
 A more detailed explanation can be found in the next chapter.
 
+
 \subsubsection{How it works
-(Pseudocode)}\label{how-it-works-pseudocode}}
+(Pseudocode)}
 
 \begin{verbatim}
 Build the AST of the project.
@@ -97,17 +173,19 @@ For all filtered clones
 - Collect them in output format
 \end{verbatim}
 
-\subsection{Visualization}\label{visualization}}
 
-TODO
+\subsection{Visualization}
 
-\subsection{Tests}\label{tests}}
+\todo{TODO}
+
+
+\subsection{Tests}
 
 All tests are in seperate files that extend their original rascal
 module:
 
 \begin{itemize}
-\tightlist
+
 \item
   DuplicationsAnalyzerTests
 \item
@@ -123,15 +201,18 @@ rascal console. The \texttt{projectLocation} in
 \texttt{Configuration.rsc} has to be set to the projects location in
 your eclipse!
 
-\subsection{References}\label{references}}
 
-{[}1{]} Lazar, F.-M. \& Banias, O., 2014. Clone detection algorithm
-based on the Abstract Syntax Tree approach. Applied Computational
-Intelligence and Informatics (SACI), 2014 IEEE 9th International
-Symposium on, pp.73--78.
+%-------------------------------------------------------------------------------
+%	REFERENTIES
+%-------------------------------------------------------------------------------
 
-{[}2{]} Baxter et al., 1998. Clone detection using abstract syntax
-trees. Software Maintenance, 1998. Proceedings., International
-Conference on, pp.368--377.
+\printbibliography
 
+%-------------------------------------------------------------------------------
+%	BIJLAGEN EN EINDE
+%-------------------------------------------------------------------------------
+
+%\section{Bijlage A}
+%\section{Bijlage B}
+%\section{Bijlage C}
 \end{document}
