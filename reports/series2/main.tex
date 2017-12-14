@@ -204,36 +204,41 @@ Build the AST of the project.
 
 For all nodes in AST 
 - If size of node > threshold
-- Clean node for type 1 detection.
-- Clean node for type 2 detection.
-- Collect node in map with cleaned node as key, 
-  relation of original node and location as value
+	- Clean node for type 1 detection.
+	- Clean node for type 2 detection.
+	- Collect node in map with cleaned node as key, 
+  	  relation of original node and location as value
 
 For all keys in Map build a set of clone classes
 - Collect all values from the map for current key
-- If size of collected values > 1 Then add values 
-  as a new clone class to set
+- If size of collected values > 1 
+	Then 
+		add values as a new clone class to set
 
-Filter subclone classes
-- For all previously detected clone classes
+For all previously detected clone classes filter subclone classes
 - If another clone class exists for which all locations 
-  include the locations of the current one Then
--
-Else
-Add to new Set
+  include the locations of the current one 
+ 	Then
+		-
+	Else
+		Add to new Set
 
-For all filtered clone classes
-- Collect them in output format
-- Collect locations
-- Determine line statistics
-- Determine clone type
+Collect all filtered clone classes in output format
+	- Collect locations
+	- Determine line statistics
+	- Determine clone type
 
 \end{lstlisting}
 
 \section{Main program validity}
-\todo {Write about automatic tests - describe what the tests do (be convincing)}
 
-All tests are in separate files that extend their original rascal module:
+We provide an automatic testing suite to verify that the tool works as designed. To maintain a good separation of concerns between implementation and tests, all tests are in separate files that extend their original rascal module. This will result in better maintainability, readability and extensibility for the future. 
+
+The tests are split in random generated tests where applicable. For example while operating on files and their locations rascal is not able to provide a proper generator for reading the contents of a file. For this we provide three test files that are used in tests where files are needed. 
+
+Especially the Clone Detection is covered with random test generators, testing the properties of the tested functions as well as tests where the implementation is tested against the provided test files to assure the continued working in case of refactoring. For design changes the tests may have to be adjusted.
+
+To run the tests, import all the modules below and execute :test in the rascal console. The \texttt{projectLocation} in \texttt{Configuration.rsc} has to be set to the projects location in your eclipse!
 
 \begin{itemize}
 
@@ -246,11 +251,6 @@ All tests are in separate files that extend their original rascal module:
 \item
   VolumeAnalyzerTests
 \end{itemize}
-
-To run the tests, import all the modules above and execute :test in the
-rascal console. The \texttt{projectLocation} in
-\texttt{Configuration.rsc} has to be set to the projects location in
-your eclipse!
 
 
 \section{The tool}
@@ -288,14 +288,13 @@ your eclipse!
 \section{Tool manual}
 \todo {
 	\begin{itemize}
-		\item{How to run}
 		\item{How to use}
 		\item{Where is the Rascal project}
 		\item{Where is the original visualisation project }
 	\end{itemize}
 }
 
-To use the tool we provide the source code as a eclipse project
+To run and use the tool we provide the source code as a eclipse project.
 
 \subsection{How to run}
 
