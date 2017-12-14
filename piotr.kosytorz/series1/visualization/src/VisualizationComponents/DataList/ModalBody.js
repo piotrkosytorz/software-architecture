@@ -42,7 +42,7 @@ class ModalBody extends React.Component {
         return (
             <div>
                 <ul>
-                    <li>Clone ID: {this.props.currentCloneId}</li>
+                    <li>Clone class ID: {this.props.currentCloneId}</li>
                     <li>Clone type-{clone.cloneType}</li>
                     <li>Clone size (lines): {clone.locations[0].Location.lineEnd - clone.locations[0].Location.lineStart + 1}</li>
                 </ul>

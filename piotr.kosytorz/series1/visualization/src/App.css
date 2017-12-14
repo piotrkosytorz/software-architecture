@@ -1,3 +1,8 @@
+.App {
+    padding: 5px;
+    width: 100%;
+}
+
 ul.color-legend li {
     color: #3c3c3c;
     /* set color of list item text */

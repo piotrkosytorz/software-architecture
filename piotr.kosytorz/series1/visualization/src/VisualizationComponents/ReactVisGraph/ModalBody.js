@@ -5,15 +5,6 @@ import _ from 'lodash';
 
 class ModalBody extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-    }
-
-    componentDidMount() {
-        console.log(this.props.currentClones);
-    }
-
     getFiles(list) {
         let files = [];
         for (let elem in list) {
@@ -61,7 +52,7 @@ class ModalBody extends React.Component {
                 <p><strong>Clones details:</strong></p>
                 {this.props.currentClones.map((clone, index) => (
                     <div>
-                        <h4>Clone ID: {clone.cloneId}</h4>
+                        <h4>Clone class ID: {clone.cloneId}</h4>
                         <ul>
                             <li>Clone type-{clone.cloneType}</li>
                             <li>Clone size

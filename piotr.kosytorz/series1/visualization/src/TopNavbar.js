@@ -47,7 +47,7 @@ class TopNavbar extends React.Component {
 
     render() {
         return (
-            <Panel header="Request data" bsStyle="success">
+            <Panel header="Request data" bsStyle="primary">
                 <form onSubmit={this.handleSubmit} className="form-inline">
                     <FormGroup>
                         <FormGroup controlId="formControlsSelect">

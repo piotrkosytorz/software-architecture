@@ -4,6 +4,7 @@ import DataList from './VisualizationComponents/DataList/DataList'
 import ReactVisGraph from './VisualizationComponents/ReactVisGraph/ReactVisGraph'
 import BibleWiz from './VisualizationComponents/BibleWiz'
 import GeneralStats from "./VisualizationComponents/GeneralStats";
+import Downloads from "./VisualizationComponents/Downloads";
 
 class MainContainer extends React.Component {
 
@@ -15,6 +16,7 @@ class MainContainer extends React.Component {
                     <Route path='/list' component={DataList}/>
                     <Route path='/vis-force-graph' component={ReactVisGraph}/>
                     <Route path='/biblewiz' component={BibleWiz}/>
+                    <Route path='/downloads' component={Downloads}/>
                 </Switch>
             </main>
         );

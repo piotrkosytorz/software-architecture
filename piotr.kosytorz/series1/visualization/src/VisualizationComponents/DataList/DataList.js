@@ -90,12 +90,9 @@ class DataList extends React.Component {
                             Header: "Parameters",
                             columns: [
                                 {
-                                    Header: "CloneID",
+                                    Header: "Clone class ID",
                                     accessor: "cloneId",
-                                    maxWidth: 100,
-                                    filterMethod: (filter, row) =>
-                                        row[filter.id].startsWith(filter.value) &&
-                                        row[filter.id].endsWith(filter.value)
+                                    maxWidth: 120
                                 },
                                 {
                                     Header: "Clone types",
