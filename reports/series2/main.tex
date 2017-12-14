@@ -115,8 +115,10 @@ This documents contains our notes and answers to the questions about software me
 In order to provide a tool to satisfy the assignment's objectives, a good understanding of the key concepts used in clone detection is needed. Based on a biref literature study, we have selected the following definitions as the base for our work and evaluation of the cloning problem:
 
 \begin{itemize}
-	\item{\textbf{Clone} or \textbf{clone relation} is }
-\end{itemize}
+	\item{\textbf{Clone relation} is an equivalence relation on code portions \cite{kamiya2002ccfinder}.}
+	\item{\textbf{Clone pair} is a set of two code portions that are in clone relation with each other (compare \cite{kamiya2002ccfinder}).}
+	\item{\textbf{Clone class} is an equivalence class of clonerelation. In other words, it is a set of multiple (more than one) code portions which hold mutual clone relation to each other (compare \cite{kamiya2002ccfinder}).}
+\end{itemize}	
 
 \subsection{Clone type-1}
 Per definition from \cite{koschke2008identifying} type 1 clones are strict textual clones, excluding comments and whitespaces.
