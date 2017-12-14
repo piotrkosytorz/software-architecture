@@ -4,3 +4,11 @@ META-INF/
 .classpath
 .project
 build.properties
+reports/series2/main.aux
+reports/series2/main.bbl
+reports/series2/main.bcf
+reports/series2/main.blg
+reports/series2/main.log
+reports/series2/main.out
+reports/series2/main.run.xml
+reports/series2/main.synctex.gz
