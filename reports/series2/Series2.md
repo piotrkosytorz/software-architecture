@@ -21,6 +21,8 @@ TODO
 
 ## Tool usage
 
+### How to run
+
 To use the tool we provide the source code as a eclipse project
 
 1. Please import the project into your eclipse with a working rascal installation. 
@@ -29,6 +31,8 @@ To use the tool we provide the source code as a eclipse project
 4. Start a rascal console and import the `Main` module
 5. run `startServe();`
 6. open a browser and point it towards `http://localhost:5433` or to the location of `serveAddress` in case you changed it
+
+### How to use
 
 ## Duplication Detection
 
