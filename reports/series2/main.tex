@@ -24,7 +24,23 @@ citestyle=numeric
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{listings}
 \newcommand\todo[1]{\textcolor{red}{#1}}
+
+
+\lstdefinestyle{mystyle}{
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
 
 \addbibresource{citations.bib}
 
@@ -96,6 +112,12 @@ This documents contains our notes and answers to the questions about software me
 	\end{itemize}
 }
 
+In order to provide a tool to satisfy the assignment's objectives, a good understanding of the key concepts used in clone detection is needed. Based on a biref literature study, we have selected the following definitions as the base for our work and evaluation of the cloning problem:
+
+\begin{itemize}
+	\item{\textbf{Clone} or \textbf{clone relation} is }
+\end{itemize}
+
 \subsection{Clone type-1}
 Per definition from \cite{koschke2008identifying} type 1 clones are strict textual clones, excluding comments and whitespaces.
 
@@ -139,7 +161,7 @@ by visiting all the subnodes of a relevant node and replacing the node with a cl
 For type 2 detection we also use the AST. To streamline all the information that is contained in the node we visit all the subnodes of a node
 and replace specific variables/identifiers/types with a general one. The replacement is done using the rascal \texttt{visit - case => } notation.
 
-\begin{verbatim}
+\begin{lstlisting}[language=Java, style=mystyle]
 case Type _ => lang::java::m3::AST::float()
 case Modifier _ => lang::java::m3::AST::\public()
 case \method(_, _, a, b) => \method(lang::java::m3::AST::float(), "method", a, b)
@@ -163,28 +185,31 @@ case \variable(_, a, b) => \variable("variable", a, b)
 case \booleanLiteral(_) => \booleanLiteral(true)
 case \stringLiteral(_) => \stringLiteral("stringLiteral")
 case \characterLiteral(_) => \characterLiteral("a")
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{The main algorithm}
 
 Here we provide a textual representation of our main algorithm. For further information please have a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
 
-\begin{verbatim}
+\begin{lstlisting}
 Build the AST of the project.
 
 For all nodes in AST 
 - If size of node > threshold
 - Clean node for type 1 detection.
 - Clean node for type 2 detection.
-- Collect node in map with cleaned node as key, relation of original node and location as value
+- Collect node in map with cleaned node as key, 
+  relation of original node and location as value
 
 For all keys in Map build a set of clone classes
 - Collect all values from the map for current key
-- If size of collected values > 1 Then add values as a new clone class to set
+- If size of collected values > 1 Then add values 
+  as a new clone class to set
 
 Filter subclone classes
 - For all previously detected clone classes
-- If another clone class exists for which all locations include the locations of the current one Then
+- If another clone class exists for which all locations 
+  include the locations of the current one Then
 -
 Else
 Add to new Set
@@ -195,7 +220,7 @@ For all filtered clone classes
 - Determine line statistics
 - Determine clone type
 
-\end{verbatim}
+\end{lstlisting}
 
 \section{Main program validity}
 \todo {Write about automatic tests - describe what the tests do (be convincing)}
