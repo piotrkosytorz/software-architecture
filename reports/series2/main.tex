@@ -103,37 +103,43 @@ This documents contains our notes and answers to the questions about software me
 
 \section{Definitions}
 
-\todo {
-	\begin{itemize}
-		\item{Clone (reference to kamiya2002ccfinder)}
-		\item{Clone class (reference to kamiya2002ccfinder)}
-		\item{The biggest clone }
-		\item{The biggest clone class}
-	\end{itemize}
-}
-
 In order to provide a tool to satisfy the assignment's objectives, a good understanding of the key concepts used in clone detection is needed. Based on a biref literature study, we have selected the following definitions as the base for our work and evaluation of the cloning problem:
 
+\subsection{Clones and clone classes}
+
 \begin{itemize}
+
 	\item{\textbf{Clone relation} is an equivalence relation on code portions \cite{kamiya2002ccfinder}.}
+	
 	\item{\textbf{Clone pair} is a set of two code portions that are in clone relation with each other (compare \cite{kamiya2002ccfinder}).}
-	\item{\textbf{Clone class} is an equivalence class of clonerelation. In other words, it is a set of multiple (more than one) code portions which hold mutual clone relation to each other (compare \cite{kamiya2002ccfinder}).}
+	
+	\item{\textbf{Clone class} is an equivalence class of clone relation. In other words, it is a set of multiple (more than one) code portions which hold mutual clone relation to each other (compare \cite{kamiya2002ccfinder}).}
+	
+	\item{\textbf{The biggest clone} is is the biggest (has the largest number of lines of code) code portion, for which exists at least one code portion, which holds clone relation with it.}
+	
+	\item{\textbf{The biggest clone class} is the biggest equivalence class of clone relation (has the most elements) in the domain of examined project.}
+	
 \end{itemize}	
 
-\subsection{Clone type-1}
-Per definition from \cite{koschke2008identifying} type 1 clones are strict textual clones, excluding comments and whitespaces.
+\subsection{Clone types}
 
-\subsection{Clone type-2}
-Per definition from \cite{koschke2008identifying} type 2 clones are "a syntactically identical copy; only variable, type, or function identifiers have been changed".
+\begin{itemize}
 
-\subsection{Clone type-3}
-Per definition from \cite{koschke2008identifying} type 3 clones are copies with further changes like adding/removing statements.
+	\item{\textbf{Type-1 clones}
+are per definition from \cite{koschke2008identifying} strict textual clones, excluding comments and white spaces.}
+
+	\item{\textbf{Type-2 clones}
+are definition from \cite{koschke2008identifying}  \textit{a syntactically identical copy; only variable, type, or function identifiers have been changed}.}
+
+	\item{\textbf{Type-3 clones}
+are per definition from \cite{koschke2008identifying} copies with further changes like adding/removing statements.}
+
+\end{itemize}
 
 \section{Algorithm design}
 
 \todo {
 	\begin{itemize}
-		\item{General algorithm design (sketch: text description) }
 		\item{Type-3 clean method (pseudocode) / We dont have it yet }
 		\item{Formalised algorithm (pseudocode with references to type-1, type-2 clean methods)}
 		\item{Describe how the algorithm is covered in the literature (and provide references).}
