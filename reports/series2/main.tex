@@ -138,14 +138,6 @@ are per definition from \cite{koschke2008identifying} copies with further change
 
 \section{Algorithm design}
 
-\todo {
-	\begin{itemize}
-		\item{Type-3 clean method (pseudocode) / We dont have it yet }
-		\item{Formalised algorithm (pseudocode with references to type-1, type-2 clean methods)}
-		\item{Describe how the algorithm is covered in the literature (and provide references).}
-	\end{itemize}
-}
-
 \subsection{General algorithm design}
 
 The idea and algorithm of our duplication detection is based on the
@@ -196,6 +188,11 @@ case \booleanLiteral(_) => \booleanLiteral(true)
 case \stringLiteral(_) => \stringLiteral("stringLiteral")
 case \characterLiteral(_) => \characterLiteral("a")
 \end{lstlisting}
+
+\subsection{Type-3 approach}
+While the tool does not detect type 3 clones, the basic idea behind type 3 detection is, that it should compute some sort of similarity between who nodes and consider it a duplication if the similarity is inside a specified threshold. The paper \cite{baxter1998clone} gives an idea on how to approach this. We tried to implement this, but it slowed down our clone detection by such a degree, that we decided to drop it and focus more on the visualizations and usability of the presentation. 
+
+Also looking at the approach from \cite{baxter1998clone}, which relies on the size of node, it comes to question if using this approach is really sensible, because the size of a node does not really say anything about its contents. Two completely different nodes could be detected as clones, just because they share the same size.
 
 \subsection{The main algorithm}
 
