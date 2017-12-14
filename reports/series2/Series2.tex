@@ -1,0 +1,202 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LATEX-TEMPLATE TECHNISCH RAPPORT
+%-------------------------------------------------------------------------------
+% Voor informatie over het technisch rapport, zie
+% http://practicumav.nl/onderzoeken/rapport.html
+% Voor readme en meest recente versie van het template, zie
+% https://gitlab-fnwi.uva.nl/informatica/LaTeX-template.git
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------------
+%	PACKAGES EN DOCUMENT CONFIGURATIE
+%-------------------------------------------------------------------------------
+
+\documentclass{uva-inf-article}
+\usepackage[english]{babel}
+
+\usepackage[
+backend=biber,
+style=numeric,
+citestyle=numeric 
+]{biblatex}
+
+\usepackage{xcolor}
+\usepackage{geometry}
+\newcommand\todo[1]{\textcolor{red}{#1}}
+
+\addbibresource{citations.bib}
+
+%-------------------------------------------------------------------------------
+%	GEGEVENS VOOR IN DE TITEL
+%-------------------------------------------------------------------------------
+
+% Vul de naam van de opdracht in.
+\assignment{Software Evolution Series 2}
+% Vul het soort opdracht in.
+\assignmenttype{Report}
+% Vul de titel van de eindopdracht in.
+\title{Report}
+
+% Vul de volledige namen van alle auteurs in.
+\authors{Cornelius Ries; Piotr Kosytorz}
+% Vul de corresponderende UvAnetID's in.
+\uvanetids{11884827; 11876964}
+
+% Vul altijd de naam in van diegene die het nakijkt, tutor of docent.
+\tutor{Riemer van Rozen}
+% Vul eventueel ook de naam van de docent of vakcoordinator toe.
+\docent{}
+% Vul hier de naam van de PAV-groep  in.
+% \group{Group 7}
+% Vul de naam van de cursus in.
+\course{Software Evolution}
+% Te vinden op onder andere Datanose.
+\courseid{}
+
+% Dit is de datum die op het document komt te staan. Standaard is dat vandaag.
+\date{\today}
+
+%-------------------------------------------------------------------------------
+%	VOORPAGINA
+%-------------------------------------------------------------------------------
+
+\begin{document}
+\maketitle
+
+%-------------------------------------------------------------------------------
+%	INHOUDSOPGAVE EN ABSTRACT
+%-------------------------------------------------------------------------------
+
+% Niet doen bij korte verslagen en rapporten
+%\tableofcontents
+%\begin{abstract}
+%\lipsum[13]
+%\end{abstract}
+
+%-------------------------------------------------------------------------------
+%	INTRODUCTIE
+%-------------------------------------------------------------------------------
+
+\section{Series 2}
+
+This documents contains our notes and answers to the questions about
+software metrics (practical lab Series 2).
+
+\subsection{About}
+
+\todo{TODO: Write the "about" section}
+
+\subsection{Design Decisions}
+
+\todo{TODO}
+
+\subsection{Results}
+
+\todo{TODO}
+
+\subsection{Tool usage}
+
+To use the tool we provide the source code as a eclipse project.
+
+\begin{enumerate}
+
+\item
+  Please import the project into your eclipse with a working rascal
+  installation.
+\item
+  Open \texttt{Configuration.rsc} and adjust the location of the
+  \texttt{projectLocation} to match the path of the project to your
+  eclise
+\item
+  Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}
+\item
+  Start a rascal console and import the \texttt{Main} module
+\item
+  run \texttt{startServe();}
+\item
+  open a browser and point it towards \texttt{http://localhost:5433} or
+  to the location of \texttt{serveAddress} in case you changed it
+\end{enumerate}
+
+\subsection{Duplication Detection}
+
+The idea and algorithm of our duplication detection is based on the
+information from \cite{lazar2014clone} and \cite{baxter1998clone} The main idea behind this approach
+is to hash the nodes of an AST into different buckets and collect the
+duplications if a bucket has more than 1 element. For type 2 the papers
+suggest to clear unnecessary information from the nodes (variable names,
+type etc.).
+
+For our implementation we decided to use a map as a utility to do the
+matching. We also had to clean the nodes initially because of a change
+in rascal that shifted the loc and other informations of a node from
+annotations on the node to information contained in the node. This
+messed up the matching because every location was unique.
+
+A more detailed explanation can be found in the next chapter.
+
+\subsubsection{How it works (Pseudocode)}
+
+\begin{verbatim}
+Build the AST of the project.
+
+For all nodes in AST if size > threshold
+- Clean nodes for type 1 detection.
+- Clean nodes for type 2 detection.
+- Collect nodes in map with cleaned node as key, relation of original node and location as value
+
+For all keys in Map build a set of duplications
+- Collect all values
+- If size of values > 1 add to set
+
+Filter subclones
+- For all duplications
+- If another duplication exists for which all locations include the locations of the current one Then
+    -
+  Else
+    Add to new Set
+    
+For all filtered clones
+- Collect them in output format
+\end{verbatim}
+
+\subsection{Visualization}
+
+\todo{TODO}
+
+\subsection{Tests}
+
+All tests are in seperate files that extend their original rascal
+module:
+
+\begin{itemize}
+\item
+  DuplicationsAnalyzerTests
+\item
+  RaterTests
+\item
+  UtilsTests
+\item
+  VolumeAnalyzerTests
+\end{itemize}
+
+To run the tests, import all the modules above and execute :test in the
+rascal console. The \texttt{projectLocation} in
+\texttt{Configuration.rsc} has to be set to the projects location in
+your eclipse!
+
+
+%-------------------------------------------------------------------------------
+%	REFERENTIES
+%-------------------------------------------------------------------------------
+
+\printbibliography
+
+%-------------------------------------------------------------------------------
+%	BIJLAGEN EN EINDE
+%-------------------------------------------------------------------------------
+
+%\section{Bijlage A}
+%\section{Bijlage B}
+%\section{Bijlage C}
+\end{document}

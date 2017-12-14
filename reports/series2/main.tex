@@ -1,0 +1,137 @@
+\include{report.tex}
+
+\begin{document}
+
+\section{Series 2}\label{series-2}}
+
+This documents contains our notes and answers to the questions about
+software metrics (practical lab Series 2).
+
+Authors
+
+\begin{itemize}
+\tightlist
+\item
+  Cornelius Ries
+\item
+  Piotr Kosytorz
+\end{itemize}
+
+\subsection{About}\label{about}}
+
+TODO
+
+\subsection{Design Desicions}\label{design-desicions}}
+
+TODO
+
+\subsection{Results}\label{results}}
+
+TODO
+
+\subsection{Tool usage}\label{tool-usage}}
+
+To use the tool we provide the source code as a eclipse project
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Please import the project into your eclipse with a working rascal
+  installation.
+\item
+  Open \texttt{Configuration.rsc} and adjust the location of the
+  \texttt{projectLocation} to match the path of the project to your
+  eclise
+\item
+  Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}
+\item
+  Start a rascal console and import the \texttt{Main} module
+\item
+  run \texttt{startServe();}
+\item
+  open a browser and point it towards \texttt{http://localhost:5433} or
+  to the location of \texttt{serveAddress} in case you changed it
+\end{enumerate}
+
+\subsection{Duplication Detection}\label{duplication-detection}}
+
+The idea and algorithm of our duplication detection is based on the
+information from {[}1{]} and {[}2{]}. The main idea behind this approach
+is to hash the nodes of an ast into different buckets and collect the
+duplications if a bucket has more than 1 element. For type 2 the papers
+suggest to clear unneccesary information from the nodes (variable names,
+type etc.).
+
+For our implementation we decided to use a map as a utility to do the
+matching. We also had to clean the nodes initially because of a change
+in rascal that shifted the loc and other informations of a node from
+annotations on the node to information contained in the node. This
+messed up the matching because every location was unique.
+
+A more detailed explanation can be found in the next chapter.
+
+\subsubsection{How it works
+(Pseudocode)}\label{how-it-works-pseudocode}}
+
+\begin{verbatim}
+Build the AST of the project.
+
+For all nodes in AST if size > threshold
+- Clean nodes for type 1 detection.
+- Clean nodes for type 2 detection.
+- Collect nodes in map with cleaned node as key, relation of original node and location as value
+
+For all keys in Map build a set of duplications
+- Collect all values
+- If size of values > 1 add to set
+
+Filter subclones
+- For all duplications
+- If another duplication exists for which all locations include the locations of the current one Then
+    -
+  Else
+    Add to new Set
+    
+For all filtered clones
+- Collect them in output format
+\end{verbatim}
+
+\subsection{Visualization}\label{visualization}}
+
+TODO
+
+\subsection{Tests}\label{tests}}
+
+All tests are in seperate files that extend their original rascal
+module:
+
+\begin{itemize}
+\tightlist
+\item
+  DuplicationsAnalyzerTests
+\item
+  RaterTests
+\item
+  UtilsTests
+\item
+  VolumeAnalyzerTests
+\end{itemize}
+
+To run the tests, import all the modules above and execute :test in the
+rascal console. The \texttt{projectLocation} in
+\texttt{Configuration.rsc} has to be set to the projects location in
+your eclipse!
+
+\subsection{References}\label{references}}
+
+{[}1{]} Lazar, F.-M. \& Banias, O., 2014. Clone detection algorithm
+based on the Abstract Syntax Tree approach. Applied Computational
+Intelligence and Informatics (SACI), 2014 IEEE 9th International
+Symposium on, pp.73--78.
+
+{[}2{]} Baxter et al., 1998. Clone detection using abstract syntax
+trees. Software Maintenance, 1998. Proceedings., International
+Conference on, pp.368--377.
+
+\end{document}
