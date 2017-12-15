@@ -31,7 +31,7 @@ class TopNavbar extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.setState({status: 'waiting for reascal to analyze the project...'});
+        this.setState({status: 'waiting for rascal to analyze the project...'});
         this.setState({executionStart: Date.now()});
         axios.get(`http://localhost:5433/analyze/?project=${this.state.projectValue}&threshold=${this.state.thresholdValue}`)
             .then(res => {

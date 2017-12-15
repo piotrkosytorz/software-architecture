@@ -112,8 +112,8 @@ rect.selected {
 
 #selected {
     position: fixed;
-    top: 150px;
-    right: 20px;
+    top: 400px;
+    right: 100px;
     width: 600px;
     background: rgba(255, 255, 255, 0.1);
     padding: 12px;

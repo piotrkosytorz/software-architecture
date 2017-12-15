@@ -138,10 +138,21 @@ class BibleWiz extends React.Component {
     render() {
         return (
             <div>
-                <svg id="chart" width="1200" height="500"/>
+              <svg id="chart" width="1200" height="500" style={{float: 'left'}}/>
+              <div style={{width: '400px', position: 'fixed', right: '100px'}}>
+                  <h4>Legend:</h4>
+                  <ul>
+                      <li><strong>blue bars</strong> represent a single file, the length of the bar represents the file length</li>
+                      <li><strong>bar hover</strong> shows the selected file name </li>
+                      <li><strong>crimson arcs</strong> represent the relations of clone class elements from different files</li>
+                      <li><strong>arc hover</strong> shows the files from the clone class</li>
+
+                  </ul>
+              </div>
+
+
                 <div id="selected"/>
             </div>
-
         );
     }
 }
