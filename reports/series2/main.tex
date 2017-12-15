@@ -67,9 +67,9 @@ citestyle=numeric
 \uvanetids{11884827; 11876964}
 
 % Vul altijd de naam in van diegene die het nakijkt, tutor of docent.
-\tutor{Riemer van Rozen}
+\tutor{}
 % Vul eventueel ook de naam van de docent of vakcoordinator toe.
-\docent{}
+\docent{Riemer van Rozen}
 % Vul hier de naam van de PAV-groep  in.
 % \group{Group 7}
 % Vul de naam van de cursus in.
@@ -103,9 +103,7 @@ citestyle=numeric
 
 \section{Introduction}
 
-This documents contains our notes and answers to the questions about software metrics (practical lab Series 2).
-
-\todo{Rewrite the introduction}
+This document presents our report for the "Series 2" assignment. To begin with, we provide a few definitions to clarify some of the terms that are used in the reader and in this report. The following chapter focuses on the main algorithm of our clone detection as well as the approaches for detecting the different types of clones. Chapter 4 provides a description of our test suite. Chapter 5 focuses on the visual interface of the tool, explaining which requirements we chose and how we try to satisfy them with our visualizations. Chapter 6 serves as a manual for the tool, describing how to run and use it. The last chapter gives a conclusion on how the program works while analyzing different projects and what could be improved.
 
 \section{Definitions}
 
@@ -287,20 +285,26 @@ As it is well explained in Baxter et al., reduction of the maintainer's cognitiv
 
 We consider the data table to be actually the most handy and practical tool a software maintainer might desire. Even though its simplicity, it is an extremely flexible tool that allows the user to get all available details of a clone detection result.
 
-\subsubsection{Insight int clones sharing among project's files}
-This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footnote{Wikipedia. 2017. Force-directed graph drawing. [ONLINE] Available at: \url{https://en.wikipedia.org/wiki/Force-directed\_graph\_drawing}. [Accessed 14 December 2017].} for this purpose .
+\subsubsection{Insight into clones sharing among project's files}
+This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footcite{wiki:forcegraph} and an arc graph diagram \footcite{wiki:arcdiagram} for this purpose. 
 
+\paragraph{Force graph}
 In our implementation we have used a React Component provided by Uber\footnote{\url{https://github.com/uber/react-vis-force}}, which after some modifications made a perfect solution to our needs. 
 
 In our solution, each node (dot) represents a single file in the project, which contains at least one clone. Each line between two nodes represents a shared clone. The Color of each node represents the number of related files - the darker, the more nodes. A legend provided in our tool explains in detail the meaning of each color. 
 
-In the visualization files with only internal clones are represented as single dots with no relations to other files. Files that share one or more clones form subgraphs. The very nice property of a force directed graph is, that the elements with the most relations to each other are being attracted to each other. They form subgraphs. On the other hand, the subgraphs repel each other, what makes a visual effect of multiple separate constellations of items that share common value (in our case - clones). 
+In the visualization, files with only internal clones are represented as single dots with no relations to other files. Files that share one or more clones form subgraphs. The very nice property of a force directed graph is, that the elements with the most relations to each other are being attracted to each other. They form subgraphs. On the other hand, the subgraphs repel each other, what makes a visual effect of multiple separate constellations of items that share common value (in our case - clones). 
 
 Our approach to visualization made it possible to quickly and easily determine groups of files that share clones, and have partially probably similar purpose in the project. Such groups of files are clearly refactoring candidates. 
 
 The tool provides also an extremely handy details preview for files in this visualization. After clicking on a single node (representing a file), the tool will show file details with all clones identified in this file, a list files that share clone classes with this file, and clone details per each related file. 
 
-\todo{add bibwiz explanation}
+\paragraph{Arc diagram}
+We got the initial idea for this diagram from the bibwiz\footnote{\url{http://bibviz.com/}} project. This project shows bible contradictions among the different books in the bible as an arc diagram. After studying the source code, we adapted the main javascript code (which uses d3 to draw the diagram) for our needs.
+
+The arc diagram is a nice way to get more information about the clone distribution in a project. While the force graph only shows the cloned files, the arc diagram shows all the files in the project as blue bars. The length of the bar further indicated the file's length (line count). The arcs in the diagram represent all the different clone classes that exist in the project. By hovering over a bar or arc, either the current file or all the files in the selected clone class are displayed.
+
+One weakness of this diagram is, that clones in a single file are not visible. This is where the force graph comes in handy. This is also why we decided to use both diagrams in our solution, because they complement each other.
 
 \section{Tool manual}
 
@@ -332,7 +336,7 @@ In order to run the program, please follow the steps:
 
 \subsection{How to use}
 
-The application opens in a web browser as a web application. Figure \ref{screenshot1} presents the initial view of the application:
+The application opens in a web browser as a web application. Figure \ref{screenshot1} presents the initial view of the application. Figures \ref{screenshot2}-\ref{screenshot3}-\ref{screenshot4} give example views of the visualizations.
 
 \begin{itemize}
 
@@ -340,34 +344,37 @@ The application opens in a web browser as a web application. Figure \ref{screens
 
 \item{On the left side (box marked with \textbf{2}), a menu with available tools is located. }
 \item{The rest of the view (box marked with \textbf{3}) presents the chosen tools. }
+\item{The box marked with \textbf{4} shows an example view of the data-table visualization. One row equals one clone class. By clicking on the row a modal dialog appears with more information about the clone class.}
+\item{The box marked with \textbf{5} shows an example view of the constellation visualization. The legend on the right explains how to read it. By clicking on a dot (file) a modal dialog opens with all the clone classes of that file. }
+\item{The box marked with \textbf{6} shows an example view of the project distribution visualization. The legend on the right explains how to read it. By hovering over a bar or arc the relevant information is displayed.}
 \end{itemize}
 
-\begin{figure}[t]
-\includegraphics[width=\textwidth]{visualization1}
-\centering
-\caption{Clone detection tool screenshot.}
-\label{screenshot1}
+\begin{figure}[!htb]
+	\includegraphics[width=\textwidth]{visualization1}
+	\centering
+	\caption{Clone detection tool screenshot.}
+	\label{screenshot1}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!htb]
 	\includegraphics[width=\textwidth]{visualization2}
 	\centering
 	\caption{Data table overview screenshot.}
-	\label{screenshot1}
+	\label{screenshot2}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!htb]
 	\includegraphics[width=\textwidth]{visualization3}
 	\centering
 	\caption{Constellations screenshot.}
-	\label{screenshot1}
+	\label{screenshot3}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!htb]
 	\includegraphics[width=\textwidth]{visualization4}
 	\centering
 	\caption{Project distribution screenshot.}
-	\label{screenshot1}
+	\label{screenshot4}
 \end{figure}
 
 \section{Summary}
