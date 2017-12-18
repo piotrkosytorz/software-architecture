@@ -24,8 +24,34 @@ citestyle=numeric
 \usepackage{geometry}
 \usepackage{amsmath}
 \usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{color}
 \usepackage{listings}
+\usepackage{caption}
 
+\newcounter{nalg}[section] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\arabic{nalg}} %defines appearance of the algorithm counter
+\DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
+
+\lstnewenvironment{pseudocode}[1][] %defines the algorithm listing environment
+{   
+    \refstepcounter{nalg} %increments algorithm number
+    \captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
+    \lstset{ %this is the stype
+        breaklines=true,
+        postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+        mathescape=true,
+        frame=tB,
+        numbers=left, 
+        numberstyle=\tiny,
+        basicstyle=\scriptsize, 
+        keywordstyle=\color{black}\bfseries\em,
+        keywords={,input, output, return, for, function, in, if, else, foreach, while, begin, end, } %add the keywords you want, or load a language as Rubens explains in his comment above.
+        numbers=left,
+        xleftmargin=.04\textwidth,
+        #1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
+    }
+}
+{}
 \newcommand\todo[1]{\textcolor{red}{#1}}
 
 
@@ -103,9 +129,9 @@ citestyle=numeric
 
 \section{Introduction}
 
-This document presents our report for the "Series 2" assignment. To begin with, we provide a few definitions to clarify some of the terms that are used in the reader and in this report. The following chapter focuses on the main algorithm of our clone detection as well as the approaches for detecting the different types of clones. Chapter 4 provides a description of our test suite. Chapter 5 focuses on the visual interface of the tool, explaining which requirements we chose and how we try to satisfy them with our visualizations. Chapter 6 serves as a manual for the tool, describing how to run and use it. The last chapter gives a conclusion on how the program works while analyzing different projects and what could be improved.
+This document presents our report for the "Series 2" assignment. To begin with, in chapter \ref{definitions}, we provide a few definitions to clarify some of the terms that are used in the reader and in this report. The next chapter focuses on the main algorithm of our clone detection as well as the approaches for detecting the different types of clones. Chapter 4 provides a description of our test suite. Chapter 5 focuses on the visual interface of the tool, explaining which requirements we chose and how we try to satisfy them with our visualizations. Chapter 6 serves as a manual for the tool, describing how to run and use it. The last chapter gives a conclusion on how the program works while analysing different projects and what could be improved.
 
-\section{Definitions}
+\section{Definitions}\label{definitions}
 
 In order to provide a tool to satisfy the assignment's objectives, a good understanding of the key concepts used in clone detection is needed. Based on a biref literature study, we have selected the following definitions as the base for our work and evaluation of the cloning problem:
 
@@ -194,40 +220,83 @@ While the tool does not detect type 3 clones, the basic idea behind type 3 detec
 
 Also looking at the approach from \cite{baxter1998clone}, which relies on the size of node, it comes to question if using this approach is really sensible, because the size of a node does not really say anything about its contents. Two completely different nodes could be detected as clones, just because they share the same size.
 
-\subsection{The main algorithm}
+\subsection{The main algorithm}\label{main_alg}
 
-In this section we provide a textual representation of our main algorithm. For further information please take a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
+In this section we provide a textual representation and explanation for our main algorithm. For further information please take a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
 
-\begin{lstlisting}[style=pseudocodeStyle,caption={General algorithm preudocode},captionpos=b]
-Build the AST of the project.
+The main algorithm, as presented on listing below, consists of four parts. In the first part the algorithm generates a list of clone candidates based.
 
-For all nodes in AST 
-- If size of node > threshold
-	- Clean node for type 1 detection.
-	- Clean node for type 2 detection.
-	- Collect node in Map with cleaned node as key, 
-  	  relation of original node and location as value
+\begin{pseudocode}[caption={Consolidated general algorithm.}, label={alg0}]
+ input: ast AST, int threshold
+ output: set duplications
+ begin
+  mapOfCloneCandidates $\gets$ extractMapOfCloneCandidates(AST, threshold)
+  setOfDuplications $\gets$ createAsetOfDuplications(mapOfCloneCandidates)
+  filteredSetOfDuplications $\gets$ filterSetOfDuplications(setOfDuplications)
+  duplications $\gets$ extractTheDuplications(filteredSetOfDuplications)
+  return duplications
+ end       
+\end{pseudocode}
 
-For all keys in Map build a set of clone classes
-- Collect all values from the Map for current key
-- If size of collected values > 1 
-	Then 
-		add values as a new clone class to set
+\begin{pseudocode}[caption={Extracting a map of clone candidates.}, label={alg1}]
+ input: ast AST, int threshold
+ output: map mapOfCandidates
+ begin
+  foreach (node in AST)
+  begin
+    if (size_of_node(node)  > threshold)
+    begin
+        node $\gets$ CleanNodeForType1Detection(node)
+        node $\gets$ CleanNodeForType2Detection(node)
+        mapOfCandidates $\gets$ mapOfCandidates + (node, metadata)
+    end
+  end
+  return mapOfCandidates
+ end       
+\end{pseudocode}
 
-For all previously detected clone classes filter subclone classes
-- If another clone class exists for which all locations 
-  include the locations of the current one 
- 	Then
-		-
-	Else
-		Add to new Set
+\begin{pseudocode}[caption={Creating a set of duplications.}, label={alg2}]
+ input: map mapOfCandidates
+ output: set setOfDuplications
+ begin
+  foreach (key in mapOfCandidates)
+  begin
+    tempListOfDuplications $\gets$ mapOfCandidates[key]
+    if (size of tempListOfDuplications > 1)
+    begin
+        setOfDuplications $\gets$ setOfDuplications + tempListOfDuplications
+    end
+  end
+  return setOfDuplications
+ end       
+\end{pseudocode}
 
-Collect all filtered clone classes in output format
-	- Collect locations
-	- Determine line statistics
-	- Determine clone type by applying the clean method of type 1 detection
+\begin{pseudocode}[caption={Filtering set of duplications.}, label={alg3}]
+input: set setOfDuplications
+output: set filteredSetOfDuplications
+begin
+  foreach (duplicationLocations in setOfDuplications)
+    begin
+      if (not any(duplicationLocations2 in setOfDuplications contains duplicationLocations)
+      begin
+        filteredSetOfDuplications += filteredSetOfDuplications + duplicationLocations
+      end
+    end
+  return filteredSetOfDuplications
+end
+\end{pseudocode}
 
-\end{lstlisting}
+\begin{pseudocode}[caption={Extracting the final set of duplications.}, label={alg4}]
+ input: set filteredSetOfDuplications
+ output: set duplications
+ begin
+  locations $\gets$ duplication.locations
+    lineStatistics $\gets$ locations[0].lineStatistics
+    cloneType $\gets$ CleanNodeForType1Detection(locations[0]) == CleanNodeForType1Detection(locations[1]) ? 1 : 2
+    duplications $\gets$ duplications += Duplication(locations, lineStatistics, cloneType)
+  return setOfDuplications
+ end       
+\end{pseudocode}
 
 \section{Main program validity}
 
@@ -286,7 +355,7 @@ As it is well explained in Baxter et al., reduction of the maintainer's cognitiv
 We consider the data table to be actually the most handy and practical tool a software maintainer might desire. Even though its simplicity, it is an extremely flexible tool that allows the user to get all available details of a clone detection result.
 
 \subsubsection{Insight into clones sharing among project's files}
-This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footcite{wiki:forcegraph} and an arc graph diagram \footcite{wiki:arcdiagram} for this purpose. 
+This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footnote{\url{https://en.wikipedia.org/wiki/Force-directed_graph_drawing}} and an arc graph diagram \footnote{\url{https://en.wikipedia.org/wiki/Arc_diagram}} for this purpose. 
 
 \paragraph{Force graph}
 In our implementation we have used a React Component provided by Uber\footnote{\url{https://github.com/uber/react-vis-force}}, which after some modifications made a perfect solution to our needs. 
@@ -300,7 +369,8 @@ Our approach to visualization made it possible to quickly and easily determine g
 The tool provides also an extremely handy details preview for files in this visualization. After clicking on a single node (representing a file), the tool will show file details with all clones identified in this file, a list files that share clone classes with this file, and clone details per each related file. 
 
 \paragraph{Arc diagram}
-We got the initial idea for this diagram from the bibwiz\footnote{\url{http://bibviz.com/}} project. This project shows bible contradictions among the different books in the bible as an arc diagram. After studying the source code, we adapted the main javascript code (which uses d3 to draw the diagram) for our needs.
+We got the initial idea for this diagram from the bibwiz\
+{\url{http://bibviz.com/}} project. This project shows bible contradictions among the different books in the bible as an arc diagram. After studying the source code, we adapted the main javascript code (which uses d3 to draw the diagram) for our needs.
 
 The arc diagram is a nice way to get more information about the clone distribution in a project. While the force graph only shows the cloned files, the arc diagram shows all the files in the project as blue bars. The length of the bar further indicated the file's length (line count). The arcs in the diagram represent all the different clone classes that exist in the project. By hovering over a bar or arc, either the current file or all the files in the selected clone class are displayed.
 
