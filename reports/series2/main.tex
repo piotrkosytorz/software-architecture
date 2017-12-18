@@ -181,11 +181,11 @@ For our implementation we decided to use the map feature of rascal to represent 
 
 There are also multiple types of clones that our tool can detect. These are type 1 and type 2 clones. The next two chapters explain the detection of type 1 and type 2 clones. Last but not least, we provide a short rationale, why we did not go for type 3 detection. We end this section by providing a textual representation of our main algorithm.
 
-\subsection{Type-1 cleaning}
+\subsection{Type-1 cleaning}\label{type1alg}
 
 If using the AST approach, the bucket key is in general just the node itself. There was a change in the implementation of rascal that shifted the \texttt{loc} (location of a node) and other informations of a node, from the annotations on the node, to information contained in the node. This leads to the problem, that matching of nodes or comparison between nodes is not possible anymore, because every location is unique. To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
 
-\subsection{Type-2 cleaning}
+\subsection{Type-2 cleaning}\label{type2alg}
 
 For type 2 detection we also use the AST. To streamline all the information that is contained in the node we visit all the sub-nodes of a node,  and replace specific variables/identifiers/types with a general one. The replacement is done using the rascal \texttt{visit - case => } notation.
 
@@ -220,11 +220,15 @@ While the tool does not detect type 3 clones, the basic idea behind type 3 detec
 
 Also looking at the approach from \cite{baxter1998clone}, which relies on the size of node, it comes to question if using this approach is really sensible, because the size of a node does not really say anything about its contents. Two completely different nodes could be detected as clones, just because they share the same size.
 
+In the next section we provide an exhaustive explanation of the applied algorithm and provide pseudocode for that. 
+
 \subsection{The main algorithm}\label{main_alg}
 
 In this section we provide a textual representation and explanation for our main algorithm. For further information please take a look into the source file \texttt{DuplicationsAnalyzer.rsc}.
 
-The main algorithm, as presented on listing below, consists of four parts. In the first part the algorithm generates a list of clone candidates based.
+\subsubsection{Consolidated general algorithm}
+
+The main algorithm, as presented in the listing below, consists of four parts. In the first part, the algorithm generates a list of clone candidates based on the nodes previously obtained from the AST tree of the analysed project. The threshold, as mentioned earlier, is the number of sub nodes of an analysed node. After obtaining the clone candidates, the next step is to extract the true duplications from there. At this moment, the program doesn't have a list of clones yet, as it still has to filter out all the clones that are a part of a bigger clone (to stay with the biggest clone only). This happens in the next step (line 6). Finally, the obtained list would be shortly analysed and each found clone would be complemented with some metadata for presentation purposes. 
 
 \begin{pseudocode}[caption={Consolidated general algorithm.}, label={alg0}]
  input: ast AST, int threshold
@@ -233,10 +237,16 @@ The main algorithm, as presented on listing below, consists of four parts. In th
   mapOfCloneCandidates $\gets$ extractMapOfCloneCandidates(AST, threshold)
   setOfDuplications $\gets$ createAsetOfDuplications(mapOfCloneCandidates)
   filteredSetOfDuplications $\gets$ filterSetOfDuplications(setOfDuplications)
-  duplications $\gets$ extractTheDuplications(filteredSetOfDuplications)
+  duplications $\gets$ performFinalAnalyse(filteredSetOfDuplications)
   return duplications
  end       
 \end{pseudocode}
+
+\subsubsection{Extracting a map of clone candidates}
+
+The first operation is to iterate through the whole AST tree (node by node) and to create a list (map) of all nodes that we want to investigate further. The main property of such a node is to match a minimal size threshold. In this case, size is determined by number of node's subnodes. 
+
+The algorithms for methods \texttt{CleanNodeForType1Detection} and \texttt{CleanNodeForType2Detection} have been described respectively in sections \ref{type1alg} and \ref{type2alg}.
 
 \begin{pseudocode}[caption={Extracting a map of clone candidates.}, label={alg1}]
  input: ast AST, int threshold
@@ -255,6 +265,10 @@ The main algorithm, as presented on listing below, consists of four parts. In th
  end       
 \end{pseudocode}
 
+\subsubsection{Creating a set of duplications}
+
+Once the list of clones candidates is provided, it is time to compare them one by one.
+
 \begin{pseudocode}[caption={Creating a set of duplications.}, label={alg2}]
  input: map mapOfCandidates
  output: set setOfDuplications
@@ -271,7 +285,13 @@ The main algorithm, as presented on listing below, consists of four parts. In th
  end       
 \end{pseudocode}
 
-\begin{pseudocode}[caption={Filtering set of duplications.}, label={alg3}]
+\subsubsection{Filtering the set of duplications}
+
+To filter all clone classes that are already fully contained in another clone class we basically
+use a for loop in a for loop. This combination checks if there is another clone class whose locations contain all the locations as the current clone class. If there is none, the current clone class is added to a new set of filtered clone classes.
+In the actual code this is achieved by using a reducer combined with any and all clauses in the condition statement.
+
+\begin{pseudocode}[caption={Filtering the set of duplications.}, label={alg3}]
 input: set setOfDuplications
 output: set filteredSetOfDuplications
 begin
@@ -279,22 +299,28 @@ begin
     begin
       if (not any(duplicationLocations2 in setOfDuplications contains duplicationLocations)
       begin
-        filteredSetOfDuplications += filteredSetOfDuplications + duplicationLocations
+        filteredSetOfDuplications  $\gets$ filteredSetOfDuplications + duplicationLocations
       end
     end
   return filteredSetOfDuplications
 end
 \end{pseudocode}
 
-\begin{pseudocode}[caption={Extracting the final set of duplications.}, label={alg4}]
+\subsubsection{Final analyse and enriching with metadata}
+
+The last algorithm collects the filtered clone classes in the output data structure.
+The data structure contains the locations and the clone type. 
+
+\begin{pseudocode}[caption={Final analyse and enriching with metadata.}, label={alg4}]
  input: set filteredSetOfDuplications
  output: set duplications
  begin
-  locations $\gets$ duplication.locations
-    lineStatistics $\gets$ locations[0].lineStatistics
+   foreach (duplication in filteredSetOfDuplications)
+    locations $\gets$ duplication.locations
     cloneType $\gets$ CleanNodeForType1Detection(locations[0]) == CleanNodeForType1Detection(locations[1]) ? 1 : 2
-    duplications $\gets$ duplications += Duplication(locations, lineStatistics, cloneType)
-  return setOfDuplications
+    duplications $\gets$ Duplication(locations, cloneType)
+   end
+  return duplications
  end       
 \end{pseudocode}
 
