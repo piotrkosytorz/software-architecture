@@ -129,11 +129,11 @@ citestyle=numeric
 
 \section{Introduction}
 
-This document presents our report for the "Series 2" assignment. To begin with, in chapter \ref{definitions}, we provide a few definitions to clarify some of the terms that are used in the reader and in this report. The next chapter focuses on the main algorithm of our clone detection as well as the approaches for detecting the different types of clones. Chapter 4 provides a description of our test suite. Chapter 5 focuses on the visual interface of the tool, explaining which requirements we chose and how we try to satisfy them with our visualizations. Chapter 6 serves as a manual for the tool, describing how to run and use it. The last chapter gives a conclusion on how the program works while analysing different projects and what could be improved.
+This document contains our report for the "Series 2" assignment. To begin with, in chapter \ref{definitions}, we provide a selection of definitions that are crucial for understanding and proceeding with further lecture of this document. The third chapter focuses on the main algorithm of our clone detection as well as the approaches for detecting the different types of clones. Chapter 4 provides a description of our test suite. Chapter 5 focuses on the visual interface of the tool, explaining which requirements we chose and how we try to satisfy them with our visualizations. Chapter 6 serves as a manual for the tool, describing how to run and use it. The last chapter gives a conclusion on how the program works while analysing different projects and what could be improved.
 
 \section{Definitions}\label{definitions}
 
-In order to provide a tool to satisfy the assignment's objectives, a good understanding of the key concepts used in clone detection is needed. Based on a biref literature study, we have selected the following definitions as the base for our work and evaluation of the cloning problem:
+In order to provide a tool to satisfy the assignment's objectives, a good understanding of the key concepts used in clone detection is needed. Based on a brief literature study, we have selected the following definitions as base for our work and evaluation of the cloning problem:
 
 \subsection{Clones and clone classes}
 
@@ -170,8 +170,8 @@ are per definition from \cite{koschke2008identifying} copies with further change
 
 \subsection{General algorithm design}
 
-The idea and algorithm of our duplication detection is based on the
-papers \cite{lazar2014clone} and \cite{baxter1998clone}. 
+The idea and algorithm of our duplication detection is based on the two
+papers: Laraz et al on \textit{Clone detection algorithm based on the Abstract Syntax Tree approach} \cite{lazar2014clone} and Baxter er al. on \textit{Clone detection using abstract syntax trees} \cite{baxter1998clone}. 
 The main idea behind this approach is to use the abstract syntax tree for clone detection.
 After creating the AST from the source files, the nodes are hashed into different buckets.
 If a bucket has more than one element, it follows, that there are multiple locations in the source code of this node.
@@ -179,11 +179,11 @@ This counts as one clone class.
 
 For our implementation we decided to use the map feature of Rascal to represent the different buckets. The key of the map is the bucket and a relation of nodes to locations is the value. This approach allows use to easily select all matching nodes using the key.  We also only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the sub-nodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
 
-There are also multiple types of clones that our tool can detect. These are type 1 and type 2 clones. The next two chapters explain the detection of type 1 and type 2 clones. Last but not least, we provide a short rationale, why we did not go for type 3 detection. We end this section by providing a textual representation of our main algorithm.
+There are also multiple types of clones that our tool can detect. These are type 1 and type 2 clones. The next two chapters explain our approach to the detection of type 1 and type 2 clones. Last but not least, we provide a short rationale, why we did not go for type 3 detection. We end this section by providing an extended textual representation of our main algorithm.
 
 \subsection{Type-1 cleaning}\label{type1alg}
 
-If using the AST approach, the bucket key is in general just the node itself. There was a change in the implementation of Rascal that shifted the \texttt{loc} (location of a node) and other informations of a node, from the annotations on the node, to information contained in the node. This leads to the problem, that matching of nodes or comparison between nodes is not possible anymore, because every location is unique. To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
+If using the AST approach, the bucket key is in general just the node itself. There was a change in the implementation of Rascal that relocated the \texttt{loc} (location of a node) and other informations of a node, from the annotations on the node, to information contained in the node. This leads to the problem, that matching of nodes or comparison between nodes is not possible anymore, because every location is unique. To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
 
 \subsection{Type-2 cleaning}\label{type2alg}
 
@@ -216,9 +216,9 @@ case \characterLiteral(_) => \characterLiteral("a")
 \end{lstlisting}
 
 \subsection{Type-3 approach}
-While the tool does not detect type 3 clones, the basic idea behind type 3 detection is, that it should compute some sort of similarity between who nodes and consider it a duplication if the similarity is inside a specified threshold. The paper \cite{baxter1998clone} gives an idea on how to approach this. We tried to implement this, but it slowed down our clone detection by such a degree, that we decided to drop it and focus more on the visualizations and usability of the presentation. 
+While the tool does not detect type 3 clones, the basic idea behind type 3 detection is, that it should compute some sort of similarity between two nodes and consider it a duplication if the similarity is inside a specified threshold. Baxter et al. \cite{baxter1998clone} give an idea on how to approach this. We tried to implement this, but it slowed down our clone detection by such a degree, that we decided to drop it and focus more on the visualizations and usability of the presentation. 
 
-Also looking at the approach from \cite{baxter1998clone}, which relies on the size of node, it comes to question if using this approach is really sensible, because the size of a node does not really say anything about its contents. Two completely different nodes could be detected as clones, just because they share the same size.
+Also looking at the approach from Baxter er al., which relies on the size of node, it comes to question if using this approach is really sensible, because the size of a node does not really say anything about its contents. Two completely different nodes could be detected as clones, just because they share the same size.
 
 In the next section we provide an exhaustive explanation of the applied algorithm and provide pseudocode for that. 
 
@@ -228,7 +228,7 @@ In this section we provide a textual representation and explanation for our main
 
 \subsubsection{Consolidated general algorithm}
 
-The main algorithm, as presented in the listing below, consists of four parts. In the first part, the algorithm generates a list of clone candidates based on the nodes previously obtained from the AST tree of the analysed project. The threshold, as mentioned earlier, is the number of sub nodes of an analysed node. After obtaining the clone candidates, the next step is to extract the true duplications from there. At this moment, the program doesn't have a list of clones yet, as it still has to filter out all the clones that are a part of a bigger clone (to stay with the biggest clone only). This happens in the next step (line 6). Finally, the obtained list would be shortly analysed and each found clone would be complemented with some metadata for presentation purposes. 
+The main algorithm, as presented in the listing below, consists of four parts. In the first part, the algorithm generates a list of clone candidates based on the nodes previously obtained from the AST tree of the analysed project. The threshold, as mentioned earlier, is the number of sub nodes of the currently analysed node. After obtaining the clone candidates, the next step is to extract the true duplications. At this moment, the program doesn't have a list of clones yet, as it still has to filter out all the clones that are a part of a bigger clone (to stay with the biggest clone only). This happens in the next step (line 6). Finally, the obtained list would be shortly analysed and each found clone would be complemented with some metadata for presentation purposes. 
 
 \begin{pseudocode}[caption={Consolidated general algorithm.}, label={alg0}]
  input: ast AST, int threshold
@@ -350,10 +350,10 @@ To run the tests, import all the modules below and execute \texttt{:test} in the
 \section{The tool}
 
 \subsection{Introduction}
-As it is stated in the assignment, we were supposed to provide a tool for clone detection that we actually would use ourselves.  Since web technologies provide currently the best tools to present data and are easy to implement, and since there is a web server in Rascal, we have decided to provide a JavaScript application as the user interface for our tool. 
+As it is stated in the assignment, we were supposed to provide a tool for clone detection that we actually would use ourselves.  Since web technologies provide great tools to present data and are easy to implement, and since there is a web server in Rascal, we have decided to write a JavaScript application as the user interface for our tool. 
 
 The front-end application is served directly from our Rascal application, which means that no extra configuration is required to use it with the provided clone detector. It is written in ReactJS \footnote{Facebook Inc. 2017. React. [ONLINE] Available at: \url{https://reactjs.org/}. [Accessed 14 December 2017].
-}. The main (Rascal) application provides a number of REST API endpoints that the JavaScript application uses to obtain data and request a project analysis. 
+}. The main (Rascal) application provides a number of REST API endpoints that the JavaScript application uses to obtain data and to request a project analysis. 
 
 \subsection{Requirements}
 The main requirements from the perspective of code maintainer that we wanted to address with our tool are the following: 
@@ -361,7 +361,7 @@ The main requirements from the perspective of code maintainer that we wanted to 
 \begin{itemize}
     \item{To get a comprehensible overview (of code quality and duplications)}
     \item{To get insight into the clones and navigate effortlessly through elements}
-    \item{See how the clones are shared among files in the project (to improve comprehension ) }
+    \item{See how the clones are shared among files in the project (to improve comprehension) }
 \end{itemize}
 
 The following paragraphs describe how the tool that we've created satisfies the stated requirements. 
@@ -382,8 +382,9 @@ We consider the data table to be actually the most handy and practical tool a so
 
 \subsubsection{Insight into clones sharing among project's files}
 This last requirement refers to clone location among different files in the project. This requirement could be satisfied only with a suitable visualization. We have decided to use a force directed graph\footnote{\url{https://en.wikipedia.org/wiki/Force-directed_graph_drawing}} and an arc graph diagram \footnote{\url{https://en.wikipedia.org/wiki/Arc_diagram}} for this purpose. 
-
-\paragraph{Force graph}
+\\\\
+\textbf{Force directed graph} 
+\\
 In our implementation we have used a React Component provided by Uber\footnote{\url{https://github.com/uber/react-vis-force}}, which after some modifications made a perfect solution to our needs. 
 
 In our solution, each node (dot) represents a single file in the project, which contains at least one clone. Each line between two nodes represents a shared clone. The Color of each node represents the number of related files - the darker, the more nodes. A legend provided in our tool explains in detail the meaning of each color. 
@@ -393,8 +394,9 @@ In the visualization, files with only internal clones are represented as single 
 Our approach to visualization made it possible to quickly and easily determine groups of files that share clones, and have partially probably similar purpose in the project. Such groups of files are clearly refactoring candidates. 
 
 The tool provides also an extremely handy details preview for files in this visualization. After clicking on a single node (representing a file), the tool will show file details with all clones identified in this file, a list files that share clone classes with this file, and clone details per each related file. 
-
-\paragraph{Arc diagram}
+\\\\
+\textbf{Arc diagram} 
+\\
 We got the initial idea for this diagram from the bibwiz\
 {\url{http://bibviz.com/}} project. This project shows bible contradictions among the different books in the bible as an arc diagram. After studying the source code, we adapted the main javascript code (which uses d3 to draw the diagram) for our needs.
 
@@ -430,7 +432,7 @@ In order to run the program, please follow the steps:
 \item Open a browser and point it towards \url{http://localhost:5433/index.hmtl}.
 \end{enumerate}
 
-\subsection{How to use}
+\subsection{How to use it?}
 
 The application opens in a web browser as a web application. Figure \ref{screenshot1} (Appendix A in \ref{appendix:a}) presents the initial view of the application. Figures \ref{screenshot2}-\ref{screenshot3}-\ref{screenshot4} give example views of the visualizations.
 
@@ -465,6 +467,8 @@ In the end, we are happy with our outcomes.
 %-------------------------------------------------------------------------------
 %	BIJLAGEN EN EINDE
 %-------------------------------------------------------------------------------
+
+\pagebreak[4]
 
 \section{Appendix A: Screenshots}\label{appendix:a}
 
