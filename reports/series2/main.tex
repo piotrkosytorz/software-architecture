@@ -177,17 +177,17 @@ After creating the AST from the source files, the nodes are hashed into differen
 If a bucket has more than one element, it follows, that there are multiple locations in the source code of this node.
 This counts as one clone class. 
 
-For our implementation we decided to use the map feature of rascal to represent the different buckets. The key of the map is the bucket and a relation of nodes to locations is the value. This approach allows use to easily select all matching nodes using the key.  We also only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the sub-nodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
+For our implementation we decided to use the map feature of Rascal to represent the different buckets. The key of the map is the bucket and a relation of nodes to locations is the value. This approach allows use to easily select all matching nodes using the key.  We also only consider nodes that are bigger than a certain threshold. The size of a node is computed by simply counting all the sub-nodes of the node in question. The threshold is a parameter and can be specified when starting the clone detection.
 
 There are also multiple types of clones that our tool can detect. These are type 1 and type 2 clones. The next two chapters explain the detection of type 1 and type 2 clones. Last but not least, we provide a short rationale, why we did not go for type 3 detection. We end this section by providing a textual representation of our main algorithm.
 
 \subsection{Type-1 cleaning}\label{type1alg}
 
-If using the AST approach, the bucket key is in general just the node itself. There was a change in the implementation of rascal that shifted the \texttt{loc} (location of a node) and other informations of a node, from the annotations on the node, to information contained in the node. This leads to the problem, that matching of nodes or comparison between nodes is not possible anymore, because every location is unique. To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
+If using the AST approach, the bucket key is in general just the node itself. There was a change in the implementation of Rascal that shifted the \texttt{loc} (location of a node) and other informations of a node, from the annotations on the node, to information contained in the node. This leads to the problem, that matching of nodes or comparison between nodes is not possible anymore, because every location is unique. To circumvent the problem we remove the unnecessary information from all the relevant nodes. The actual cleaning \texttt{cleanNode} is done by visiting all the sub-nodes of a relevant node and replacing the node with a cleaned version of the original node using the \texttt{insert} statement.
 
 \subsection{Type-2 cleaning}\label{type2alg}
 
-For type 2 detection we also use the AST. To streamline all the information that is contained in the node we visit all the sub-nodes of a node,  and replace specific variables/identifiers/types with a general one. The replacement is done using the rascal \texttt{visit - case => } notation.
+For type 2 detection we also use the AST. To streamline all the information that is contained in the node we visit all the sub-nodes of a node,  and replace specific variables/identifiers/types with a general one. The replacement is done using the Rascal \texttt{visit - case => } notation.
 
 \begin{lstlisting}[language=Java, style=mystyle,caption={Node elements stripping method for type-2 clone detection.},captionpos=b]
 case Type _ => lang::java::m3::AST::float()
@@ -326,13 +326,13 @@ The data structure contains the locations and the clone type.
 
 \section{Main program validity}
 
-We provide an automatic testing suite to verify that the tool works as designed. To maintain a good separation of concerns between implementation and tests, all tests are in separate files that extend their original rascal module. This will result in better maintainability, readability and extensibility for the future. 
+We provide an automatic testing suite to verify that the tool works as designed. To maintain a good separation of concerns between implementation and tests, all tests are in separate files that extend their original Rascal module. This will result in better maintainability, readability and extensibility for the future. 
 
-The tests are split in random generated tests where applicable. For example while operating on files and their locations, rascal is not able to provide a proper generator for reading the contents of a file. For this we provide three test files that are used in tests where files are needed. 
+The tests are split in random generated tests where applicable. For example while operating on files and their locations, Rascal is not able to provide a proper generator for reading the contents of a file. For this we provide three test files that are used in tests where files are needed. 
 
 Especially the Clone Detection is covered with random test generators, testing the properties of the tested functions as well as tests where the implementation is tested against the provided test files to assure the continued working in case of refactoring. For design changes the tests may have to be adjusted.
 
-To run the tests, import all the modules below and execute \texttt{:test} in the rascal console. The \texttt{projectLocation} in \texttt{Configuration.rsc} has to be set to the projects location in your eclipse workspace!
+To run the tests, import all the modules below and execute \texttt{:test} in the Rascal console. The \texttt{projectLocation} in \texttt{Configuration.rsc} has to be set to the projects location in your eclipse workspace!
 
 \begin{itemize}
 
@@ -421,11 +421,11 @@ The Rascal source code is in \texttt{piotr.kosytorz/series1/src/src}.
 In order to run the program, please follow the steps:
 
 \begin{enumerate}
-\item Please import the rascal part as a project into your eclipse with a working rascal installation.
+\item Please import the Rascal part as a project into your eclipse with a working Rascal installation.
 \item
   Open \texttt{Configuration.rsc} and adjust the location of the \texttt{projectLocation} to match the path of the project to your eclise workspace.
 \item Do the same for the \texttt{smallSqlProject} and \texttt{hqSqlProject}.
-\item Start a rascal console and import the \texttt{Main} module.
+\item Start a Rascal console and import the \texttt{Main} module.
 \item Run \texttt{startServe();}
 \item Open a browser and point it towards \url{http://localhost:5433/index.hmtl}.
 \end{enumerate}
@@ -474,15 +474,13 @@ The application opens in a web browser as a web application. Figure \ref{screens
 \end{figure}
 
 \section{Summary}
-\todo {
-	\begin{itemize}
-		\item{Sum things up}
-		\item{Write how the tool performs on hsqlsb,}
-		\item{Write how it can be improved}
-	\end{itemize}
-}
+Our aim in this assignment was to provide a clone detector and a tool to analyse those clones, that we would use ourselves. We believe that we have succeeded. 
 
+We decided to apply a different approach than setting the minimum of 6 lines of a clone class, because of several reasons. The first being, that like this you can fine tune for your project how big a clone should be. Of course the threshold could have been set up as lines as well, but this would have meant that for example getters and setters would have been detected as clones. This leads us to the next reason for our decision. With the node size a getter/setter is not detected, but complex on line statements, that should be put into reusable constants are detected as clones. The last reason is, that there was no evidence put forth in the papers why they used the 6 line minimum.
 
+Our solution works very well with medium and small projects like \texttt{smallSQL}, where the analyse time oscillates around 1 minute and 30 seconds, depending on the size of the threshold. For big project, like \texttt{hsqldb}, the execution time runs up to 29 minutes. The detailed data table in our visualization tool works also perfectly with that project, however the visualization on the force graph is not that transparent any more, due to a huge number of files that won't fit one one screen. Another approach where the user/maintainer would be able to filter the files beforehand, would probably solve the problem. 
+
+In the end, we are happy with our outcomes. 
 
 %-------------------------------------------------------------------------------
 %	REFERENTIES
