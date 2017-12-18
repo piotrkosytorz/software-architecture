@@ -432,7 +432,7 @@ In order to run the program, please follow the steps:
 
 \subsection{How to use}
 
-The application opens in a web browser as a web application. Figure \ref{screenshot1} presents the initial view of the application. Figures \ref{screenshot2}-\ref{screenshot3}-\ref{screenshot4} give example views of the visualizations.
+The application opens in a web browser as a web application. Figure \ref{screenshot1} (Appendix A in \ref{appendix:a}) presents the initial view of the application. Figures \ref{screenshot2}-\ref{screenshot3}-\ref{screenshot4} give example views of the visualizations.
 
 \begin{itemize}
 
@@ -444,6 +444,27 @@ The application opens in a web browser as a web application. Figure \ref{screens
 \item{The box marked with \textbf{5} shows an example view of the constellation visualization. The legend on the right explains how to read it. By clicking on a dot (file) a modal dialog opens with all the clone classes of that file. }
 \item{The box marked with \textbf{6} shows an example view of the project distribution visualization. The legend on the right explains how to read it. By hovering over a bar or arc the relevant information is displayed.}
 \end{itemize}
+
+\section{Summary}
+Our aim in this assignment was to provide a clone detector and a tool to analyse those clones, that we would use ourselves. We believe that we have succeeded. 
+
+We decided to apply a different approach than setting the minimum of 6 lines of a clone class, because of several reasons. The first being, that like this you can fine tune for your project how big a clone should be. Of course the threshold could have been set up as lines as well, but this would have meant that for example getters and setters would have been detected as clones. This leads us to the next reason for our decision. With the node size a getter/setter is not detected, but complex on line statements, that should be put into reusable constants are detected as clones. The last reason is, that there was no evidence put forth in the papers why they used the 6 line minimum.
+
+Our solution works very well with medium and small projects like \texttt{smallSQL}, where the analyse time oscillates around 1 minute and 30 seconds, depending on the size of the threshold. For big project, like \texttt{hsqldb}, the execution time runs up to 29 minutes. The detailed data table in our visualization tool works also perfectly with that project, however the visualization on the force graph is not that transparent any more, due to a huge number of files that won't fit one one screen. Another approach where the user/maintainer would be able to filter the files beforehand, would probably solve the problem. 
+
+In the end, we are happy with our outcomes. 
+
+%-------------------------------------------------------------------------------
+%	REFERENTIES
+%-------------------------------------------------------------------------------
+
+\printbibliography
+
+%-------------------------------------------------------------------------------
+%	BIJLAGEN EN EINDE
+%-------------------------------------------------------------------------------
+
+\section{Appendix A: Screenshots}\label{appendix:a}
 
 \begin{figure}[!htb]
 	\includegraphics[width=\textwidth]{visualization1}
@@ -472,27 +493,6 @@ The application opens in a web browser as a web application. Figure \ref{screens
 	\caption{Project distribution screenshot.}
 	\label{screenshot4}
 \end{figure}
-
-\section{Summary}
-Our aim in this assignment was to provide a clone detector and a tool to analyse those clones, that we would use ourselves. We believe that we have succeeded. 
-
-We decided to apply a different approach than setting the minimum of 6 lines of a clone class, because of several reasons. The first being, that like this you can fine tune for your project how big a clone should be. Of course the threshold could have been set up as lines as well, but this would have meant that for example getters and setters would have been detected as clones. This leads us to the next reason for our decision. With the node size a getter/setter is not detected, but complex on line statements, that should be put into reusable constants are detected as clones. The last reason is, that there was no evidence put forth in the papers why they used the 6 line minimum.
-
-Our solution works very well with medium and small projects like \texttt{smallSQL}, where the analyse time oscillates around 1 minute and 30 seconds, depending on the size of the threshold. For big project, like \texttt{hsqldb}, the execution time runs up to 29 minutes. The detailed data table in our visualization tool works also perfectly with that project, however the visualization on the force graph is not that transparent any more, due to a huge number of files that won't fit one one screen. Another approach where the user/maintainer would be able to filter the files beforehand, would probably solve the problem. 
-
-In the end, we are happy with our outcomes. 
-
-%-------------------------------------------------------------------------------
-%	REFERENTIES
-%-------------------------------------------------------------------------------
-
-\printbibliography
-
-%-------------------------------------------------------------------------------
-%	BIJLAGEN EN EINDE
-%-------------------------------------------------------------------------------
-
-%\section{Bijlage A}
 %\section{Bijlage B}
 %\section{Bijlage C}
 \end{document}
